@@ -1,0 +1,163 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Luxurious Gold Theme for Melted Gold Landing Page */
+  --background: #faf7f0; /* Soft cream */
+  --foreground: #0f1724; /* Dark navy */
+  --card: #ffffff;
+  --card-foreground: #0f1724;
+  --popover: #ffffff;
+  --popover-foreground: #0f1724;
+  --primary: #d4af37; /* Rich gold */
+  --primary-foreground: #0f1724;
+  --secondary: #bfa67a; /* Accent neutral gold */
+  --secondary-foreground: #0f1724;
+  --muted: #f5f1e8;
+  --muted-foreground: #6b6b6b;
+  --accent: #d4af37;
+  --accent-foreground: #0f1724;
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: #e8e3d6;
+  --input: #e8e3d6;
+  --ring: #d4af37;
+  --chart-1: #d4af37;
+  --chart-2: #bfa67a;
+  --chart-3: #0f1724;
+  --chart-4: #faf7f0;
+  --chart-5: #c9a961;
+  --radius: 0.5rem;
+  --sidebar: #faf7f0;
+  --sidebar-foreground: #0f1724;
+  --sidebar-primary: #d4af37;
+  --sidebar-primary-foreground: #0f1724;
+  --sidebar-accent: #bfa67a;
+  --sidebar-accent-foreground: #0f1724;
+  --sidebar-border: #e8e3d6;
+  --sidebar-ring: #d4af37;
+}
+
+.dark {
+  --background: #0f1724; /* Dark navy */
+  --foreground: #faf7f0; /* Soft cream */
+  --card: #1a2332;
+  --card-foreground: #faf7f0;
+  --popover: #1a2332;
+  --popover-foreground: #faf7f0;
+  --primary: #d4af37; /* Rich gold */
+  --primary-foreground: #0f1724;
+  --secondary: #bfa67a;
+  --secondary-foreground: #faf7f0;
+  --muted: #1f2937;
+  --muted-foreground: #9ca3af;
+  --accent: #d4af37;
+  --accent-foreground: #0f1724;
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: #2d3748;
+  --input: #2d3748;
+  --ring: #d4af37;
+  --chart-1: #d4af37;
+  --chart-2: #bfa67a;
+  --chart-3: #faf7f0;
+  --chart-4: #0f1724;
+  --chart-5: #c9a961;
+  --sidebar: #0f1724;
+  --sidebar-foreground: #faf7f0;
+  --sidebar-primary: #d4af37;
+  --sidebar-primary-foreground: #0f1724;
+  --sidebar-accent: #bfa67a;
+  --sidebar-accent-foreground: #faf7f0;
+  --sidebar-border: #2d3748;
+  --sidebar-ring: #d4af37;
+}
+
+@theme inline {
+  /* Updated to use Vazirmatn font for Persian text */
+  --font-sans: "Vazirmatn", var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono);
+  --font-serif: "Vazirmatn", serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Persian/RTL Support */
+  [dir="rtl"] {
+    direction: rtl;
+  }
+}
+
+/* Gold shine animation */
+@keyframes gold-shine {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.gold-shine {
+  background: linear-gradient(90deg, #d4af37 0%, #f4e5b8 50%, #d4af37 100%);
+  background-size: 200% auto;
+  animation: gold-shine 3s linear infinite;
+}
+
+/* Subtle texture overlay */
+.texture-overlay {
+  position: relative;
+}
+
+.texture-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.4;
+}
