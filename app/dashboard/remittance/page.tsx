@@ -86,188 +86,184 @@ export default function RemittancePage() {
     });
 
   return (
-    <div className="min-h-screen bg-[#e2d0ad]  flex" dir="rtl">
-      <Sidebar />
-
-      <div className="flex-1 lg:mr-64">
-        <main className="container mx-auto px-4 py-8 space-y-6">
-          {/* Page Header */}
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center">
-              <FileText className="h-6 w-6 text-gold" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-gold">ثبت حواله</h1>
-              <p className="text-cream/60">ثبت و مدیریت حواله‌های طلا و ریال</p>
-            </div>
+    <div className="min-h-screen bg-[#F6F5EE]  " dir="rtl">
+      <main className=" px-4 py-8 space-y-6">
+        {/* Page Header */}
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center">
+            <FileText className="h-6 w-6 text-gold" />
           </div>
+          <div>
+            <h1 className="text-3xl font-bold text-gold">ثبت حواله</h1>
+            <p className="text-cream/60">ثبت و مدیریت حواله‌های طلا و ریال</p>
+          </div>
+        </div>
 
-          {/* New Remittance Form */}
-          <Card className="bg-[#fdf4e0] border-gold/20">
-            <CardHeader>
-              <CardTitle className="text-gold">ثبت حواله جدید</CardTitle>
-              <CardDescription className="text-cream/60">
-                اطلاعات حواله را وارد کنید
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="amount" className="text-cream">
-                      مقدار
-                    </Label>
-                    <Input
-                      id="amount"
-                      type="number"
-                      value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
-                      placeholder="مقدار را وارد کنید"
-                      className="bg-navy border-gold/30 text-cream"
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="unit" className="text-cream">
-                      واحد
-                    </Label>
-                    <Select
-                      value={unit}
-                      onValueChange={(value: any) => setUnit(value)}
-                    >
-                      <SelectTrigger className="bg-navy border-gold/30 text-cream">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="گرم طلا">گرم طلا</SelectItem>
-                        <SelectItem value="ریال">ریال</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
+        {/* New Remittance Form */}
+        <Card className="bg-white border-gold/20">
+          <CardHeader>
+            <CardTitle className="text-gold">ثبت حواله جدید</CardTitle>
+            <CardDescription className="text-cream/60">
+              اطلاعات حواله را وارد کنید
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="flex gap-4 items-center">
                 <div className="space-y-2">
-                  <Label htmlFor="recipient" className="text-cream">
-                    نام گیرنده
+                  <Label htmlFor="amount" className="text-cream">
+                    مقدار
                   </Label>
                   <Input
-                    id="recipient"
-                    type="text"
-                    value={recipient}
-                    onChange={(e) => setRecipient(e.target.value)}
-                    placeholder="نام گیرنده را وارد کنید"
-                    className="bg-navy border-gold/30 text-cream"
+                    id="amount"
+                    type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    placeholder="مقدار را وارد کنید"
+                    className="bg-navy border-gold/30 text-cream w-96"
                     required
                   />
                 </div>
 
-                <Button
-                  type="submit"
-                  className="w-full bg-gold hover:bg-gold/90 text-navy font-bold"
-                >
-                  ثبت حواله
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-
-          {/* Remittance History */}
-          <Card className="bg-[#fdf4e0] border-gold/20">
-            <CardHeader>
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div>
-                  <CardTitle className="text-gold">تاریخچه حواله‌ها</CardTitle>
-                  <CardDescription className="text-cream/60">
-                    مشاهده و مدیریت حواله‌های ثبت شده
-                  </CardDescription>
-                </div>
-
-                <div className="flex gap-2">
+                <div className="space-y-2 mt-2">
+                  <Label htmlFor="unit" className="text-cream">
+                    واحد
+                  </Label>
                   <Select
-                    value={sortBy}
-                    onValueChange={(value: any) => setSortBy(value)}
+                    value={unit}
+                    onValueChange={(value: any) => setUnit(value)}
                   >
-                    <SelectTrigger className="w-[140px] bg-navy border-gold/30 text-cream">
+                    <SelectTrigger className="bg-navy border-gold/30 mb-2 text-cream">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="date">مرتب‌سازی: تاریخ</SelectItem>
-                      <SelectItem value="amount">مرتب‌سازی: مقدار</SelectItem>
-                    </SelectContent>
-                  </Select>
-
-                  <Select
-                    value={filterUnit}
-                    onValueChange={(value: any) => setFilterUnit(value)}
-                  >
-                    <SelectTrigger className="w-[140px] bg-navy border-gold/30 text-cream">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">همه واحدها</SelectItem>
                       <SelectItem value="گرم طلا">گرم طلا</SelectItem>
                       <SelectItem value="ریال">ریال</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {filteredRemittances.map((remittance) => (
-                  <div
-                    key={remittance.id}
-                    className="p-4 rounded-lg bg-navy border border-gold/20 hover:border-gold/40 transition-colors"
-                  >
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                      <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-gold/10 flex items-center justify-center flex-shrink-0">
-                          <Weight className="h-5 w-5 text-gold" />
+
+              <div className="space-y-2">
+                <Label htmlFor="recipient" className="text-cream">
+                  نام گیرنده
+                </Label>
+                <Input
+                  id="recipient"
+                  type="text"
+                  value={recipient}
+                  onChange={(e) => setRecipient(e.target.value)}
+                  placeholder="نام گیرنده را وارد کنید"
+                  className="bg-navy border-gold/30 text-cream w-96"
+                  required
+                />
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full bg-[#d8c070] hover:bg-[#BFA67A] text-gray-800 font-bold py-6 rounded-xl transition-all hover:shadow-lg disabled:opacity-50"
+              >
+                ثبت حواله
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+
+        {/* Remittance History */}
+        <Card className="bg-white border-gold/20">
+          <CardHeader>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <CardTitle className="text-gold">تاریخچه حواله‌ها</CardTitle>
+                <CardDescription className="text-cream/60">
+                  مشاهده و مدیریت حواله‌های ثبت شده
+                </CardDescription>
+              </div>
+
+              <div className="flex gap-2">
+                <Select
+                  value={sortBy}
+                  onValueChange={(value: any) => setSortBy(value)}
+                >
+                  <SelectTrigger className="w-[140px] bg-navy border-gold/30 text-cream">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="date">مرتب‌سازی: تاریخ</SelectItem>
+                    <SelectItem value="amount">مرتب‌سازی: مقدار</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Select
+                  value={filterUnit}
+                  onValueChange={(value: any) => setFilterUnit(value)}
+                >
+                  <SelectTrigger className="w-[140px] bg-navy border-gold/30 text-cream">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">همه واحدها</SelectItem>
+                    <SelectItem value="گرم طلا">گرم طلا</SelectItem>
+                    <SelectItem value="ریال">ریال</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {filteredRemittances.map((remittance) => (
+                <div
+                  key={remittance.id}
+                  className="p-4 rounded-lg bg-navy border border-gold/20 hover:border-gold/40 transition-colors"
+                >
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-gold/10 flex items-center justify-center flex-shrink-0">
+                        <Weight className="h-5 w-5 text-gold" />
+                      </div>
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg font-bold text-cream">
+                            {remittance.amount.toLocaleString("fa-IR")}
+                          </span>
+                          <span className="text-sm text-cream/60">
+                            {remittance.unit}
+                          </span>
                         </div>
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2">
-                            <span className="text-lg font-bold text-cream">
-                              {remittance.amount.toLocaleString("fa-IR")}
-                            </span>
-                            <span className="text-sm text-cream/60">
-                              {remittance.unit}
-                            </span>
+                        <div className="flex items-center gap-4 text-sm text-cream/60">
+                          <div className="flex items-center gap-1">
+                            <User className="h-4 w-4" />
+                            <span>{remittance.recipient}</span>
                           </div>
-                          <div className="flex items-center gap-4 text-sm text-cream/60">
-                            <div className="flex items-center gap-1">
-                              <User className="h-4 w-4" />
-                              <span>{remittance.recipient}</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Calendar className="h-4 w-4" />
-                              <span>{remittance.date}</span>
-                            </div>
+                          <div className="flex items-center gap-1">
+                            <Calendar className="h-4 w-4" />
+                            <span>{remittance.date}</span>
                           </div>
                         </div>
                       </div>
-                      <Badge
-                        variant={
-                          remittance.status === "تکمیل شده"
-                            ? "default"
-                            : "secondary"
-                        }
-                        className={
-                          remittance.status === "تکمیل شده"
-                            ? "bg-green-500/20 text-green-400 border-green-500/30"
-                            : "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
-                        }
-                      >
-                        {remittance.status}
-                      </Badge>
                     </div>
+                    <Badge
+                      variant={
+                        remittance.status === "تکمیل شده"
+                          ? "default"
+                          : "secondary"
+                      }
+                      className={
+                        remittance.status === "تکمیل شده"
+                          ? "bg-green-500/20 text-green-400 border-green-500/30"
+                          : "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
+                      }
+                    >
+                      {remittance.status}
+                    </Badge>
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </main>
-      </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </main>
     </div>
   );
 }
