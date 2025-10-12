@@ -87,15 +87,14 @@ export default function RemittancePage() {
 
   return (
     <div className="min-h-screen bg-[#F6F5EE]  " dir="rtl">
-      <main className=" px-4 py-8 space-y-6">
+      <main className=" px-4 py-4 space-y-6">
         {/* Page Header */}
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center">
-            <FileText className="h-6 w-6 text-gold" />
-          </div>
           <div>
-            <h1 className="text-3xl font-bold text-gold">ثبت حواله</h1>
-            <p className="text-cream/60">ثبت و مدیریت حواله‌های طلا و ریال</p>
+            <h1 className="text-xl font-bold text-slate-800">ثبت حواله</h1>
+            <p className="text-slate-800/60 text-base">
+              ثبت و مدیریت حواله‌های طلا و ریال
+            </p>
           </div>
         </div>
 
