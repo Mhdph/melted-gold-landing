@@ -160,7 +160,7 @@ export default function RemittancePage() {
 
               <Button
                 type="submit"
-                className="w-full bg-[#d8c070] hover:bg-[#BFA67A] text-gray-800 font-bold py-6 rounded-xl transition-all hover:shadow-lg disabled:opacity-50"
+                className=" bg-[#d8c070] hover:bg-[#BFA67A] text-gray-800 font-bold py-4 w-40 rounded-xl transition-all hover:shadow-lg disabled:opacity-50"
               >
                 ثبت حواله
               </Button>
