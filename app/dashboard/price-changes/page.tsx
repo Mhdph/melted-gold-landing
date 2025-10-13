@@ -126,7 +126,7 @@ export default function PriceChangesPage() {
           </div>
 
           {/* Price Changes Table */}
-          <Card className=" border-gold/20">
+          <Card className="overflow-x-scroll w-96 lg:w-full border-gold/20">
             <CardHeader>
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
