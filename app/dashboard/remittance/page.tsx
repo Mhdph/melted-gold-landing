@@ -117,7 +117,7 @@ export default function RemittancePage() {
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="مقدار را وارد کنید"
-                    className="bg-navy border-gold/30 text-cream w-96"
+                    className="bg-navy border-gold/30 text-cream w-full xl:w-96"
                     required
                   />
                 </div>
@@ -130,7 +130,7 @@ export default function RemittancePage() {
                     value={unit}
                     onValueChange={(value: any) => setUnit(value)}
                   >
-                    <SelectTrigger className="bg-navy border-gold/30 mb-2 text-cream">
+                    <SelectTrigger className="bg-navy border-gold/30 mb-2 text-cream ">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -151,7 +151,7 @@ export default function RemittancePage() {
                   value={recipient}
                   onChange={(e) => setRecipient(e.target.value)}
                   placeholder="نام گیرنده را وارد کنید"
-                  className="bg-navy border-gold/30 text-cream w-96"
+                  className="bg-navy border-gold/30 text-cream w-full xl:w-96"
                   required
                 />
               </div>
