@@ -8,10 +8,28 @@ import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "خرید طلای آب‌شده — فروش طلای ذوب‌شده با گواهی و ارسال امن",
-  description:
-    "خرید و فروش طلای آب‌شده با گواهی خلوص، بسته‌بندی حرفه‌ای و بازخرید تضمینی. استعلام قیمت امروز و سفارش آنلاین.",
-  generator: "v0.app",
+  title: "Your App",
+  description: "Your app description",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Your App",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Your App",
+    title: "Your App",
+    description: "Your app description",
+  },
+  twitter: {
+    card: "summary",
+    title: "Your App",
+    description: "Your app description",
+  },
 };
 
 export default function RootLayout({
