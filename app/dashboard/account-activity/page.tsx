@@ -1,21 +1,40 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Sidebar } from "@/components/dashboard/sidebar"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Activity, ArrowDownLeft, ArrowUpRight, Calendar, Filter } from "lucide-react"
+import { useState } from "react";
+import { Sidebar } from "@/components/dashboard/sidebar";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Activity,
+  ArrowDownLeft,
+  ArrowUpRight,
+  Calendar,
+  Filter,
+} from "lucide-react";
+import PageTitle from "@/components/page-title";
 
 type Transaction = {
-  id: string
-  date: string
-  description: string
-  amount: number
-  type: "واریز" | "برداشت" | "انتقال"
-  balance: number
-}
+  id: string;
+  date: string;
+  description: string;
+  amount: number;
+  type: "واریز" | "برداشت" | "انتقال";
+  balance: number;
+};
 
 export default function AccountActivityPage() {
   const [transactions] = useState<Transaction[]>([
@@ -59,40 +78,40 @@ export default function AccountActivityPage() {
       type: "واریز",
       balance: 47500000,
     },
-  ])
+  ]);
 
-  const [filterType, setFilterType] = useState<"all" | "واریز" | "برداشت" | "انتقال">("all")
-  const [dateFrom, setDateFrom] = useState("")
-  const [dateTo, setDateTo] = useState("")
+  const [filterType, setFilterType] = useState<
+    "all" | "واریز" | "برداشت" | "انتقال"
+  >("all");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
 
-  const filteredTransactions = transactions.filter((t) => filterType === "all" || t.type === filterType)
+  const filteredTransactions = transactions.filter(
+    (t) => filterType === "all" || t.type === filterType
+  );
 
-  const totalDeposits = transactions.filter((t) => t.type === "واریز").reduce((sum, t) => sum + t.amount, 0)
+  const totalDeposits = transactions
+    .filter((t) => t.type === "واریز")
+    .reduce((sum, t) => sum + t.amount, 0);
 
   const totalWithdrawals = transactions
     .filter((t) => t.type === "برداشت" || t.type === "انتقال")
-    .reduce((sum, t) => sum + Math.abs(t.amount), 0)
+    .reduce((sum, t) => sum + Math.abs(t.amount), 0);
 
   return (
     <div className="min-h-screen bg-navy flex" dir="rtl">
-      <Sidebar />
-
-      <div className="flex-1 lg:mr-64">
+      <div className="flex-1 ">
         <main className="container mx-auto px-4 py-8 space-y-6">
           {/* Page Header */}
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center">
-              <Activity className="h-6 w-6 text-gold" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-gold">گردش حساب</h1>
-              <p className="text-cream/60">مشاهده تمام تراکنش‌های حساب</p>
-            </div>
-          </div>
+
+          <PageTitle
+            title="گردش حساب"
+            description="مشاهده تمام تراکنش‌های حساب"
+          />
 
           {/* Summary Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="bg-navy/50 border-gold/20">
+            <Card className=" border-gold/20">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -108,7 +127,7 @@ export default function AccountActivityPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-navy/50 border-green-500/20">
+            <Card className=" border-green-500/20">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -124,7 +143,7 @@ export default function AccountActivityPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-navy/50 border-red-500/20">
+            <Card className=" border-red-500/20">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -142,7 +161,7 @@ export default function AccountActivityPage() {
           </div>
 
           {/* Filters */}
-          <Card className="bg-navy/50 border-gold/20">
+          <Card className=" border-gold/20">
             <CardHeader>
               <div className="flex items-center gap-2">
                 <Filter className="h-5 w-5 text-gold" />
@@ -153,7 +172,10 @@ export default function AccountActivityPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label className="text-cream">نوع تراکنش</Label>
-                  <Select value={filterType} onValueChange={(value: any) => setFilterType(value)}>
+                  <Select
+                    value={filterType}
+                    onValueChange={(value: any) => setFilterType(value)}
+                  >
                     <SelectTrigger className="bg-navy border-gold/30 text-cream">
                       <SelectValue />
                     </SelectTrigger>
@@ -192,10 +214,12 @@ export default function AccountActivityPage() {
           </Card>
 
           {/* Transactions Table */}
-          <Card className="bg-navy/50 border-gold/20">
+          <Card className=" border-gold/20">
             <CardHeader>
               <CardTitle className="text-gold">تراکنش‌ها</CardTitle>
-              <CardDescription className="text-cream/60">{filteredTransactions.length} تراکنش یافت شد</CardDescription>
+              <CardDescription className="text-cream/60">
+                {filteredTransactions.length} تراکنش یافت شد
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -211,8 +235,8 @@ export default function AccountActivityPage() {
                             transaction.type === "واریز"
                               ? "bg-green-500/10"
                               : transaction.type === "برداشت"
-                                ? "bg-red-500/10"
-                                : "bg-blue-500/10"
+                              ? "bg-red-500/10"
+                              : "bg-blue-500/10"
                           }`}
                         >
                           {transaction.type === "واریز" ? (
@@ -222,7 +246,9 @@ export default function AccountActivityPage() {
                           )}
                         </div>
                         <div className="space-y-1 flex-1">
-                          <p className="font-medium text-cream">{transaction.description}</p>
+                          <p className="font-medium text-cream">
+                            {transaction.description}
+                          </p>
                           <div className="flex items-center gap-2 text-sm text-cream/60">
                             <Calendar className="h-4 w-4" />
                             <span>{transaction.date}</span>
@@ -232,13 +258,18 @@ export default function AccountActivityPage() {
 
                       <div className="text-left md:text-right space-y-1">
                         <p
-                          className={`text-lg font-bold ${transaction.amount > 0 ? "text-green-400" : "text-red-400"}`}
+                          className={`text-lg font-bold ${
+                            transaction.amount > 0
+                              ? "text-green-400"
+                              : "text-red-400"
+                          }`}
                         >
                           {transaction.amount > 0 ? "+" : ""}
                           {transaction.amount.toLocaleString("fa-IR")} ریال
                         </p>
                         <p className="text-sm text-cream/60">
-                          موجودی: {transaction.balance.toLocaleString("fa-IR")} ریال
+                          موجودی: {transaction.balance.toLocaleString("fa-IR")}{" "}
+                          ریال
                         </p>
                       </div>
                     </div>
@@ -250,5 +281,5 @@ export default function AccountActivityPage() {
         </main>
       </div>
     </div>
-  )
+  );
 }

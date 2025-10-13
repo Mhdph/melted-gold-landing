@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { FileText, Calendar, User, Weight } from "lucide-react";
+import PageTitle from "@/components/page-title";
 
 type Remittance = {
   id: string;
@@ -89,14 +90,11 @@ export default function RemittancePage() {
     <div className="min-h-screen bg-[#F6F5EE]  " dir="rtl">
       <main className=" px-4 py-4 space-y-6">
         {/* Page Header */}
-        <div className="flex items-center gap-3">
-          <div>
-            <h1 className="text-xl font-bold text-slate-800">ثبت حواله</h1>
-            <p className="text-slate-800/60 text-base">
-              ثبت و مدیریت حواله‌های طلا و ریال
-            </p>
-          </div>
-        </div>
+
+        <PageTitle
+          title="ثبت حواله"
+          description="ثبت و مدیریت حواله‌های طلا و ریال"
+        />
 
         {/* New Remittance Form */}
         <Card className="bg-white border-gold/20">
