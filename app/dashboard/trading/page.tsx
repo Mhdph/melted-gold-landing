@@ -11,9 +11,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import {
   TrendingUp,
@@ -22,8 +19,8 @@ import {
   Weight,
   DollarSign,
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import PageTitle from "@/components/page-title";
+import { TradingDrawer } from "@/components/trading-drawer";
 
 type Trade = {
   id: string;
@@ -36,10 +33,9 @@ type Trade = {
 };
 
 export default function TradingPage() {
-  const { toast } = useToast();
-  const [buyAmount, setBuyAmount] = useState("");
-  const [sellAmount, setSellAmount] = useState("");
   const [currentPrice] = useState(2500000);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerType, setDrawerType] = useState<"buy" | "sell">("buy");
   const [trades, setTrades] = useState<Trade[]>([
     {
       id: "1",
@@ -61,63 +57,21 @@ export default function TradingPage() {
     },
   ]);
 
-  const handleBuy = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!buyAmount) return;
-
-    const amount = Number.parseFloat(buyAmount);
-    const newTrade: Trade = {
-      id: Date.now().toString(),
-      date:
-        new Date().toLocaleDateString("fa-IR") +
-        " - " +
-        new Date().toLocaleTimeString("fa-IR"),
-      type: "خرید",
-      amount,
-      pricePerGram: currentPrice,
-      totalValue: amount * currentPrice,
-      status: "در انتظار",
-    };
-
-    setTrades([newTrade, ...trades]);
-    setBuyAmount("");
-
-    toast({
-      title: "معامله ثبت شد",
-      description: `خرید ${amount} گرم طلا با موفقیت ثبت شد`,
-    });
+  const handleOpenDrawer = (type: "buy" | "sell") => {
+    setDrawerType(type);
+    setDrawerOpen(true);
   };
 
-  const handleSell = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!sellAmount) return;
+  const handleCloseDrawer = () => {
+    setDrawerOpen(false);
+  };
 
-    const amount = Number.parseFloat(sellAmount);
-    const sellPrice = currentPrice - 50000;
-    const newTrade: Trade = {
-      id: Date.now().toString(),
-      date:
-        new Date().toLocaleDateString("fa-IR") +
-        " - " +
-        new Date().toLocaleTimeString("fa-IR"),
-      type: "فروش",
-      amount,
-      pricePerGram: sellPrice,
-      totalValue: amount * sellPrice,
-      status: "در انتظار",
-    };
-
+  const handleTradeComplete = (newTrade: Trade) => {
     setTrades([newTrade, ...trades]);
-    setSellAmount("");
-
-    toast({
-      title: "معامله ثبت شد",
-      description: `فروش ${amount} گرم طلا با موفقیت ثبت شد`,
-    });
   };
 
   return (
-    <div className="min-h-screen bg-navy flex" dir="rtl">
+    <div className="min-h-screen bg-[#F6F5EE] flex" dir="rtl">
       <div className="flex-1 ">
         <main className="container mx-auto px-4 py-8 space-y-6">
           {/* Page Header */}
@@ -127,7 +81,7 @@ export default function TradingPage() {
           />
 
           {/* Current Price Display */}
-          <Card className="bg-gradient-to-br from-gold/20 to-accent/20 border-gold/30">
+          {/* <Card className="bg-gradient-to-br from-gold/20 to-accent/20 border-gold/30">
             <CardContent className="pt-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex items-center gap-4">
@@ -157,7 +111,7 @@ export default function TradingPage() {
                 </div>
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
 
           {/* Quick Trade Section */}
           <Card className=" border-gold/20">
@@ -168,107 +122,41 @@ export default function TradingPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Tabs defaultValue="buy" dir="rtl">
-                <TabsList className="grid w-full grid-cols-2 bg-navy border border-gold/20">
-                  <TabsTrigger
-                    value="buy"
-                    className="data-[state=active]:bg-green-500/20 data-[state=active]:text-slate-700"
-                  >
-                    خرید طلا
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="sell"
-                    className="data-[state=active]:bg-red-500/20 data-[state=active]:text-slate-700"
-                  >
-                    فروش طلا
-                  </TabsTrigger>
-                </TabsList>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Buy Button */}
+                <Button
+                  onClick={() => handleOpenDrawer("buy")}
+                  className="h-20 bg-[#F6F5EE] flex flex-col hover:bg-zinc-100  text-green-500 "
+                >
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="h-8 w-8 text-green-400" />
+                    <p className="font-bold text-center text-base">بخرید</p>
+                  </div>
+                  <div className="flex items-center gap-2 text-gray-700">
+                    <p className="text-sm text-cream/80">مظنه خرید</p>
+                    <p className="text-xl font-semibold ">
+                      {currentPrice.toLocaleString("fa-IR")}
+                    </p>
+                  </div>
+                </Button>
 
-                <TabsContent value="buy">
-                  <form onSubmit={handleBuy} className="space-y-4 mt-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="buy-amount" className="text-cream">
-                        مقدار (گرم)
-                      </Label>
-                      <Input
-                        id="buy-amount"
-                        type="number"
-                        step="0.01"
-                        value={buyAmount}
-                        onChange={(e) => setBuyAmount(e.target.value)}
-                        placeholder="مقدار طلا را وارد کنید"
-                        className="bg-navy border-gold/30 text-cream"
-                        required
-                      />
-                    </div>
-
-                    {buyAmount && (
-                      <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/30">
-                        <div className="flex items-center justify-between">
-                          <span className="text-cream/80">
-                            مبلغ قابل پرداخت:
-                          </span>
-                          <span className="text-xl font-bold text-green-400">
-                            {(
-                              Number.parseFloat(buyAmount) * currentPrice
-                            ).toLocaleString("fa-IR")}{" "}
-                            ریال
-                          </span>
-                        </div>
-                      </div>
-                    )}
-
-                    <Button
-                      type="submit"
-                      className="w-full bg-[#D4AF37] hover:bg-[#BFA67A] text-[#0F1724] font-bold"
-                    >
-                      ثبت خرید
-                    </Button>
-                  </form>
-                </TabsContent>
-
-                <TabsContent value="sell">
-                  <form onSubmit={handleSell} className="space-y-4 mt-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="sell-amount" className="text-cream">
-                        مقدار (گرم)
-                      </Label>
-                      <Input
-                        id="sell-amount"
-                        type="number"
-                        step="0.01"
-                        value={sellAmount}
-                        onChange={(e) => setSellAmount(e.target.value)}
-                        placeholder="مقدار طلا را وارد کنید"
-                        className="bg-navy border-gold/30 text-cream"
-                        required
-                      />
-                    </div>
-
-                    {sellAmount && (
-                      <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/30">
-                        <div className="flex items-center justify-between">
-                          <span className="text-cream/80">مبلغ دریافتی:</span>
-                          <span className="text-xl font-bold text-red-400">
-                            {(
-                              Number.parseFloat(sellAmount) *
-                              (currentPrice - 50000)
-                            ).toLocaleString("fa-IR")}{" "}
-                            ریال
-                          </span>
-                        </div>
-                      </div>
-                    )}
-
-                    <Button
-                      type="submit"
-                      className="w-full bg-red-500 hover:bg-red-600 text-white font-bold"
-                    >
-                      ثبت فروش
-                    </Button>
-                  </form>
-                </TabsContent>
-              </Tabs>
+                {/* Sell Button */}
+                <Button
+                  onClick={() => handleOpenDrawer("sell")}
+                  className="h-20 bg-[#F6F5EE] flex flex-col hover:bg-zinc-100 transition-all duration-200 text-red-500"
+                >
+                  <div className="flex items-center gap-2">
+                    <TrendingDown className="h-8 w-8" />
+                    <p className="font-bold text-center text-base">بفروشید</p>
+                  </div>
+                  <div className="flex items-center gap-2 text-gray-700">
+                    <p className="text-sm text-cream/80">مظنه فروش</p>
+                    <p className="text-xl font-semibold ">
+                      {(currentPrice - 50000).toLocaleString("fa-IR")}
+                    </p>
+                  </div>
+                </Button>
+              </div>
             </CardContent>
           </Card>
 
@@ -290,7 +178,7 @@ export default function TradingPage() {
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                       <div className="flex items-start gap-3">
                         <div
-                          className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                          className={`w-10 h-10 hidden  rounded-lg md:flex items-center justify-center flex-shrink-0 ${
                             trade.type === "خرید"
                               ? "bg-green-500/10"
                               : "bg-red-500/10"
@@ -335,20 +223,20 @@ export default function TradingPage() {
                           </div>
                           <div className="flex items-center gap-4 text-sm text-cream/60">
                             <div className="flex items-center gap-1">
-                              <Weight className="h-4 w-4" />
+                              <Weight className="h-4 w-4 hidden md:inline" />
                               <span>
                                 {trade.amount.toLocaleString("fa-IR")} گرم
                               </span>
                             </div>
                             <div className="flex items-center gap-1">
-                              <DollarSign className="h-4 w-4" />
+                              <DollarSign className="h-4 w-4 hidden md:inline" />
                               <span>
                                 {trade.pricePerGram.toLocaleString("fa-IR")}{" "}
                                 ریال/گرم
                               </span>
                             </div>
                             <div className="flex items-center gap-1">
-                              <Calendar className="h-4 w-4" />
+                              <Calendar className="h-4 w-4 hidden md:inline" />
                               <span>{trade.date}</span>
                             </div>
                           </div>
@@ -367,6 +255,15 @@ export default function TradingPage() {
           </Card>
         </main>
       </div>
+
+      {/* Trading Drawer */}
+      <TradingDrawer
+        isOpen={drawerOpen}
+        onClose={handleCloseDrawer}
+        type={drawerType}
+        currentPrice={currentPrice}
+        onTradeComplete={handleTradeComplete}
+      />
     </div>
   );
 }
