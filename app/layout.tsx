@@ -8,27 +8,27 @@ import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Your App",
-  description: "Your app description",
+  title: "طلای آب‌شده زروان",
+  description: "طلای آب‌شده زروان",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Your App",
+    title: "طلای آب‌شده زروان",
   },
   formatDetection: {
     telephone: false,
   },
   openGraph: {
     type: "website",
-    siteName: "Your App",
-    title: "Your App",
-    description: "Your app description",
+    siteName: "طلای آب‌شده زروان",
+    title: "طلای آب‌شده زروان",
+    description: "طلای آب‌شده زروان",
   },
   twitter: {
     card: "summary",
-    title: "Your App",
-    description: "Your app description",
+    title: "طلای آب‌شده زروان",
+    description: "طلای آب‌شده زروان",
   },
 };
 

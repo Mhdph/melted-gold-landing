@@ -74,7 +74,7 @@ export function TradingDrawer({
 
   return (
     <Drawer open={isOpen} onOpenChange={handleClose} direction="bottom">
-      <DrawerContent className="bg-white  border-gold/20">
+      <DrawerContent className="bg-white  flex justify-center items-center border-gold/20">
         <DrawerHeader className="text-center">
           <div className="flex items-center justify-center gap-3 mb-2">
             <div
@@ -99,7 +99,10 @@ export function TradingDrawer({
           </DrawerDescription>
         </DrawerHeader>
 
-        <form onSubmit={handleSubmit} className="px-4 space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          className="px-4 space-y-6 bg-white md:w-1/2 "
+        >
           {/* Price Display */}
           <div className="p-4 rounded-lg bg-gold/10 border border-gold/30">
             <div className="flex items-center justify-between">
