@@ -52,6 +52,7 @@ export default function RootLayout({
         />
       </head>
       <body
+        dir="rtl"
         className={`font-sans ${GeistSans.variable} ${GeistMono.variable} bg-[#b8a989]`}
       >
         <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
