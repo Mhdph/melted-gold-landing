@@ -1,11 +1,11 @@
 {
-  "name": "Your App Name",
-  "short_name": "App",
-  "description": "Your app description",
+  "name": "طلای آب‌شده زروان",
+  "short_name": "طلای آب‌شده زروان",
+  "description": "طلای آب‌شده زروان",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "background_color": "#b8a989",
+  "theme_color": "#b8a989",
   "icons": [
     {
       "src": "/icon-192x192.png",

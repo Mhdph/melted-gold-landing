@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
+import InstallPWA from "@/components/install-pwa";
 
 export const metadata: Metadata = {
   title: "طلای آب‌شده زروان",

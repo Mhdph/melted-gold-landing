@@ -27,12 +27,15 @@ import {
   Activity,
   TrendingDown,
   Info,
+  SmartphoneIcon,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import logo from "@/assets/images/zavran-dark.png";
 import Image from "next/image";
+import InstallPWA from "../install-pwa";
+import { useState } from "react";
 
 // This is sample data.
 const data = {
@@ -41,11 +44,6 @@ const data = {
       title: "Building Your Application",
       url: "#",
       items: [
-        {
-          title: "داشبورد",
-          icon: LayoutDashboard,
-          href: "/dashboard",
-        },
         {
           title: "ثبت حواله",
           icon: FileText,
@@ -78,7 +76,7 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
-
+  const [isInstallPWA, setIsInstallPWA] = useState(false);
   return (
     <Sidebar dir="rtl" {...props}>
       <SidebarContent className="bg-[#000e1f] text-white">
@@ -99,7 +97,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       {item.items.map((item) => (
                         <SidebarMenuSubItem className="" key={item.title}>
                           <SidebarMenuSubButton
-                            className="text-[#F6F5EE] h-9"
+                            className="text-[#F6F5EE]  h-9"
                             asChild
                             isActive={pathname === item.href}
                           >
@@ -120,6 +118,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   ) : null}
                 </SidebarMenuItem>
               ))}
+              <SidebarMenuSubItem
+                className="px-3.5 py-1"
+                onClick={() => setIsInstallPWA(true)}
+              >
+                <SidebarMenuSubButton className="text-[#F6F5EE]  h-9 cursor-pointer">
+                  <SmartphoneIcon className="size-5 !text-[#D7B46A]" />
+                  نصب برنامه
+                </SidebarMenuSubButton>
+              </SidebarMenuSubItem>
+              {isInstallPWA && <InstallPWA setIsInstallPWA={setIsInstallPWA} />}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

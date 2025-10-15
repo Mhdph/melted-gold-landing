@@ -9,7 +9,11 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
-export default function InstallPWA() {
+export default function InstallPWA({
+  setIsInstallPWA,
+}: {
+  setIsInstallPWA: (isInstallPWA: boolean) => void;
+}) {
   const [supportsPWA, setSupportsPWA] = useState(false);
   const [promptInstall, setPromptInstall] =
     useState<BeforeInstallPromptEvent | null>(null);
@@ -46,23 +50,22 @@ export default function InstallPWA() {
     setPromptInstall(null);
   };
 
-  if (!supportsPWA || !isVisible) return null;
+  // if (!supportsPWA || !isVisible) return null;
 
   return (
     <div className="fixed bottom-4 left-4 right-4 z-50 mx-auto max-w-md">
-      <div className="flex items-center gap-3 rounded-lg border bg-white p-4 shadow-lg dark:bg-gray-800">
+      <div className="flex items-center gap-3 rounded-lg border bg-white p-4 justify-between shadow-lg dark:bg-gray-800">
         <Download className="h-8 w-8 text-blue-500" />
-        <div className="flex-1">
-          <h3 className="font-semibold">Install App</h3>
+        <div className="">
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Install this app on your device for a better experience
+            دریافت رابط کاربری بهتر با نصب این برنامه{" "}
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-1">
           <Button onClick={onClick} size="sm">
-            Install
+            نصب
           </Button>
-          <Button onClick={() => setIsVisible(false)} size="sm" variant="ghost">
+          <Button onClick={() => setIsInstallPWA(false)} size="sm">
             <X className="h-4 w-4" />
           </Button>
         </div>
