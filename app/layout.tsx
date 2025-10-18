@@ -6,7 +6,8 @@ import { Analytics } from "@vercel/analytics/next";
 import { Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
-import InstallPWA from "@/components/install-pwa";
+
+import { Providers } from "@/components/provider";
 
 export const metadata: Metadata = {
   title: "طلای آب‌شده زروان",
@@ -56,7 +57,9 @@ export default function RootLayout({
         dir="rtl"
         className={`font-sans ${GeistSans.variable} ${GeistMono.variable} bg-[#b8a989]`}
       >
-        <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Providers>{children}</Providers>
+        </Suspense>
         <Toaster />
         <Analytics />
       </body>
