@@ -4,6 +4,8 @@ import { ArrowLeft, Lock } from "lucide-react";
 import { Label } from "../ui/label";
 import { Step } from "../login-form";
 import { useLogin } from "@/services/auth-service";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface LoginOtpProps {
   setStep: (step: Step) => void;
@@ -13,6 +15,7 @@ function LoginOtp({ setStep }: LoginOtpProps) {
   const [countdown, setCountdown] = useState(0);
   const { mutate: login, isPending } = useLogin();
   const phone = localStorage.getItem("phone");
+  const router = useRouter();
 
   const handleOtpChange = (index: number, value: string) => {
     if (value.length > 1) return;
@@ -31,13 +34,17 @@ function LoginOtp({ setStep }: LoginOtpProps) {
   const handleOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Simulate API call to verify OTP
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    console.log("[v0] OTP verified:", otp.join(""));
-
-    // Redirect to dashboard or home
-    window.location.href = "/";
+    login(
+      { mobile: phone!, otpCode: otp.join("") },
+      {
+        onSuccess: () => {
+          router.push("/dashboard/trading");
+        },
+        onError: () => {
+          toast.error("کد تایید یا شماره تماس نادرست است");
+        },
+      }
+    );
   };
 
   const handleResendOtp = async () => {

@@ -17,7 +17,9 @@ function LoginPhone({ setStep }: LoginPhoneProps) {
   const { isLoading, isSuccess } = useGetLoginCode(phone, enabled);
 
   const handlePhoneSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setEnabled(!enabled);
+    localStorage.setItem("phone", phone);
   };
 
   useEffect(() => {

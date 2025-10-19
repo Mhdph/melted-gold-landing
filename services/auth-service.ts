@@ -13,7 +13,7 @@ export const useGetLoginCode = (slug: string, enabled: boolean) =>
   });
 
 interface LoginParams {
-  phone: string;
+  mobile: string;
   otpCode: string;
 }
 
