@@ -10,11 +10,11 @@ export interface BaseResponse<T extends any> {
 }
 
 export interface BasePaginationResponse<T> {
-  success: boolean;
-  message: string;
-  data: {
-    results: T;
-    total: number;
-    sort: Sort;
+  data: T;
+  meta: {
+    page: number;
+    limit: number;
+    itemCount: number;
+    hasNextPage: boolean;
   };
 }

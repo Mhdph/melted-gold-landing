@@ -12,7 +12,7 @@ class ApiClient {
 
   get<T>(url: string, config: AxiosRequestConfig = {}) {
     return axios
-      .get<BaseResponse<T>>(`${this.endpoint}${url}`, { ...config })
+      .get<T>(`${this.endpoint}${url}`, { ...config })
       .then((res) => res.data);
   }
 

@@ -16,8 +16,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { TrendingDown, TrendingUp, Clock } from "lucide-react";
+import {
+  TrendingDown,
+  TrendingUp,
+  Clock,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import PageTitle from "@/components/page-title";
+import { useGetPrices, PriceData } from "@/services/price-service";
 
 type PriceRecord = {
   time: string;
@@ -26,53 +33,57 @@ type PriceRecord = {
   change: number;
 };
 
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("fa-IR", {
+    month: "numeric",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
 export default function PriceChangesPage() {
   const [timeRange, setTimeRange] = useState<"today" | "7days" | "30days">(
     "today"
   );
-  const [priceData, setPriceData] = useState<PriceRecord[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const {
+    data: pricesResponse,
+    isLoading,
+    error,
+  } = useGetPrices(currentPage, pageSize);
 
-  useEffect(() => {
-    // Generate mock price data
-    const generatePriceData = () => {
-      const data: PriceRecord[] = [];
-      const basePrice = 2500000;
-      const now = new Date();
+  const priceData = pricesResponse?.data || [];
+  const meta = pricesResponse?.meta;
 
-      const count = timeRange === "today" ? 24 : timeRange === "7days" ? 7 : 30;
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
-      for (let i = count - 1; i >= 0; i--) {
-        const variation = (Math.random() - 0.5) * 100000;
-        const buyPrice = basePrice + variation;
-        const sellPrice = buyPrice - 50000;
-        const change = (Math.random() - 0.5) * 5;
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    setCurrentPage(1); // Reset to first page when changing page size
+  };
 
-        let timeLabel = "";
-        if (timeRange === "today") {
-          const hour = now.getHours() - i;
-          timeLabel = `${hour >= 0 ? hour : 24 + hour}:00`;
-        } else {
-          const date = new Date(now);
-          date.setDate(date.getDate() - i);
-          timeLabel = date.toLocaleDateString("fa-IR", {
-            month: "numeric",
-            day: "numeric",
-          });
-        }
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#F6F5EE] flex items-center justify-center">
+        <div className="text-gold">در حال بارگذاری...</div>
+      </div>
+    );
+  }
 
-        data.push({
-          time: timeLabel,
-          buyPrice: Math.round(buyPrice),
-          sellPrice: Math.round(sellPrice),
-          change: Number.parseFloat(change.toFixed(2)),
-        });
-      }
+  if (error) {
+    return (
+      <div className="min-h-screen bg-[#F6F5EE] flex items-center justify-center">
+        <div className="text-red-400">خطا در بارگذاری داده‌ها</div>
+      </div>
+    );
+  }
 
-      return data;
-    };
-
-    setPriceData(generatePriceData());
-  }, [timeRange]);
+  console.log(meta);
 
   return (
     <div className="min-h-screen bg-[#F6F5EE] flex" dir="rtl">
@@ -92,10 +103,7 @@ export default function PriceChangesPage() {
                   <div>
                     <p className="text-sm text-cream/60">قیمت خرید (هر گرم)</p>
                     <p className="text-2xl font-bold text-green-400 mt-1">
-                      {priceData[priceData.length - 1]?.buyPrice.toLocaleString(
-                        "fa-IR"
-                      )}{" "}
-                      ریال
+                      {priceData[0]?.buy.toLocaleString("fa-IR")} ریال
                     </p>
                   </div>
                   <div className="w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center">
@@ -111,10 +119,7 @@ export default function PriceChangesPage() {
                   <div>
                     <p className="text-sm text-cream/60">قیمت فروش (هر گرم)</p>
                     <p className="text-2xl font-bold text-red-400 mt-1">
-                      {priceData[
-                        priceData.length - 1
-                      ]?.sellPrice.toLocaleString("fa-IR")}{" "}
-                      ریال
+                      {priceData[0]?.sell.toLocaleString("fa-IR")} ریال
                     </p>
                   </div>
                   <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center">
@@ -174,70 +179,118 @@ export default function PriceChangesPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {priceData.map((record, index) => (
-                      <tr
-                        key={index}
-                        className="border-b border-gold/10 hover:bg-gold/5 transition-colors"
-                      >
-                        <td className="py-3 px-4">
-                          <div className="flex items-center gap-2 text-cream">
-                            <Clock className="h-4 w-4 text-cream/60" />
-                            <span>{record.time}</span>
-                          </div>
-                        </td>
-                        <td className="py-3 px-4 text-green-400 font-medium">
-                          {record.buyPrice.toLocaleString("fa-IR")} ریال
-                        </td>
-                        <td className="py-3 px-4 text-red-400 font-medium">
-                          {record.sellPrice.toLocaleString("fa-IR")} ریال
-                        </td>
-                        <td className="py-3 px-4">
-                          <div
-                            className={`flex items-center gap-1 ${
-                              record.change >= 0
-                                ? "text-green-400"
-                                : "text-red-400"
-                            }`}
-                          >
-                            {record.change >= 0 ? (
-                              <TrendingUp className="h-4 w-4" />
-                            ) : (
-                              <TrendingDown className="h-4 w-4" />
-                            )}
-                            <span className="font-bold">
-                              {record.change >= 0 ? "+" : ""}
-                              {record.change.toLocaleString("fa-IR")}%
-                            </span>
-                          </div>
-                        </td>
-                        <td className="py-3 px-4">
-                          <div className="flex items-center gap-1 h-8">
-                            {Array.from({ length: 10 }).map((_, i) => {
-                              const height =
-                                Math.abs(record.change) * 10 +
-                                Math.random() * 20;
-                              return (
-                                <div
-                                  key={i}
-                                  className={`w-1 rounded-full ${
-                                    record.change >= 0
-                                      ? "bg-green-400/50"
-                                      : "bg-red-400/50"
-                                  }`}
-                                  style={{
-                                    height: `${Math.min(height, 100)}%`,
-                                  }}
-                                />
-                              );
-                            })}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                    {priceData.map((record, index) => {
+                      const change = parseFloat(record.percentageChange);
+                      return (
+                        <tr
+                          key={index}
+                          className="border-b border-gold/10 hover:bg-gold/5 transition-colors"
+                        >
+                          <td className="py-3 px-4">
+                            <div className="flex items-center gap-2 text-cream">
+                              <Clock className="h-4 w-4 text-cream/60" />
+                              <span>{formatDate(record.createdAt)}</span>
+                            </div>
+                          </td>
+                          <td className="py-3 px-4 text-green-400 font-medium">
+                            {record.buy.toLocaleString("fa-IR")} ریال
+                          </td>
+                          <td className="py-3 px-4 text-red-400 font-medium">
+                            {record.sell.toLocaleString("fa-IR")} ریال
+                          </td>
+                          <td className="py-3 px-4">
+                            <div
+                              className={`flex items-center gap-1 ${
+                                change >= 0 ? "text-green-400" : "text-red-400"
+                              }`}
+                            >
+                              {change >= 0 ? (
+                                <TrendingUp className="h-4 w-4" />
+                              ) : (
+                                <TrendingDown className="h-4 w-4" />
+                              )}
+                              <span className="font-bold">
+                                {change >= 0 ? "+" : ""}
+                                {change.toLocaleString("fa-IR")}%
+                              </span>
+                            </div>
+                          </td>
+                          <td className="py-3 px-4">
+                            <div className="flex items-center gap-1 h-8">
+                              {Array.from({ length: 10 }).map((_, i) => {
+                                const height =
+                                  Math.abs(change) * 10 + Math.random() * 20;
+                                return (
+                                  <div
+                                    key={i}
+                                    className={`w-1 rounded-full ${
+                                      change >= 0
+                                        ? "bg-green-400/50"
+                                        : "bg-red-400/50"
+                                    }`}
+                                    style={{
+                                      height: `${Math.min(height, 100)}%`,
+                                    }}
+                                  />
+                                );
+                              })}
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
             </CardContent>
+
+            {/* Pagination Controls */}
+            {meta && (
+              <div className="flex items-center justify-between px-6 py-4 border-t border-gold/20">
+                <div className="flex items-center gap-2 text-cream/60 text-sm">
+                  <span>نمایش</span>
+                  <Select
+                    value={pageSize.toString()}
+                    onValueChange={(value) =>
+                      handlePageSizeChange(parseInt(value))
+                    }
+                  >
+                    <SelectTrigger className="w-20 bg-navy border-gold/30 text-cream">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="5">5</SelectItem>
+                      <SelectItem value="10">10</SelectItem>
+                      <SelectItem value="20">20</SelectItem>
+                      <SelectItem value="50">50</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <span>از {meta.itemCount} رکورد</span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="p-2 rounded-md bg-navy border border-gold/30 text-cream disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gold/10 transition-colors"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+
+                  <span className="px-3 py-1 text-cream text-sm">
+                    صفحه {currentPage} از {Math.ceil(meta.itemCount / pageSize)}
+                  </span>
+
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={!meta.hasNextPage}
+                    className="p-2 rounded-md bg-navy border border-gold/30 text-cream disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gold/10 transition-colors"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            )}
           </Card>
         </main>
       </div>
