@@ -37,7 +37,9 @@ function LoginOtp({ setStep }: LoginOtpProps) {
     login(
       { mobile: phone!, otpCode: otp.join("") },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
+          console.log(data, "salam");
+          localStorage.setItem("token", data?.access_token);
           router.push("/dashboard/trading");
         },
         onError: () => {

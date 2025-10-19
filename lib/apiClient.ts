@@ -18,7 +18,7 @@ class ApiClient {
 
   post<T>(url: string, data = {}, config: AxiosRequestConfig = {}) {
     return axios
-      .post<T>(`${this.endpoint}${url}`, data, { ...config })
+      .post<any>(`${this.endpoint}${url}`, data, { ...config })
       .then((res) => res.data);
   }
 
