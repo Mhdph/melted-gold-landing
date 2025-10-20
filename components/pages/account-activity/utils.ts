@@ -1,0 +1,42 @@
+export const sampleTransactions = [
+  {
+    id: "1",
+    date: "1403/10/15 - 14:30",
+    description: "خرید 10 گرم طلا",
+    amount: -25000000,
+    type: "برداشت",
+    balance: 75000000,
+  },
+  {
+    id: "2",
+    date: "1403/10/14 - 10:15",
+    description: "واریز به حساب",
+    amount: 50000000,
+    type: "واریز",
+    balance: 100000000,
+  },
+  {
+    id: "3",
+    date: "1403/10/13 - 16:45",
+    description: "فروش 5 گرم طلا",
+    amount: 12500000,
+    type: "واریز",
+    balance: 50000000,
+  },
+  {
+    id: "4",
+    date: "1403/10/12 - 09:20",
+    description: "انتقال به کاربر دیگر",
+    amount: -10000000,
+    type: "انتقال",
+    balance: 37500000,
+  },
+  {
+    id: "5",
+    date: "1403/10/11 - 11:00",
+    description: "واریز اولیه",
+    amount: 47500000,
+    type: "واریز",
+    balance: 47500000,
+  },
+];
