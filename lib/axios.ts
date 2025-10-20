@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import axios, { InternalAxiosRequestConfig } from "axios";
+import axios, { InternalAxiosRequestConfig, AxiosError } from "axios";
 import Cookies from "js-cookie";
 
 function AuthRequestInterceptor(config: InternalAxiosRequestConfig) {
@@ -13,6 +13,16 @@ function AuthRequestInterceptor(config: InternalAxiosRequestConfig) {
   return config;
 }
 
+function AuthResponseInterceptor(error: AxiosError) {
+  if (error.response?.status === 401) {
+    // Clear token and redirect to login
+    localStorage.removeItem("token");
+    localStorage.removeItem("phone");
+    window.location.href = "/";
+  }
+  return Promise.reject(error);
+}
+
 const baseURL = "/api";
 
 const axiosInstance = axios.create({
@@ -20,5 +30,9 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(AuthRequestInterceptor);
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  AuthResponseInterceptor
+);
 
 export default axiosInstance;

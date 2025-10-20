@@ -14,6 +14,16 @@ export function Providers({ children, ...props }: ThemeProviderProps) {
         refetchOnWindowFocus: false,
         retry: false,
       },
+      mutations: {
+        onError: (error: any) => {
+          // Handle 401 errors globally
+          if (error?.response?.status === 401) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("phone");
+            window.location.href = "/";
+          }
+        },
+      },
     },
   });
   return (
