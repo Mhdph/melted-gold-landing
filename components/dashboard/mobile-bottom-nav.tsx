@@ -46,7 +46,7 @@ export function MobileBottomNav() {
               className={cn(
                 "flex items-center flex-col justify-center rounded-full p-2  transition-all duration-300 relative",
                 pathname === item.href
-                  ? "bg-gradient-to-br from-amber-300 to-amber-400 text-gold shadow-lg shadow-gold/20 scale-105"
+                  ? "bg-[#d8c070] hover:bg-[#BFA67A] text-gold shadow-lg shadow-gold/20 scale-105"
                   : "text-[#F6F5EE] hover:bg-yellow-500/10 hover:scale-105 active:scale-95"
               )}
             >
