@@ -1,6 +1,6 @@
 import { LoginForm } from "@/components/login-form";
 import Link from "next/link";
-import logo from "@/assets/images/zarvaan.png";
+import logo from "@/assets/images/zavran-dark.png";
 import Image from "next/image";
 
 export default function LoginPage() {
@@ -19,7 +19,7 @@ export default function LoginPage() {
         </div>
 
         {/* Login Card */}
-        <div className="bg-[#FAF7F0] rounded-2xl shadow-2xl p-8 border border-[#d7b46a]/20">
+        <div className="bg-[#F6F5EE] rounded-2xl shadow-2xl p-8 border border-[#d7b46a]/20">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-[#0F1724] mb-2">
               ورود به حساب
@@ -30,18 +30,6 @@ export default function LoginPage() {
           </div>
 
           <LoginForm />
-
-          <div className="mt-6 text-center">
-            <p className="text-sm text-[#6b6b6b]">
-              حساب کاربری ندارید؟{" "}
-              <Link
-                href="/register"
-                className="text-[#d7b46a] hover:underline font-medium"
-              >
-                ثبت‌نام کنید
-              </Link>
-            </p>
-          </div>
         </div>
       </div>
     </div>
