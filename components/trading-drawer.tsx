@@ -13,7 +13,8 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { useToast } from "@/hooks/use-toast";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { TrendingUp, TrendingDown, XIcon } from "lucide-react";
+import { Separator } from "./ui/separator";
 
 interface TradingDrawerProps {
   isOpen: boolean;
@@ -75,33 +76,16 @@ export function TradingDrawer({
   return (
     <Drawer open={isOpen} onOpenChange={handleClose} direction="bottom">
       <DrawerContent className="bg-white  flex justify-center items-center border-gold/20">
-        <DrawerHeader className="text-center">
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <div
-              className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                isBuy ? "bg-green-500/20" : "bg-red-500/20"
-              }`}
-            >
-              {isBuy ? (
-                <TrendingUp className="h-6 w-6 text-green-400" />
-              ) : (
-                <TrendingDown className="h-6 w-6 text-red-400" />
-              )}
-            </div>
-          </div>
-          <DrawerTitle className="text-gold text-xl">
-            {isBuy ? "خرید طلا" : "فروش طلا"}
-          </DrawerTitle>
-          <DrawerDescription className="text-cream/60">
-            {isBuy
-              ? "مقدار طلای مورد نظر برای خرید را وارد کنید"
-              : "مقدار طلای مورد نظر برای فروش را وارد کنید"}
-          </DrawerDescription>
-        </DrawerHeader>
-
+        <div className=" flex items-center px-6 justify-between  w-full  py-2">
+          <p className="text-gold text-sm">
+            {isBuy ? "خرید آبشده نقدی" : "فروش آبشده نقدی"}
+          </p>
+          <XIcon className="size-4" />
+        </div>
+        <Separator />
         <form
           onSubmit={handleSubmit}
-          className="px-4 space-y-6 bg-white md:w-1/2 "
+          className="px-4 space-y-6 py-2 bg-white md:w-1/2 "
         >
           {/* Price Display */}
           <div className="p-4 rounded-lg bg-gold/10 border border-gold/30">
@@ -161,7 +145,7 @@ export function TradingDrawer({
             </div>
           )}
 
-          <DrawerFooter className="px-0">
+          <DrawerFooter className="px-0 mb-12">
             <div className="flex gap-3">
               <Button
                 type="button"
