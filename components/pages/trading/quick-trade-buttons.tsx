@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { TrendingUp, TrendingDown } from "lucide-react";
+import { useGoldPriceWebSocket } from "@/hooks/use-gold-price-websocket";
 
 interface QuickTradeButtonsProps {
   currentPrice: number;
@@ -19,15 +20,30 @@ export default function QuickTradeButtons({
   onBuyClick,
   onSellClick,
 }: QuickTradeButtonsProps) {
-  const sellPrice = currentPrice - 50000;
+  const { isConnected, priceData, error, lastMessage } =
+    useGoldPriceWebSocket();
+
+  // Use WebSocket data if available, otherwise fallback to props
+  const buyPrice = priceData?.buy || currentPrice;
+  const sellPrice = priceData?.sell || currentPrice - 50000;
+
+  // Log WebSocket data for debugging
+  console.log("WebSocket connection status:", isConnected);
+  console.log("WebSocket error:", error);
+  console.log("WebSocket price data:", priceData);
+  console.log("WebSocket last message:", lastMessage);
 
   return (
     <Card className="border-gold/20">
       <CardHeader>
-        <CardTitle className="text-gold">معامله سریع</CardTitle>
-        <CardDescription className="text-cream/60">
-          خرید یا فروش فوری طلا
-        </CardDescription>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle className="text-gold">معامله سریع</CardTitle>
+            <CardDescription className="text-cream/60">
+              خرید یا فروش فوری طلا
+            </CardDescription>
+          </div>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -43,7 +59,7 @@ export default function QuickTradeButtons({
             <div className="flex items-center gap-2 text-gray-700">
               <p className="text-sm text-cream/80">مظنه خرید</p>
               <p className="text-xl font-semibold">
-                {currentPrice.toLocaleString("fa-IR")}
+                {buyPrice.toLocaleString("fa-IR")}
               </p>
             </div>
           </Button>
