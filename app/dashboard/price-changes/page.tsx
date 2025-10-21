@@ -38,9 +38,9 @@ export default function PriceChangesPage() {
   if (error) return <ErrorMessage />;
 
   return (
-    <div className="min-h-screen bg-[#F6F5EE] flex" dir="rtl">
+    <div className="min-h-screen bg-[#F6F5EE]  flex" dir="rtl">
       <div className="flex-1">
-        <main className="container mx-auto px-4 py-8 space-y-6">
+        <main className="container mx-auto py-8 space-y-6">
           {/* Page Header */}
           <PageTitle
             title="تغییرات قیمت طلا"

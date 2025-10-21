@@ -1,6 +1,7 @@
 "use client";
 
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
+import { MobileBottomNav } from "@/components/dashboard/mobile-bottom-nav";
 import {
   SidebarInset,
   SidebarProvider,
@@ -33,11 +34,12 @@ export default function DashboardLayout({
         </header>
         <div
           dir="rtl"
-          className="flex flex-1 bg-[#F6F5EE]   flex-col gap-4 p-4"
+          className="flex flex-1 bg-[#F6F5EE] flex-col gap-4 p-4 pb-20 md:pb-4"
         >
           {children}
         </div>
       </SidebarInset>
+      <MobileBottomNav />
     </SidebarProvider>
   );
 }
