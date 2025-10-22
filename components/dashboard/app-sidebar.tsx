@@ -45,14 +45,14 @@ const data = {
       url: "#",
       items: [
         {
+          title: "معاملات",
+          icon: TrendingUp,
+          href: "/dashboard/trading",
+        },
+        {
           title: "ثبت حواله",
           icon: FileText,
           href: "/dashboard/remittance",
-        },
-        {
-          title: "گردش حساب",
-          icon: Activity,
-          href: "/dashboard/account-activity",
         },
         {
           title: "تغییرات قیمت",
@@ -60,9 +60,9 @@ const data = {
           href: "/dashboard/price-changes",
         },
         {
-          title: "معاملات",
-          icon: TrendingUp,
-          href: "/dashboard/trading",
+          title: "گردش حساب",
+          icon: Activity,
+          href: "/dashboard/account-activity",
         },
         {
           title: "درباره ما",
