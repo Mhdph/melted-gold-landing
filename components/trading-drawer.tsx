@@ -82,7 +82,7 @@ export function TradingDrawer({
           <p className="text-gold text-sm">
             {isBuy ? "خرید آبشده نقدی" : "فروش آبشده نقدی"}
           </p>
-          <XIcon className="size-4" />
+          <XIcon onClick={handleClose} className="size-4" />
         </div>
         <Separator />
         <form
@@ -91,7 +91,7 @@ export function TradingDrawer({
         >
           {/* Price Display */}
 
-          <div className="bg-gray-300 mt-2  rounded-lg border-black p-2 border flex">
+          <div className="bg-gray-300 mt-2 justify-between rounded-lg border-black p-2 border flex">
             <div className="flex items-center gap-1 pl-2  border-black">
               <p className="text-cream/80">مثقال:</p>
               <p className="text-gold font-bold">
@@ -111,30 +111,11 @@ export function TradingDrawer({
             </div>
           </div>
 
-          {/* Amount Input */}
-          {/* <div className="space-y-2">
-            <Label htmlFor="amount" className="text-cream text-base">
-              مقدار (گرم)
-            </Label>
-            <Input
-              id="amount"
-              type="number"
-              step="0.01"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="مقدار طلا را وارد کنید"
-              className="bg-navy border-gold/30 text-cream text-lg h-12"
-              required
-              autoFocus
-            />
-          </div> */}
-
           <InputGroup>
             <InputGroupInput
               placeholder="وزن"
               value={amount}
               id="amount"
-              type="number"
               onChange={(e) => setAmount(e.target.value)}
               required
               className="placeholder:!text-gray-500"
@@ -148,7 +129,6 @@ export function TradingDrawer({
             <InputGroupInput
               placeholder="مبلغ کل"
               value={totalValue.toLocaleString("fa-IR")}
-              type="number"
               onChange={(e) => setAmount(e.target.value)}
               disabled
             />
