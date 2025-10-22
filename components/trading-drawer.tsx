@@ -15,6 +15,8 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { TrendingUp, TrendingDown, XIcon } from "lucide-react";
 import { Separator } from "./ui/separator";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
+import { Textarea } from "./ui/textarea";
 
 interface TradingDrawerProps {
   isOpen: boolean;
@@ -33,7 +35,7 @@ export function TradingDrawer({
 }: TradingDrawerProps) {
   const { toast } = useToast();
   const [amount, setAmount] = useState("");
-
+  const [description, setDescription] = useState("");
   const isBuy = type === "buy";
   const tradePrice = isBuy ? currentPrice : currentPrice - 50000;
   const totalValue = amount ? Number.parseFloat(amount) * tradePrice : 0;
@@ -88,23 +90,29 @@ export function TradingDrawer({
           className="px-4 space-y-6 py-2 bg-white md:w-1/2 "
         >
           {/* Price Display */}
-          <div className="p-4 rounded-lg bg-gold/10 border border-gold/30">
-            <div className="flex items-center justify-between">
-              <span className="text-cream/80">
-                قیمت {isBuy ? "خرید" : "فروش"} (هر گرم):
-              </span>
-              <span
-                className={`text-xl font-bold ${
-                  isBuy ? "text-green-400" : "text-red-400"
-                }`}
-              >
-                {tradePrice.toLocaleString("fa-IR")} ریال
-              </span>
+
+          <div className="bg-gray-300 mt-2  rounded-lg border-black p-2 border flex">
+            <div className="flex items-center gap-1 pl-2  border-black">
+              <p className="text-cream/80">مثقال:</p>
+              <p className="text-gold font-bold">
+                {" "}
+                {tradePrice.toLocaleString("fa-IR")}
+              </p>
+              <p>ریال</p>
+            </div>
+            <div className="border-r pl-2 border-black"></div>
+            <div className="flex items-center gap-1 border-black">
+              <p className="text-cream/80">گرم:</p>
+              <p className="text-gold font-bold">
+                {" "}
+                {tradePrice.toLocaleString("fa-IR")}
+              </p>
+              <p>ریال</p>
             </div>
           </div>
 
           {/* Amount Input */}
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <Label htmlFor="amount" className="text-cream text-base">
               مقدار (گرم)
             </Label>
@@ -119,33 +127,42 @@ export function TradingDrawer({
               required
               autoFocus
             />
-          </div>
+          </div> */}
 
+          <InputGroup>
+            <InputGroupInput
+              placeholder="وزن"
+              value={amount}
+              id="amount"
+              type="number"
+              onChange={(e) => setAmount(e.target.value)}
+              required
+              className="placeholder:!text-gray-500"
+            />
+            <InputGroupAddon align="inline-end">
+              <div className="pl-2">گرم </div>
+            </InputGroupAddon>
+          </InputGroup>
           {/* Total Value Display */}
-          {amount && (
-            <div
-              className={`p-4 rounded-lg border ${
-                isBuy
-                  ? "bg-green-500/10 border-green-500/30"
-                  : "bg-red-500/10 border-red-500/30"
-              }`}
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-cream/80 text-base">
-                  {isBuy ? "مبلغ قابل پرداخت:" : "مبلغ دریافتی:"}
-                </span>
-                <span
-                  className={`text-xl font-bold ${
-                    isBuy ? "text-green-400" : "text-red-400"
-                  }`}
-                >
-                  {totalValue.toLocaleString("fa-IR")} ریال
-                </span>
-              </div>
-            </div>
-          )}
-
-          <DrawerFooter className="px-0 mb-12">
+          <InputGroup>
+            <InputGroupInput
+              placeholder="مبلغ کل"
+              value={totalValue.toLocaleString("fa-IR")}
+              type="number"
+              onChange={(e) => setAmount(e.target.value)}
+              disabled
+            />
+            <InputGroupAddon align="inline-end">
+              <div className="pl-2">ریال </div>
+            </InputGroupAddon>
+          </InputGroup>
+          <Textarea
+            placeholder="توضیحات"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="bg-navy border-gold/30 text-cream text-lg h-12 placeholder:!text-gray-500"
+          />
+          <DrawerFooter className="px-0 mb-2">
             <div className="flex gap-3">
               <Button
                 type="button"
