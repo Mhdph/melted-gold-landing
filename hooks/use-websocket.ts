@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { io, Socket } from "socket.io-client";
 
 interface UseWebSocketOptions {
   url: string;
   token?: string;
   onMessage?: (data: any) => void;
-  onError?: (error: Event) => void;
+  onError?: (error: any) => void;
   onOpen?: () => void;
   onClose?: () => void;
   reconnectInterval?: number;
@@ -26,67 +27,81 @@ export function useWebSocket({
   const [isConnected, setIsConnected] = useState(false);
   const [lastMessage, setLastMessage] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
-  const wsRef = useRef<WebSocket | null>(null);
+  const socketRef = useRef<Socket | null>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const reconnectAttemptsRef = useRef(0);
 
   const connect = () => {
     try {
-      const wsUrl = token ? `${url}?token=${token}` : url;
-      console.log("Connecting to WebSocket:", wsUrl);
+      console.log("Connecting to Socket.IO:", url);
+      console.log("Token being used:", token);
 
-      const ws = new WebSocket(wsUrl);
-      wsRef.current = ws;
+      const socket = io(url, {
+        query: token ? { token } : undefined,
+        auth: token ? { token } : undefined,
+        extraHeaders: token
+          ? {
+              Authorization: `Bearer ${token}`,
+              "x-auth-token": token,
+              token: token,
+            }
+          : undefined,
+        autoConnect: true,
+        reconnection: true,
+        reconnectionAttempts: maxReconnectAttempts,
+        reconnectionDelay: reconnectInterval,
+        transports: ["polling", "websocket"],
+        forceNew: true, // Force a new connection
+      });
 
-      ws.onopen = () => {
-        console.log("WebSocket connected");
+      socketRef.current = socket;
+
+      socket.on("connect", () => {
+        console.log("Socket.IO connected");
+        console.log("Socket ID:", socket.id);
+        console.log("Socket query params:", socket.io.opts.query);
+        console.log("Socket auth:", (socket.io.opts as any).auth);
+        console.log("Socket extra headers:", socket.io.opts.extraHeaders);
         setIsConnected(true);
         setError(null);
         reconnectAttemptsRef.current = 0;
         onOpen?.();
-      };
+      });
 
-      ws.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data);
-          console.log("WebSocket message received:", data);
-          setLastMessage(data);
-          onMessage?.(data);
-        } catch (err) {
-          console.error("Error parsing WebSocket message:", err);
-          console.log("Raw message:", event.data);
-        }
-      };
-
-      ws.onerror = (error) => {
-        console.error("WebSocket error:", error);
-        setError("WebSocket connection error");
-        onError?.(error);
-      };
-
-      ws.onclose = (event) => {
-        console.log("WebSocket closed:", event.code, event.reason);
+      socket.on("disconnect", (reason) => {
+        console.log("Socket.IO disconnected:", reason);
         setIsConnected(false);
         onClose?.();
+      });
 
-        // Attempt to reconnect if not a manual close
-        if (
-          event.code !== 1000 &&
-          reconnectAttemptsRef.current < maxReconnectAttempts
-        ) {
-          reconnectAttemptsRef.current++;
-          console.log(
-            `Attempting to reconnect (${reconnectAttemptsRef.current}/${maxReconnectAttempts})...`
-          );
+      socket.on("connect_error", (err) => {
+        console.error("Socket.IO connection error:", err);
+        console.error("Error details:", {
+          message: err.message,
+          description: (err as any).description,
+          context: (err as any).context,
+          type: (err as any).type,
+        });
+        setError("Socket.IO connection error");
+        onError?.(err);
+      });
 
-          reconnectTimeoutRef.current = setTimeout(() => {
-            connect();
-          }, reconnectInterval);
-        }
-      };
+      // Listen for gold price updates - this matches your server's event name
+      socket.on("updatePrice", (data) => {
+        console.log("Gold price update received:", data);
+        setLastMessage(data);
+        onMessage?.(data);
+      });
+
+      // Listen for other potential events
+      socket.on("message", (data) => {
+        console.log("Socket.IO message received:", data);
+        setLastMessage(data);
+        onMessage?.(data);
+      });
     } catch (err) {
-      console.error("Error creating WebSocket connection:", err);
-      setError("Failed to create WebSocket connection");
+      console.error("Error creating Socket.IO connection:", err);
+      setError("Failed to create Socket.IO connection");
     }
   };
 
@@ -96,18 +111,18 @@ export function useWebSocket({
       reconnectTimeoutRef.current = null;
     }
 
-    if (wsRef.current) {
-      wsRef.current.close(1000, "Manual disconnect");
-      wsRef.current = null;
+    if (socketRef.current) {
+      socketRef.current.disconnect();
+      socketRef.current = null;
     }
     setIsConnected(false);
   };
 
-  const sendMessage = (message: any) => {
-    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-      wsRef.current.send(JSON.stringify(message));
+  const sendMessage = (event: string, message: any) => {
+    if (socketRef.current && socketRef.current.connected) {
+      socketRef.current.emit(event, message);
     } else {
-      console.warn("WebSocket is not connected");
+      console.warn("Socket.IO is not connected");
     }
   };
 

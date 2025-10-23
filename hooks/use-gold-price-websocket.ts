@@ -4,10 +4,9 @@ import { useWebSocket } from "./use-websocket";
 import { useEffect, useState } from "react";
 
 interface GoldPriceData {
-  buy: number;
-  sell: number;
-  percentageChange: string;
-  createdAt: string;
+  msg: {
+    lastPrice: number;
+  };
 }
 
 export function useGoldPriceWebSocket() {
@@ -22,29 +21,44 @@ export function useGoldPriceWebSocket() {
     }
   }, []);
 
+  console.log(token);
+
   const { isConnected, lastMessage, error, sendMessage } = useWebSocket({
-    url: "wss://yellowgold.liara.run",
+    url: "https://yellowgold.liara.run", // Changed from wss:// to https:// for Socket.IO
     token: token || undefined,
     onMessage: (data) => {
-      console.log("Gold price WebSocket data received:", data);
+      console.log("Gold price Socket.IO data received:", data);
+      console.log("Data structure:", JSON.stringify(data, null, 2));
       setPriceData(data);
     },
     onError: (error) => {
-      console.error("Gold price WebSocket error:", error);
+      console.error("Gold price Socket.IO error:", error);
     },
     onOpen: () => {
-      console.log("Gold price WebSocket connected");
+      console.log("Gold price Socket.IO connected");
     },
     onClose: () => {
-      console.log("Gold price WebSocket disconnected");
+      console.log("Gold price Socket.IO disconnected");
     },
   });
+
+  // Reconnect when token changes
+  useEffect(() => {
+    if (token) {
+      console.log("Token is now available, reconnecting...");
+    }
+  }, [token]);
+
+  // Helper function to send messages to specific Socket.IO events
+  const sendGoldPriceMessage = (event: string, message: any) => {
+    sendMessage(event, message);
+  };
 
   return {
     isConnected,
     priceData,
     error,
-    sendMessage,
+    sendMessage: sendGoldPriceMessage,
     lastMessage,
   };
 }

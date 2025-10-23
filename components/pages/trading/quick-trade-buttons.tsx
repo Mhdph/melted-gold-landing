@@ -24,8 +24,9 @@ export default function QuickTradeButtons({
     useGoldPriceWebSocket();
 
   // Use WebSocket data if available, otherwise fallback to props
-  const buyPrice = priceData?.buy || currentPrice;
-  const sellPrice = priceData?.sell || currentPrice - 50000;
+  const lastPrice = priceData?.msg?.lastPrice;
+  const buyPrice = lastPrice || currentPrice;
+  const sellPrice = lastPrice ? lastPrice - 50000 : currentPrice - 50000;
 
   // Log WebSocket data for debugging
   console.log("WebSocket connection status:", isConnected);
