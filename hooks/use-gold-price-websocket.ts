@@ -3,9 +3,14 @@
 import { useWebSocket } from "./use-websocket";
 import { useEffect, useState } from "react";
 
-interface GoldPriceData {
+export interface GoldPriceData {
   msg: {
     lastPrice: number;
+    buyGerm: number;
+    buyMithqal: number;
+    changePercent: number;
+    sellGerm: number;
+    sellMithqal: number;
   };
 }
 

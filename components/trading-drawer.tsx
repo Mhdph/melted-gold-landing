@@ -17,6 +17,7 @@ import { TrendingUp, TrendingDown, XIcon } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
 import { Textarea } from "./ui/textarea";
+import { GoldPriceData } from "@/hooks/use-gold-price-websocket";
 
 interface TradingDrawerProps {
   isOpen: boolean;
@@ -24,6 +25,7 @@ interface TradingDrawerProps {
   type: "buy" | "sell";
   currentPrice: number;
   onTradeComplete: (trade: any) => void;
+  priceData: GoldPriceData;
 }
 
 export function TradingDrawer({
@@ -32,12 +34,13 @@ export function TradingDrawer({
   type,
   currentPrice,
   onTradeComplete,
+  priceData,
 }: TradingDrawerProps) {
   const { toast } = useToast();
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const isBuy = type === "buy";
-  const tradePrice = isBuy ? currentPrice : currentPrice - 50000;
+  const tradePrice = isBuy ? priceData.msg.buyGerm : priceData.msg.sellGerm;
   const totalValue = amount ? Number.parseFloat(amount) * tradePrice : 0;
 
   const handleSubmit = (e: React.FormEvent) => {

@@ -8,32 +8,20 @@ import {
 import { Button } from "@/components/ui/button";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { useGoldPriceWebSocket } from "@/hooks/use-gold-price-websocket";
-
+import { GoldPriceData } from "@/hooks/use-gold-price-websocket";
 interface QuickTradeButtonsProps {
   currentPrice: number;
   onBuyClick: () => void;
   onSellClick: () => void;
+  priceData: GoldPriceData;
 }
 
 export default function QuickTradeButtons({
   currentPrice,
   onBuyClick,
   onSellClick,
+  priceData,
 }: QuickTradeButtonsProps) {
-  const { isConnected, priceData, error, lastMessage } =
-    useGoldPriceWebSocket();
-
-  // Use WebSocket data if available, otherwise fallback to props
-  const lastPrice = priceData?.msg?.lastPrice;
-  const buyPrice = lastPrice || currentPrice;
-  const sellPrice = lastPrice ? lastPrice - 50000 : currentPrice - 50000;
-
-  // Log WebSocket data for debugging
-  console.log("WebSocket connection status:", isConnected);
-  console.log("WebSocket error:", error);
-  console.log("WebSocket price data:", priceData);
-  console.log("WebSocket last message:", lastMessage);
-
   return (
     <div className="space-y-4">
       {/* Main Trading Card */}
@@ -49,7 +37,7 @@ export default function QuickTradeButtons({
             <div className="flex justify-between items-center">
               <p className="text-gray-600 text-sm">نرخ هر گرم طلا</p>
               <p className="text-gray-800 font-semibold">
-                {buyPrice.toLocaleString("fa-IR")} تومان
+                {priceData?.msg.buyGerm.toLocaleString("fa-IR")} تومان
               </p>
             </div>
           </CardContent>
@@ -67,10 +55,10 @@ export default function QuickTradeButtons({
                 </div>
                 <h3 className="font-bold text-gray-800 text-lg">بخرید</h3>
                 <p className="text-gray-500 text-sm">
-                  گرم: {buyPrice.toLocaleString("fa-IR")}
+                  گرم: {priceData?.msg.buyGerm.toLocaleString("fa-IR")}
                 </p>
                 <Button className="w-full bg-green-500 hover:bg-green-600 text-white border-0 rounded-lg py-2">
-                  {buyPrice.toLocaleString("fa-IR")}
+                  {priceData?.msg.buyMithqal.toLocaleString("fa-IR")}
                 </Button>
               </div>
             </div>
@@ -85,10 +73,10 @@ export default function QuickTradeButtons({
                 </div>
                 <h3 className="font-bold text-gray-800 text-lg">بفروشید</h3>
                 <p className="text-gray-500 text-sm">
-                  گرم : {sellPrice.toLocaleString("fa-IR")}
+                  گرم : {priceData?.msg.sellGerm.toLocaleString("fa-IR")}
                 </p>
                 <Button className="w-full bg-red-500 hover:bg-red-600 text-white border-0 rounded-lg py-2">
-                  {sellPrice.toLocaleString("fa-IR")}
+                  {priceData?.msg.sellMithqal.toLocaleString("fa-IR")}
                 </Button>
               </div>
             </div>
