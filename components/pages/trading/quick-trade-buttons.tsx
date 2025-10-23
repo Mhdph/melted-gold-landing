@@ -35,54 +35,66 @@ export default function QuickTradeButtons({
   console.log("WebSocket last message:", lastMessage);
 
   return (
-    <Card className="border-gold/20">
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle className="text-gold">معامله سریع</CardTitle>
-            <CardDescription className="text-cream/60">
-              خرید یا فروش فوری طلا
-            </CardDescription>
+    <div className="space-y-4">
+      {/* Main Trading Card */}
+      <Card className="bg-[#F6F5EE] border-0 py-2 shadow-none">
+        <CardHeader className="text-center pb-2">
+          <CardTitle className="text-gray-800 text-xl font-semibold">
+            آبشده نقدی
+          </CardTitle>
+        </CardHeader>
+        {/* Price Info Card */}
+        <Card className="bg-gray-300 border border-gray-600 rounded-sm gap-0 py-2 shadow-none">
+          <CardContent className="py-0">
+            <div className="flex justify-between items-center">
+              <p className="text-gray-600 text-sm">نرخ هر گرم طلا</p>
+              <p className="text-gray-800 font-semibold">
+                {buyPrice.toLocaleString("fa-IR")} تومان
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+        <CardContent className="p-0">
+          <div className="grid grid-cols-2 gap-4">
+            {/* Buy Panel */}
+            <div
+              onClick={onBuyClick}
+              className="bg-white rounded-lg p-4 border border-gray-200"
+            >
+              <div className="flex flex-col items-center space-y-3">
+                <div className="w-8 h-8 border-2 border-green-500 rounded flex items-center justify-center">
+                  <TrendingUp className="h-4 w-4 text-green-500" />
+                </div>
+                <h3 className="font-bold text-gray-800 text-lg">بخرید</h3>
+                <p className="text-gray-500 text-sm">
+                  گرم: {buyPrice.toLocaleString("fa-IR")}
+                </p>
+                <Button className="w-full bg-green-500 hover:bg-green-600 text-white border-0 rounded-lg py-2">
+                  {buyPrice.toLocaleString("fa-IR")}
+                </Button>
+              </div>
+            </div>
+            {/* Sell Panel */}
+            <div
+              onClick={onSellClick}
+              className="bg-white rounded-lg p-4 border border-gray-200"
+            >
+              <div className="flex flex-col items-center space-y-3">
+                <div className="w-8 h-8 border-2 border-red-500 rounded flex items-center justify-center">
+                  <TrendingDown className="h-4 w-4 text-red-400" />
+                </div>
+                <h3 className="font-bold text-gray-800 text-lg">بفروشید</h3>
+                <p className="text-gray-500 text-sm">
+                  گرم : {sellPrice.toLocaleString("fa-IR")}
+                </p>
+                <Button className="w-full bg-red-500 hover:bg-red-600 text-white border-0 rounded-lg py-2">
+                  {sellPrice.toLocaleString("fa-IR")}
+                </Button>
+              </div>
+            </div>
           </div>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Buy Button */}
-          <Button
-            onClick={onBuyClick}
-            className="h-20 bg-[#F6F5EE] flex flex-col hover:bg-zinc-100 text-green-500"
-          >
-            <div className="flex items-center gap-2">
-              <TrendingUp className="h-8 w-8 text-green-400" />
-              <p className="font-bold text-center text-base">بخرید</p>
-            </div>
-            <div className="flex items-center gap-2 text-gray-700">
-              <p className="text-sm text-cream/80">مظنه خرید</p>
-              <p className="text-xl font-semibold">
-                {buyPrice.toLocaleString("fa-IR")}
-              </p>
-            </div>
-          </Button>
-
-          {/* Sell Button */}
-          <Button
-            onClick={onSellClick}
-            className="h-20 bg-[#F6F5EE] flex flex-col hover:bg-zinc-100 transition-all duration-200 text-red-500"
-          >
-            <div className="flex items-center gap-2">
-              <TrendingDown className="h-8 w-8" />
-              <p className="font-bold text-center text-base">بفروشید</p>
-            </div>
-            <div className="flex items-center gap-2 text-gray-700">
-              <p className="text-sm text-cream/80">مظنه فروش</p>
-              <p className="text-xl font-semibold">
-                {sellPrice.toLocaleString("fa-IR")}
-              </p>
-            </div>
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
