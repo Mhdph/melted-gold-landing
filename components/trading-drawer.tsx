@@ -18,6 +18,7 @@ import { Separator } from "./ui/separator";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
 import { Textarea } from "./ui/textarea";
 import { GoldPriceData } from "@/hooks/use-gold-price-websocket";
+import { useCreateTransaction } from "@/services/trade-service";
 
 interface TradingDrawerProps {
   isOpen: boolean;
@@ -37,44 +38,63 @@ export function TradingDrawer({
   priceData,
 }: TradingDrawerProps) {
   const { toast } = useToast();
+  const createTransactionMutation = useCreateTransaction();
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const isBuy = type === "buy";
   const tradePrice = isBuy ? priceData.msg.buyGerm : priceData.msg.sellGerm;
   const totalValue = amount ? Number.parseFloat(amount) * tradePrice : 0;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!amount) return;
 
     const tradeAmount = Number.parseFloat(amount);
-    const newTrade = {
-      id: Date.now().toString(),
-      date:
-        new Date().toLocaleDateString("fa-IR") +
-        " - " +
-        new Date().toLocaleTimeString("fa-IR"),
-      type: isBuy ? "خرید" : "فروش",
-      amount: tradeAmount,
-      pricePerGram: tradePrice,
-      totalValue: totalValue,
-      status: "در انتظار",
-    };
 
-    onTradeComplete(newTrade);
-    setAmount("");
-    onClose();
+    try {
+      const response = await createTransactionMutation.mutateAsync({
+        weight: tradeAmount,
+        type: isBuy ? "buy" : "sell",
+        livePrice: tradePrice,
+        description: description || undefined,
+      });
 
-    toast({
-      title: "معامله ثبت شد",
-      description: `${
-        isBuy ? "خرید" : "فروش"
-      } ${tradeAmount} گرم طلا با موفقیت ثبت شد`,
-    });
+      const newTrade = {
+        id: Date.now().toString(),
+        date:
+          new Date().toLocaleDateString("fa-IR") +
+          " - " +
+          new Date().toLocaleTimeString("fa-IR"),
+        type: isBuy ? "خرید" : "فروش",
+        amount: tradeAmount,
+        pricePerGram: tradePrice,
+        totalValue: totalValue,
+        status: "در انتظار",
+      };
+
+      onTradeComplete(newTrade);
+      setAmount("");
+      setDescription("");
+      onClose();
+
+      toast({
+        title: "معامله ثبت شد",
+        description: `${
+          isBuy ? "خرید" : "فروش"
+        } ${tradeAmount} گرم طلا با موفقیت ثبت شد`,
+      });
+    } catch (error) {
+      toast({
+        title: "خطا در ثبت معامله",
+        description: "لطفاً دوباره تلاش کنید",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleClose = () => {
     setAmount("");
+    setDescription("");
     onClose();
   };
 
@@ -157,13 +177,18 @@ export function TradingDrawer({
               </Button>
               <Button
                 type="submit"
+                disabled={createTransactionMutation.isPending}
                 className={`flex-1 font-bold   ${
                   isBuy
                     ? "bg-[#D4AF37] hover:bg-[#BFA67A] text-[#0F1724]"
                     : "bg-red-500 hover:bg-red-600 text-white"
                 }`}
               >
-                {isBuy ? "ثبت خرید" : "ثبت فروش"}
+                {createTransactionMutation.isPending
+                  ? "در حال ثبت..."
+                  : isBuy
+                  ? "ثبت خرید"
+                  : "ثبت فروش"}
               </Button>
             </div>
           </DrawerFooter>
