@@ -87,7 +87,7 @@ export default function TradeHistoryList({ trades }: TradeHistoryListProps) {
                     <div className="flex items-center gap-4 text-sm text-cream/60">
                       <div className="flex items-center gap-1">
                         <Weight className="h-4 w-4 hidden md:inline" />
-                        <span>{trade.amount.toLocaleString("fa-IR")} گرم</span>
+                        <span>{trade.weight.toLocaleString("fa-IR")} گرم</span>
                       </div>
                       {/* <div className="flex items-center gap-1">
                         <DollarSign className="h-4 w-4 hidden md:inline" />
@@ -107,7 +107,7 @@ export default function TradeHistoryList({ trades }: TradeHistoryListProps) {
                   </div>
                 </div>
                 <div className="text-left md:text-right">
-                  <p className="text-lg font-bold text-gold">
+                  <p className="text-lg font-bold  text-gold">
                     {trade.amount.toLocaleString("fa-IR")} ریال
                   </p>
                 </div>
