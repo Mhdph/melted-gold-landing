@@ -6,14 +6,9 @@ import { User } from "./types";
 interface UserTableProps {
   users: User[];
   onApprove: (userId: string, userName: string) => void;
-  onReject: (userId: string, userName: string) => void;
 }
 
-export default function UserTable({
-  users,
-  onApprove,
-  onReject,
-}: UserTableProps) {
+export default function UserTable({ users, onApprove }: UserTableProps) {
   return (
     <Card className="bg-navy/50 border-gold/20">
       <CardContent>
@@ -69,15 +64,6 @@ export default function UserTable({
                         >
                           <Check className="h-4 w-4 ml-1" />
                           تایید
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => onReject(user.id, user.mobile)}
-                          className="border-red-400/30 text-red-400 hover:bg-red-400/10"
-                        >
-                          <X className="h-4 w-4 ml-1" />
-                          رد
                         </Button>
                       </div>
                     )}

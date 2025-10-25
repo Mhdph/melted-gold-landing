@@ -6,7 +6,7 @@ import UserFilters from "@/components/pages/admin/users/user-filters";
 import UserTable from "@/components/pages/admin/users/user-table";
 import { User, FilterStatus } from "@/components/pages/admin/users/types";
 import { sampleUsers } from "@/components/pages/admin/users/utils";
-import { useGetUsers } from "@/services/user-service";
+import { useApproveUser, useGetUsers } from "@/services/user-service";
 import {
   Pagination,
   PaginationContent,
@@ -28,29 +28,23 @@ export default function UsersApprovalPage() {
     isError,
     error,
   } = useGetUsers(currentPage, pageSize);
+  const { mutate: approveUser, isPending: isApproving } = useApproveUser();
 
   const handleApprove = (userId: string, userName: string) => {
-    // setUsers(
-    //   users.map((user) =>
-    //     user.id === userId ? { ...user, status: "approved" as const } : user
-    //   )
-    // );
-    toast({
-      title: "کاربر تایید شد",
-      description: `${userName} با موفقیت تایید شد و می‌تواند از سیستم استفاده کند.`,
-    });
-  };
-
-  const handleReject = (userId: string, userName: string) => {
-    // setUsers(
-    //   users.map((user) =>
-    //     user.id === userId ? { ...user, status: "rejected" as const } : user
-    //   )
-    // );
-    toast({
-      title: "کاربر رد شد",
-      description: `درخواست ${userName} رد شد.`,
-      variant: "destructive",
+    approveUser(userId, {
+      onSuccess: () => {
+        toast({
+          title: "کاربر تایید شد",
+          description: `${userName} با موفقیت تایید شد و می‌تواند از سیستم استفاده کند.`,
+        });
+      },
+      onError: (error) => {
+        toast({
+          title: "خطا در تایید کاربر",
+          description: error.message,
+          variant: "destructive",
+        });
+      },
     });
   };
 
@@ -86,11 +80,7 @@ export default function UsersApprovalPage() {
       /> */}
 
       {/* User Table */}
-      <UserTable
-        users={usersData.data}
-        onApprove={handleApprove}
-        onReject={handleReject}
-      />
+      <UserTable users={usersData.data} onApprove={handleApprove} />
 
       {/* Pagination */}
       {totalPages > 1 && (
