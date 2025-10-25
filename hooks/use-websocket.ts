@@ -93,6 +93,13 @@ export function useWebSocket({
         onMessage?.(data);
       });
 
+      // Listen for admin status updates
+      socket.on("adminStatus", (data) => {
+        console.log("Admin status update received:", data);
+        setLastMessage(data);
+        onMessage?.(data);
+      });
+
       // Listen for other potential events
       socket.on("message", (data) => {
         console.log("Socket.IO message received:", data);

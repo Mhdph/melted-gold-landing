@@ -7,10 +7,13 @@ import { Sidebar } from "./sidebar";
 import { SidebarTrigger } from "../ui/sidebar";
 import Image from "next/image";
 import logo from "@/assets/images/logo-no-name.png";
+import { useAdminStatusWebSocket } from "@/hooks/use-admin-status-websocket";
 
 export function DashboardHeader() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { adminStatus, isConnected, requestAdminStatus } =
+    useAdminStatusWebSocket();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -19,6 +22,13 @@ export function DashboardHeader() {
 
     return () => clearInterval(timer);
   }, []);
+
+  // Request admin status on component mount
+  useEffect(() => {
+    if (isConnected) {
+      requestAdminStatus();
+    }
+  }, [isConnected, requestAdminStatus]);
 
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString("fa-IR", {
@@ -71,10 +81,20 @@ export function DashboardHeader() {
           </div>
           <div className="flex items-center gap-2 ">
             <span className="text-slate-800 text-sm font-medium">
-              مدیر آفلاین
+              {adminStatus.isOnline ? "مدیر آنلاین" : "مدیر آفلاین"}
             </span>
-            <div className="bg-gray-300 rounded-full p-[2px]">
-              <div className="w-1 h-1 bg-gray-600 rounded-full"></div>
+            <div
+              className={cn(
+                "rounded-full p-[2px]",
+                adminStatus.isOnline ? "bg-green-300" : "bg-gray-300"
+              )}
+            >
+              <div
+                className={cn(
+                  "w-1 h-1 rounded-full",
+                  adminStatus.isOnline ? "bg-green-600" : "bg-gray-600"
+                )}
+              ></div>
             </div>
           </div>
         </div>
