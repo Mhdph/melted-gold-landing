@@ -22,10 +22,18 @@ export default function QuickTradeButtons({
   onSellClick,
   priceData,
 }: QuickTradeButtonsProps) {
+  console.log(priceData, "priceData");
+
+  // Safe access to price data with fallbacks
+  const buyGerm = priceData?.msg?.buyGerm || 0;
+  const sellGerm = priceData?.msg?.sellGerm || 0;
+  const buyMithqal = priceData?.msg?.buyMithqal || 0;
+  const sellMithqal = priceData?.msg?.sellMithqal || 0;
+
   return (
     <div className="space-y-4">
       {/* Main Trading Card */}
-      {priceData && (
+      {priceData && priceData.msg && (
         <Card className="bg-[#F6F5EE] border-0 py-2 shadow-none">
           <CardHeader className="text-center pb-2">
             <CardTitle className="text-gray-800 text-xl font-semibold">
@@ -38,7 +46,7 @@ export default function QuickTradeButtons({
               <div className="flex justify-between items-center">
                 <p className="text-gray-600 text-sm">نرخ هر گرم طلا</p>
                 <p className="text-gray-800 font-semibold">
-                  {priceData?.msg.buyGerm.toLocaleString("fa-IR") || 0} تومان
+                  {buyGerm.toLocaleString("fa-IR")} تومان
                 </p>
               </div>
             </CardContent>
@@ -56,10 +64,10 @@ export default function QuickTradeButtons({
                   </div>
                   <h3 className="font-bold text-gray-800 text-lg">بخرید</h3>
                   <p className="text-gray-500 text-sm">
-                    گرم: {priceData?.msg.buyGerm.toLocaleString("fa-IR") || 0}
+                    گرم: {buyGerm.toLocaleString("fa-IR")}
                   </p>
                   <Button className="w-full bg-green-500 hover:bg-green-600 text-white border-0 rounded-lg py-2">
-                    {priceData?.msg.buyMithqal.toLocaleString("fa-IR") || 0}
+                    {buyMithqal.toLocaleString("fa-IR")}
                   </Button>
                 </div>
               </div>
@@ -74,10 +82,10 @@ export default function QuickTradeButtons({
                   </div>
                   <h3 className="font-bold text-gray-800 text-lg">بفروشید</h3>
                   <p className="text-gray-500 text-sm">
-                    گرم : {priceData?.msg.sellGerm.toLocaleString("fa-IR") || 0}
+                    گرم : {sellGerm.toLocaleString("fa-IR")}
                   </p>
                   <Button className="w-full bg-red-500 hover:bg-red-600 text-white border-0 rounded-lg py-2">
-                    {priceData?.msg.sellMithqal.toLocaleString("fa-IR") || 0}
+                    {sellMithqal.toLocaleString("fa-IR")}
                   </Button>
                 </div>
               </div>
