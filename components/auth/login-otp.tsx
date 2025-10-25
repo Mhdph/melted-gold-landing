@@ -40,6 +40,12 @@ function LoginOtp({ setStep }: LoginOtpProps) {
         onSuccess: (data) => {
           console.log(data, "salam");
           localStorage.setItem("token", data?.access_token);
+          // Store user ID if available in response
+          if (data?.user?.id) {
+            localStorage.setItem("userId", data.user.id);
+          } else if (data?.id) {
+            localStorage.setItem("userId", data.id);
+          }
           router.push("/dashboard/trading");
         },
         onError: () => {
