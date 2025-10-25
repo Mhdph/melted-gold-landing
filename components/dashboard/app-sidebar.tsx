@@ -35,10 +35,10 @@ import Link from "next/link";
 import logo from "@/assets/images/zavran-dark.png";
 import Image from "next/image";
 import InstallPWA from "../install-pwa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-// This is sample data.
-const data = {
+// Navigation data
+const getNavigationData = (isAdmin: boolean) => ({
   navMain: [
     {
       title: "Building Your Application",
@@ -69,14 +69,58 @@ const data = {
           icon: Info,
           href: "/dashboard/about",
         },
+        // Admin-only pages
+        ...(isAdmin
+          ? [
+              {
+                title: "مدیریت کاربران",
+                icon: LayoutDashboard,
+                href: "/dashboard/admin/users",
+              },
+              {
+                title: "مدیریت تراکنش‌ها",
+                icon: Activity,
+                href: "/dashboard/admin/transactions",
+              },
+            ]
+          : []),
       ],
     },
   ],
-};
+});
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
   const [isInstallPWA, setIsInstallPWA] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    // Check localStorage for admin role
+    const checkAdminRole = () => {
+      if (typeof window !== "undefined") {
+        const role = localStorage.getItem("role");
+        setIsAdmin(role === "admin");
+      }
+    };
+
+    checkAdminRole();
+
+    // Listen for storage changes (in case role changes in another tab)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "role") {
+        setIsAdmin(e.newValue === "admin");
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
+  const data = getNavigationData(isAdmin);
+
   return (
     <Sidebar dir="rtl" {...props}>
       <SidebarContent className="bg-[#000e1f] text-white">
