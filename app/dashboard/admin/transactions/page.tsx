@@ -13,11 +13,21 @@ import {
   useGetTransactions,
   useRejectTransaction,
 } from "@/services/trade-service";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 export default function TransactionsApprovalPage() {
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("pending");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(10);
   const approveTransaction = useApproveTransaction();
   const rejectTransaction = useRejectTransaction();
 
@@ -26,7 +36,7 @@ export default function TransactionsApprovalPage() {
     isLoading,
     isError,
     error,
-  } = useGetTransactions();
+  } = useGetTransactions(currentPage, pageSize);
 
   const handleApprove = (transactionId: string, userName: string) => {
     approveTransaction.mutate(transactionId, {
@@ -65,6 +75,14 @@ export default function TransactionsApprovalPage() {
     });
   };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const totalPages = transactionsData?.meta
+    ? Math.ceil(transactionsData.meta.itemCount / pageSize)
+    : 1;
+
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error?.message}</div>;
   if (!transactionsData) return <div>No transactions found</div>;
@@ -96,6 +114,64 @@ export default function TransactionsApprovalPage() {
         onApprove={handleApprove}
         onReject={handleReject}
       />
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex justify-center mt-6">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (currentPage > 1) {
+                      handlePageChange(currentPage - 1);
+                    }
+                  }}
+                  className={
+                    currentPage <= 1 ? "pointer-events-none opacity-50" : ""
+                  }
+                />
+              </PaginationItem>
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <PaginationItem key={page}>
+                    <PaginationLink
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePageChange(page);
+                      }}
+                      isActive={currentPage === page}
+                    >
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                )
+              )}
+
+              <PaginationItem>
+                <PaginationNext
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (currentPage < totalPages) {
+                      handlePageChange(currentPage + 1);
+                    }
+                  }}
+                  className={
+                    currentPage >= totalPages
+                      ? "pointer-events-none opacity-50"
+                      : ""
+                  }
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
     </div>
   );
 }
