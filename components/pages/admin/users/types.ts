@@ -7,3 +7,10 @@ export interface User {
   phone: string;
   verify: boolean;
 }
+
+export interface PaginationMeta {
+  page: number;
+  limit: number;
+  itemCount: number;
+  hasNextPage: boolean;
+}
