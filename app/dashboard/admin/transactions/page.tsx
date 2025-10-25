@@ -8,12 +8,18 @@ import {
   Transaction,
   FilterStatus,
 } from "@/components/pages/admin/transactions/types";
-import { useGetTransactions } from "@/services/trade-service";
+import {
+  useApproveTransaction,
+  useGetTransactions,
+  useRejectTransaction,
+} from "@/services/trade-service";
 
 export default function TransactionsApprovalPage() {
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("pending");
+  const approveTransaction = useApproveTransaction();
+  const rejectTransaction = useRejectTransaction();
 
   const {
     data: transactionsData,
@@ -23,17 +29,39 @@ export default function TransactionsApprovalPage() {
   } = useGetTransactions();
 
   const handleApprove = (transactionId: string, userName: string) => {
-    toast({
-      title: "تراکنش تایید شد",
-      description: `تراکنش ${userName} با موفقیت تایید و پردازش شد.`,
+    approveTransaction.mutate(transactionId, {
+      onSuccess: () => {
+        toast({
+          title: "تراکنش تایید شد",
+          description: `تراکنش ${userName} با موفقیت تایید و پردازش شد.`,
+        });
+      },
+      onError: (error) => {
+        toast({
+          title: "خطا در تایید تراکنش",
+          description: error.message,
+          variant: "destructive",
+        });
+      },
     });
   };
 
   const handleReject = (transactionId: string, userName: string) => {
-    toast({
-      title: "تراکنش رد شد",
-      description: `تراکنش ${userName} رد شد.`,
-      variant: "destructive",
+    rejectTransaction.mutate(transactionId, {
+      onSuccess: () => {
+        toast({
+          title: "تراکنش رد شد",
+          description: `تراکنش ${userName} رد شد.`,
+          variant: "destructive",
+        });
+      },
+      onError: (error) => {
+        toast({
+          title: "خطا در رد تراکنش",
+          description: error.message,
+          variant: "destructive",
+        });
+      },
     });
   };
 

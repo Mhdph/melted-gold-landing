@@ -16,7 +16,7 @@ export default function TransactionTable({
   onReject,
 }: TransactionTableProps) {
   return (
-    <Card className="bg-navy/50 border-gold/20">
+    <Card className="bg-white border-gold/20">
       <CardContent>
         <div className="overflow-x-auto">
           <table className="w-full">

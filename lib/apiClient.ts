@@ -33,6 +33,12 @@ class ApiClient {
       .delete<T>(`${this.endpoint}${url}`, { ...config })
       .then((res) => res.data);
   }
+
+  put<T>(url: string, data = {}, config: AxiosRequestConfig = {}) {
+    return axios
+      .put<T>(`${this.endpoint}${url}`, data, { ...config })
+      .then((res) => res.data);
+  }
 }
 
 export default ApiClient;
