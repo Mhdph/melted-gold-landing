@@ -28,7 +28,7 @@ export const useUpdateSetting = () => {
 
   return useMutation({
     mutationFn: (data: UpdateSettingRequest) =>
-      apiClient.patch(`/Setting/${data.id}`, { value: data.value }),
+      apiClient.put(`/Setting/${data.id}`, { value: data.value }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["settings"] });
     },
