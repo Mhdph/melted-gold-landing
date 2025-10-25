@@ -37,7 +37,7 @@ export default function QuickTradeButtons({
             <div className="flex justify-between items-center">
               <p className="text-gray-600 text-sm">نرخ هر گرم طلا</p>
               <p className="text-gray-800 font-semibold">
-                {priceData?.msg.buyGerm.toLocaleString("fa-IR")} تومان
+                {priceData?.msg.buyGerm.toLocaleString("fa-IR") || 0} تومان
               </p>
             </div>
           </CardContent>

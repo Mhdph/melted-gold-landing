@@ -11,4 +11,5 @@ export interface Transaction {
   amount: number;
   accept: boolean;
   createdAt: string;
+  weight: number;
 }
