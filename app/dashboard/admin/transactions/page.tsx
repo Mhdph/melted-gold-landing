@@ -83,12 +83,12 @@ export default function TransactionsApprovalPage() {
       </div>
 
       {/* Filters */}
-      <TransactionFilters
+      {/* <TransactionFilters
         searchQuery={searchQuery}
         filterStatus={filterStatus}
         onSearchChange={setSearchQuery}
         onFilterChange={setFilterStatus}
-      />
+      /> */}
 
       {/* Transaction Table */}
       <TransactionTable

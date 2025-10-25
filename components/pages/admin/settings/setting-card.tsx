@@ -66,7 +66,7 @@ export default function SettingCard({
   const renderInput = () => {
     if (setting.type === "boolean") {
       return (
-        <div className="flex items-center space-x-2 space-x-reverse">
+        <div className="flex items-center space-x-2 gap-2 space-x-reverse">
           <Switch
             checked={editValue === "true"}
             onCheckedChange={(checked) => setEditValue(checked.toString())}
@@ -103,7 +103,7 @@ export default function SettingCard({
   };
 
   return (
-    <Card className="bg-navy/50 border-gold/20 hover:border-gold/30 transition-colors">
+    <Card className="bg-white border-gold/20 hover:border-gold/30 transition-colors">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-gold text-lg">{setting.key}</CardTitle>
@@ -129,7 +129,7 @@ export default function SettingCard({
         <div className="space-y-2">
           <Label className="text-cream/80 text-sm">مقدار فعلی:</Label>
           {!isEditing ? (
-            <div className="p-3 bg-navy/30 rounded-lg border border-gold/10">
+            <div className="p-3 bg-white rounded-lg border border-gold/10">
               <span className="text-cream font-mono">
                 {formatValue(setting.value, setting.type)}
               </span>
@@ -145,7 +145,7 @@ export default function SettingCard({
               size="sm"
               onClick={handleSave}
               disabled={isUpdating}
-              className="bg-green-500 hover:bg-green-600 text-white"
+              className="bg-yellow-500 hover:bg-yellow-600 text-white"
             >
               <Save className="h-4 w-4 ml-1" />
               {isUpdating ? "در حال ذخیره..." : "ذخیره"}

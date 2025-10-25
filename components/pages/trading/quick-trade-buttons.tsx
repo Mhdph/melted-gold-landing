@@ -55,10 +55,10 @@ export default function QuickTradeButtons({
                 </div>
                 <h3 className="font-bold text-gray-800 text-lg">بخرید</h3>
                 <p className="text-gray-500 text-sm">
-                  گرم: {priceData?.msg.buyGerm.toLocaleString("fa-IR")}
+                  گرم: {priceData?.msg.buyGerm.toLocaleString("fa-IR") || 0}
                 </p>
                 <Button className="w-full bg-green-500 hover:bg-green-600 text-white border-0 rounded-lg py-2">
-                  {priceData?.msg.buyMithqal.toLocaleString("fa-IR")}
+                  {priceData?.msg.buyMithqal.toLocaleString("fa-IR") || 0}
                 </Button>
               </div>
             </div>
@@ -73,10 +73,10 @@ export default function QuickTradeButtons({
                 </div>
                 <h3 className="font-bold text-gray-800 text-lg">بفروشید</h3>
                 <p className="text-gray-500 text-sm">
-                  گرم : {priceData?.msg.sellGerm.toLocaleString("fa-IR")}
+                  گرم : {priceData?.msg.sellGerm.toLocaleString("fa-IR") || 0}
                 </p>
                 <Button className="w-full bg-red-500 hover:bg-red-600 text-white border-0 rounded-lg py-2">
-                  {priceData?.msg.sellMithqal.toLocaleString("fa-IR")}
+                  {priceData?.msg.sellMithqal.toLocaleString("fa-IR") || 0}
                 </Button>
               </div>
             </div>

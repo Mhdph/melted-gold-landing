@@ -37,7 +37,7 @@ export default function SettingsSummary({ settings }: SettingsSummaryProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       {/* Total Settings */}
-      <Card className="bg-navy/50 border-gold/20">
+      <Card className="bg-white border-gold/20">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium text-cream/80">
             کل تنظیمات
@@ -51,7 +51,7 @@ export default function SettingsSummary({ settings }: SettingsSummaryProps) {
       </Card>
 
       {/* Active Permissions */}
-      <Card className="bg-navy/50 border-gold/20">
+      <Card className="bg-white border-gold/20">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium text-cream/80">
             مجوزهای فعال
@@ -69,10 +69,10 @@ export default function SettingsSummary({ settings }: SettingsSummaryProps) {
       </Card>
 
       {/* Boolean Settings */}
-      <Card className="bg-navy/50 border-gold/20">
+      <Card className="bg-white border-gold/20">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium text-cream/80">
-            تنظیمات بولی
+            معاملات
           </CardTitle>
           <ToggleLeft className="h-4 w-4 text-blue-400" />
         </CardHeader>
@@ -85,7 +85,7 @@ export default function SettingsSummary({ settings }: SettingsSummaryProps) {
       </Card>
 
       {/* Numeric Settings */}
-      <Card className="bg-navy/50 border-gold/20">
+      <Card className="bg-white border-gold/20">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium text-cream/80">
             تنظیمات عددی

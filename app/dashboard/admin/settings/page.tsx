@@ -87,7 +87,7 @@ export default function SettingsPage() {
   if (!settings || settings.length === 0) {
     return (
       <div className="p-6 lg:p-8">
-        <Card className="bg-navy/50 border-gold/20">
+        <Card className="bg-white border-gold/20">
           <CardContent className="p-6 text-center">
             <Settings className="h-12 w-12 text-gold/50 mx-auto mb-4" />
             <div className="text-cream/60">هیچ تنظیماتی یافت نشد</div>
@@ -113,7 +113,7 @@ export default function SettingsPage() {
       <SettingsSummary settings={settings} />
 
       {/* Search and Filter */}
-      <Card className="bg-navy/50 border-gold/20">
+      <Card className="bg-white border-gold/20">
         <CardHeader>
           <CardTitle className="text-gold">جستجو و فیلتر</CardTitle>
         </CardHeader>
@@ -161,26 +161,29 @@ export default function SettingsPage() {
       </Card>
 
       {/* Settings Tabs */}
-      <Tabs defaultValue="all" className="w-full">
+      <Tabs dir="rtl" defaultValue="all" className="w-full">
         <TabsList className="grid w-full grid-cols-4 bg-navy/30">
-          <TabsTrigger value="all" className="data-[state=active]:bg-gold/20">
+          <TabsTrigger
+            value="all"
+            className="data-[state=active]:bg-yellow-500/20"
+          >
             همه ({settings.length})
           </TabsTrigger>
           <TabsTrigger
             value="boolean"
-            className="data-[state=active]:bg-gold/20"
+            className="data-[state=active]:bg-yellow-500/20"
           >
-            بولی ({settingsByType.boolean?.length || 0})
+            معاملات ({settingsByType.boolean?.length || 0})
           </TabsTrigger>
           <TabsTrigger
             value="number"
-            className="data-[state=active]:bg-gold/20"
+            className="data-[state=active]:bg-yellow-500/20"
           >
             عددی ({settingsByType.number?.length || 0})
           </TabsTrigger>
           <TabsTrigger
             value="string"
-            className="data-[state=active]:bg-gold/20"
+            className="data-[state=active]:bg-yellow-500/20"
           >
             متنی ({settingsByType.string?.length || 0})
           </TabsTrigger>
@@ -246,7 +249,7 @@ export default function SettingsPage() {
       </Tabs>
 
       {filteredSettings.length === 0 && (
-        <Card className="bg-navy/50 border-gold/20">
+        <Card className="bg-white border-gold/20">
           <CardContent className="p-6 text-center">
             <Filter className="h-12 w-12 text-gold/50 mx-auto mb-4" />
             <div className="text-cream/60">
