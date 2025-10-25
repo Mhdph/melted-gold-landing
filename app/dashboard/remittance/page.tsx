@@ -53,13 +53,9 @@ export default function RemittancePage() {
       "unknown-user";
 
     const transferData: CreateTransferRequest = {
-      value: newRemittance.amount,
-      valueType: newRemittance.unit === "گرم طلا" ? "gold" : "mony",
-      userId: currentUserId,
-      receiver: newRemittance.recipient,
-      description: newRemittance.description,
-      fees: newRemittance.fees,
-      exchangeRate: newRemittance.exchangeRate,
+      value: newRemittance.value,
+      valueType: newRemittance.valueType as "gold" | "money",
+      receiver: newRemittance.receiver,
     };
 
     console.log("Creating transfer with data:", transferData);
@@ -75,21 +71,9 @@ export default function RemittancePage() {
   const convertTransferToRemittance = (transfer: any): Remittance => ({
     id: transfer.id,
     date: transfer.createdAt,
-    amount: transfer.value || transfer.amount,
-    unit: transfer.valueType === "gold" ? "گرم طلا" : "ریال",
-    recipient: transfer.receiver || transfer.toUser || "نامشخص",
-    status:
-      transfer.status === "completed"
-        ? "تکمیل شده"
-        : transfer.status === "pending"
-        ? "در انتظار"
-        : transfer.status === "cancelled"
-        ? "لغو شده"
-        : "ناموفق",
-    description: transfer.description,
-    fees: transfer.fees,
-    exchangeRate: transfer.exchangeRate,
-    transactionId: transfer.transactionId,
+    value: transfer.value,
+    valueType: transfer.valueType as "gold" | "money",
+    receiver: transfer.receiver,
   });
 
   const remittances =
@@ -99,12 +83,8 @@ export default function RemittancePage() {
     : 1;
 
   const filteredRemittances = remittances
-    .filter((r) => filterUnit === "all" || r.unit === filterUnit)
-    .sort((a, b) => {
-      if (sortBy === "date")
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-      return b.amount - a.amount;
-    });
+    .filter((r) => filterUnit === "all" || r.valueType === filterUnit)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   if (isLoading) {
     return (

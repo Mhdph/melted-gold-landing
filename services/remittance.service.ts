@@ -8,28 +8,16 @@ const apiClient = new ApiClient("https://yellowgold.liara.run");
 // Types for remittance/transfer data
 export interface Transfer {
   id: string;
-  amount: number;
-  currency: string;
-  status: "pending" | "completed" | "failed" | "cancelled";
-  type: "remittance" | "transfer" | "withdrawal";
-  fromUser: string;
-  toUser?: string;
-  description?: string;
-  createdAt: string;
-  updatedAt: string;
-  transactionId?: string;
-  fees?: number;
-  exchangeRate?: number;
+  value: number;
+  valueType: "gold" | "money";
+  date: string;
+  receiver: string;
 }
 
 export interface CreateTransferRequest {
   value: number;
-  valueType: "gold" | "mony";
-  userId: string;
+  valueType: "gold" | "money";
   receiver: string;
-  description?: string;
-  fees?: number;
-  exchangeRate?: number;
 }
 
 export interface TransferFilters {

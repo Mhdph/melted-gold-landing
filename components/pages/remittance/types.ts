@@ -6,41 +6,24 @@ export type FilterUnit = "all" | "گرم طلا" | "ریال";
 export interface Remittance {
   id: string;
   date: string;
-  amount: number;
-  unit: RemittanceUnit;
-  recipient: string;
-  status: RemittanceStatus;
-  description?: string;
-  fees?: number;
-  exchangeRate?: number;
-  transactionId?: string;
+  value: number;
+  valueType: string;
+  receiver: string;
 }
 
 // API Response types
 export interface Transfer {
   id: string;
-  amount: number;
-  currency: string;
-  status: "pending" | "completed" | "failed" | "cancelled";
-  type: "remittance" | "transfer" | "withdrawal";
-  fromUser: string;
-  toUser?: string;
-  description?: string;
-  createdAt: string;
-  updatedAt: string;
-  transactionId?: string;
-  fees?: number;
-  exchangeRate?: number;
+  date: string;
+  value: number;
+  valueType: "gold" | "money";
+  receiver: string;
 }
 
 export interface CreateTransferRequest {
   value: number;
-  valueType: "gold" | "mony";
-  userId: string;
+  valueType: "gold" | "money";
   receiver: string;
-  description?: string;
-  fees?: number;
-  exchangeRate?: number;
 }
 
 export interface TransferFilters {
