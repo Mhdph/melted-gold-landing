@@ -55,3 +55,22 @@ export const useCreateTransaction = () =>
         data
       ),
   });
+
+export const useGetUserTransactions = () =>
+  useQuery({
+    queryKey: ["user-transactions"],
+    queryFn: () =>
+      apiClient.get<BasePaginationResponse<Transaction[]>>(`/Transaction/user`),
+  });
+
+export const useApproveTransaction = () =>
+  useMutation({
+    mutationFn: (id: string) =>
+      apiClient.put(`/Transaction/${id}`, { accept: true }),
+  });
+
+export const useRejectTransaction = () =>
+  useMutation({
+    mutationFn: (id: string) =>
+      apiClient.put(`/Transaction/${id}`, { accept: false }),
+  });
