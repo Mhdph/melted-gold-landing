@@ -1,5 +1,5 @@
 import ApiClient from "@/lib/apiClient";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BaseResponse, BasePaginationResponse } from "@/lib/response.interface";
 
 const apiClient = new ApiClient("https://yellowgold.liara.run");
@@ -23,6 +23,7 @@ export interface Transaction {
   amount: number;
   accept: boolean;
   createdAt: string;
+  weight: number;
 }
 
 export interface CreateTransactionRequest {
@@ -63,14 +64,26 @@ export const useGetUserTransactions = () =>
       apiClient.get<BasePaginationResponse<Transaction[]>>(`/Transaction/user`),
   });
 
-export const useApproveTransaction = () =>
-  useMutation({
+export const useApproveTransaction = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
     mutationFn: (id: string) =>
       apiClient.put(`/Transaction/${id}`, { accept: true }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+    },
   });
+};
 
-export const useRejectTransaction = () =>
-  useMutation({
+export const useRejectTransaction = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
     mutationFn: (id: string) =>
       apiClient.put(`/Transaction/${id}`, { accept: false }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+    },
   });
+};

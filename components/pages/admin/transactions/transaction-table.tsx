@@ -25,7 +25,9 @@ export default function TransactionTable({
                 <th className="text-right py-3 px-4 text-cream/80 font-medium">
                   کاربر
                 </th>
-
+                <th className="text-right py-3 px-4 text-cream/80 font-medium">
+                  نوع تراکنش
+                </th>
                 <th className="text-right py-3 px-4 text-cream/80 font-medium">
                   وزن (گرم)
                 </th>
@@ -67,12 +69,20 @@ export default function TransactionTable({
                       {tx.type === "buy" ? "خرید" : "فروش"}
                     </span>
                   </td>
-                  <td className="py-4 px-4 text-cream">{tx.amount}</td>
-                  <td className="py-4 px-4 text-cream font-mono">
-                    {tx.amount.toLocaleString()} ریال
+                  <td className="py-4 px-4">
+                    <div>
+                      <p className="text-xs text-cream/60 font-mono">
+                        {tx.weight}
+                      </p>
+                    </div>
                   </td>
+
+                  <td className="py-4 px-4 text-cream">
+                    {tx.amount.toLocaleString("fa-IR")} تومان
+                  </td>
+
                   <td className="py-4 px-4 text-cream/80 text-sm">
-                    {tx.createdAt}
+                    {new Date(tx.createdAt).toLocaleDateString("fa-IR")}
                   </td>
                   <td className="py-4 px-4">
                     <span
@@ -91,6 +101,7 @@ export default function TransactionTable({
                         : "رد شده"}
                     </span>
                   </td>
+
                   <td className="py-4 px-4">
                     <div className="flex gap-2">
                       <TransactionDetailsDialog transaction={tx} />
