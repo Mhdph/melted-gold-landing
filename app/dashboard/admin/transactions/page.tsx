@@ -8,21 +8,21 @@ import {
   Transaction,
   FilterStatus,
 } from "@/components/pages/admin/transactions/types";
-import { sampleTransactions } from "@/components/pages/admin/transactions/utils";
+import { useGetTransactions } from "@/services/trade-service";
 
 export default function TransactionsApprovalPage() {
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("pending");
-  const [transactions, setTransactions] =
-    useState<Transaction[]>(sampleTransactions);
+
+  const {
+    data: transactionsData,
+    isLoading,
+    isError,
+    error,
+  } = useGetTransactions();
 
   const handleApprove = (transactionId: string, userName: string) => {
-    setTransactions(
-      transactions.map((tx) =>
-        tx.id === transactionId ? { ...tx, status: "approved" as const } : tx
-      )
-    );
     toast({
       title: "تراکنش تایید شد",
       description: `تراکنش ${userName} با موفقیت تایید و پردازش شد.`,
@@ -30,11 +30,6 @@ export default function TransactionsApprovalPage() {
   };
 
   const handleReject = (transactionId: string, userName: string) => {
-    setTransactions(
-      transactions.map((tx) =>
-        tx.id === transactionId ? { ...tx, status: "rejected" as const } : tx
-      )
-    );
     toast({
       title: "تراکنش رد شد",
       description: `تراکنش ${userName} رد شد.`,
@@ -42,17 +37,11 @@ export default function TransactionsApprovalPage() {
     });
   };
 
-  const filteredTransactions = transactions.filter((tx) => {
-    const matchesSearch =
-      tx.userName.includes(searchQuery) ||
-      tx.userPhone.includes(searchQuery) ||
-      tx.id.includes(searchQuery);
-    const matchesFilter = filterStatus === "all" || tx.status === filterStatus;
-    return matchesSearch && matchesFilter;
-  });
-
-  const pendingCount = transactions.filter(
-    (tx) => tx.status === "pending"
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error?.message}</div>;
+  if (!transactionsData) return <div>No transactions found</div>;
+  const pendingCount = transactionsData?.data.filter(
+    (tx) => tx.accept === false
   ).length;
 
   return (
@@ -75,7 +64,7 @@ export default function TransactionsApprovalPage() {
 
       {/* Transaction Table */}
       <TransactionTable
-        transactions={filteredTransactions}
+        transactions={transactionsData.data}
         onApprove={handleApprove}
         onReject={handleReject}
       />

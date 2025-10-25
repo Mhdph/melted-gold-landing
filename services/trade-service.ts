@@ -4,14 +4,25 @@ import { BaseResponse, BasePaginationResponse } from "@/lib/response.interface";
 
 const apiClient = new ApiClient("https://yellowgold.liara.run");
 
-export interface TransactionData {
+export type TransactionType = "buy" | "sell";
+export type TransactionStatus = "pending" | "approved" | "rejected";
+export type UserStatus = "pending" | "approved" | "rejected";
+export type FilterStatus = "all" | "pending" | "approved" | "rejected";
+
+export interface User {
   id: string;
-  weight: number;
-  type: "buy" | "sell";
-  livePrice: number;
+  mobile: string;
+  phone: string;
+  verify: boolean;
+}
+
+export interface Transaction {
+  id: string;
+  User: User;
+  type: TransactionType;
+  amount: number;
+  accept: boolean;
   createdAt: string;
-  status: string;
-  description?: string;
 }
 
 export interface CreateTransactionRequest {
@@ -31,7 +42,7 @@ export const useGetTransactions = (page: number = 1, limit: number = 10) =>
   useQuery({
     queryKey: ["transactions", page, limit],
     queryFn: () =>
-      apiClient.get<BasePaginationResponse<TransactionData[]>>(
+      apiClient.get<BasePaginationResponse<Transaction[]>>(
         `/Transaction?filter={}&search={}&page=${page}&limit=${limit}`
       ),
   });

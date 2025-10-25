@@ -23,14 +23,9 @@ export default function TransactionTable({
             <thead>
               <tr className="border-b border-gold/20">
                 <th className="text-right py-3 px-4 text-cream/80 font-medium">
-                  شناسه
-                </th>
-                <th className="text-right py-3 px-4 text-cream/80 font-medium">
                   کاربر
                 </th>
-                <th className="text-right py-3 px-4 text-cream/80 font-medium">
-                  نوع
-                </th>
+
                 <th className="text-right py-3 px-4 text-cream/80 font-medium">
                   وزن (گرم)
                 </th>
@@ -44,7 +39,7 @@ export default function TransactionTable({
                   وضعیت
                 </th>
                 <th className="text-right py-3 px-4 text-cream/80 font-medium">
-                  عملیات
+                  تایید/رد
                 </th>
               </tr>
             </thead>
@@ -54,14 +49,10 @@ export default function TransactionTable({
                   key={tx.id}
                   className="border-b border-gold/10 hover:bg-cream/5"
                 >
-                  <td className="py-4 px-4 text-cream/80 font-mono">
-                    #{tx.id}
-                  </td>
                   <td className="py-4 px-4">
                     <div>
-                      <p className="text-cream">{tx.userName}</p>
                       <p className="text-xs text-cream/60 font-mono">
-                        {tx.userPhone}
+                        {tx.User.mobile}
                       </p>
                     </div>
                   </td>
@@ -76,24 +67,26 @@ export default function TransactionTable({
                       {tx.type === "buy" ? "خرید" : "فروش"}
                     </span>
                   </td>
-                  <td className="py-4 px-4 text-cream">{tx.weight}</td>
+                  <td className="py-4 px-4 text-cream">{tx.amount}</td>
                   <td className="py-4 px-4 text-cream font-mono">
-                    {tx.totalAmount.toLocaleString()} ریال
+                    {tx.amount.toLocaleString()} ریال
                   </td>
-                  <td className="py-4 px-4 text-cream/80 text-sm">{tx.date}</td>
+                  <td className="py-4 px-4 text-cream/80 text-sm">
+                    {tx.createdAt}
+                  </td>
                   <td className="py-4 px-4">
                     <span
                       className={`text-xs px-3 py-1 rounded-full ${
-                        tx.status === "pending"
+                        tx.accept === false
                           ? "bg-gold/10 text-gold"
-                          : tx.status === "approved"
+                          : tx.accept === true
                           ? "bg-green-400/10 text-green-400"
                           : "bg-red-400/10 text-red-400"
                       }`}
                     >
-                      {tx.status === "pending"
+                      {tx.accept === false
                         ? "در انتظار"
-                        : tx.status === "approved"
+                        : tx.accept === true
                         ? "تایید شده"
                         : "رد شده"}
                     </span>
@@ -101,11 +94,11 @@ export default function TransactionTable({
                   <td className="py-4 px-4">
                     <div className="flex gap-2">
                       <TransactionDetailsDialog transaction={tx} />
-                      {tx.status === "pending" && (
+                      {tx.accept === false && (
                         <>
                           <Button
                             size="sm"
-                            onClick={() => onApprove(tx.id, tx.userName)}
+                            onClick={() => onApprove(tx.id, tx.User.mobile)}
                             className="bg-green-500 hover:bg-green-600 text-white"
                           >
                             <Check className="h-4 w-4 ml-1" />
@@ -114,7 +107,7 @@ export default function TransactionTable({
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => onReject(tx.id, tx.userName)}
+                            onClick={() => onReject(tx.id, tx.User.mobile)}
                             className="border-red-400/30 text-red-400 hover:bg-red-400/10"
                           >
                             <X className="h-4 w-4 ml-1" />
