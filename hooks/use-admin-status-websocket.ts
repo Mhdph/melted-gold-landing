@@ -6,16 +6,12 @@ import { SOCKET_PATTERN } from "@/lib/socket-patterns";
 
 export interface AdminStatusData {
   isOnline: boolean;
-  lastSeen?: string;
-  adminName?: string;
-  status?: "online" | "offline" | "away" | "busy";
 }
 
 export function useAdminStatusWebSocket() {
   const [token, setToken] = useState<string | null>(null);
   const [adminStatus, setAdminStatus] = useState<AdminStatusData>({
     isOnline: false,
-    status: "offline",
   });
 
   // Get token from localStorage
@@ -36,10 +32,7 @@ export function useAdminStatusWebSocket() {
       // Handle admin status updates
       if (data && typeof data === "object") {
         setAdminStatus({
-          isOnline: data.isOnline || false,
-          lastSeen: data.lastSeen,
-          adminName: data.adminName,
-          status: data.status || (data.isOnline ? "online" : "offline"),
+          isOnline: data.msg.adminStatus || false,
         });
       }
     },
