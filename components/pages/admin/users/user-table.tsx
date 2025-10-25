@@ -22,17 +22,9 @@ export default function UserTable({
             <thead>
               <tr className="border-b border-gold/20">
                 <th className="text-right py-3 px-4 text-cream/80 font-medium">
-                  نام
-                </th>
-                <th className="text-right py-3 px-4 text-cream/80 font-medium">
                   شماره تلفن
                 </th>
-                <th className="text-right py-3 px-4 text-cream/80 font-medium">
-                  ایمیل
-                </th>
-                <th className="text-right py-3 px-4 text-cream/80 font-medium">
-                  تاریخ ثبت‌نام
-                </th>
+
                 <th className="text-right py-3 px-4 text-cream/80 font-medium">
                   وضعیت
                 </th>
@@ -47,37 +39,32 @@ export default function UserTable({
                   key={user.id}
                   className="border-b border-gold/10 hover:bg-cream/5"
                 >
-                  <td className="py-4 px-4 text-cream">{user.name}</td>
                   <td className="py-4 px-4 text-cream/80 font-mono">
-                    {user.phone}
-                  </td>
-                  <td className="py-4 px-4 text-cream/80">{user.email}</td>
-                  <td className="py-4 px-4 text-cream/80">
-                    {user.registeredAt}
+                    {user.mobile}
                   </td>
                   <td className="py-4 px-4">
                     <span
                       className={`text-xs px-3 py-1 rounded-full ${
-                        user.status === "pending"
+                        user.verify === false
                           ? "bg-gold/10 text-gold"
-                          : user.status === "approved"
+                          : user.verify === true
                           ? "bg-green-400/10 text-green-400"
                           : "bg-red-400/10 text-red-400"
                       }`}
                     >
-                      {user.status === "pending"
+                      {user.verify === false
                         ? "در انتظار"
-                        : user.status === "approved"
+                        : user.verify === true
                         ? "تایید شده"
                         : "رد شده"}
                     </span>
                   </td>
                   <td className="py-4 px-4">
-                    {user.status === "pending" && (
+                    {user.verify === false && (
                       <div className="flex gap-2">
                         <Button
                           size="sm"
-                          onClick={() => onApprove(user.id, user.name)}
+                          onClick={() => onApprove(user.id, user.mobile)}
                           className="bg-green-500 hover:bg-green-600 text-white"
                         >
                           <Check className="h-4 w-4 ml-1" />
@@ -86,7 +73,7 @@ export default function UserTable({
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => onReject(user.id, user.name)}
+                          onClick={() => onReject(user.id, user.mobile)}
                           className="border-red-400/30 text-red-400 hover:bg-red-400/10"
                         >
                           <X className="h-4 w-4 ml-1" />

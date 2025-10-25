@@ -3,9 +3,7 @@ export type FilterStatus = "all" | "pending" | "approved" | "rejected";
 
 export interface User {
   id: string;
-  name: string;
+  mobile: string;
   phone: string;
-  email: string;
-  registeredAt: string;
-  status: UserStatus;
+  verify: boolean;
 }
