@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 import { ArrowLeft, Lock } from "lucide-react";
 import { Label } from "../ui/label";
 import { Step } from "../login-form";
-import { useLogin } from "@/services/auth-service";
+import { useGetLoginCode, useLogin } from "@/services/auth-service";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -13,8 +13,12 @@ interface LoginOtpProps {
 function LoginOtp({ setStep }: LoginOtpProps) {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [countdown, setCountdown] = useState(0);
-  const { mutate: login, isPending } = useLogin();
   const phone = localStorage.getItem("phone");
+  const [enabled, setEnabled] = useState(false);
+
+  const { isLoading, isSuccess } = useGetLoginCode(phone!, enabled);
+
+  const { mutate: login, isPending } = useLogin();
   const router = useRouter();
 
   const handleOtpChange = (index: number, value: string) => {
@@ -53,7 +57,7 @@ function LoginOtp({ setStep }: LoginOtpProps) {
 
   const handleResendOtp = async () => {
     if (countdown > 0) return;
-
+    setEnabled(true);
     setCountdown(120);
   };
 
