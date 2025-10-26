@@ -16,13 +16,13 @@ export interface Transfer {
   id: string;
   date: string;
   value: number;
-  valueType: "gold" | "money";
+  valueType: "gold" | "mony";
   receiver: string;
 }
 
 export interface CreateTransferRequest {
   value: number;
-  valueType: "gold" | "money";
+  valueType: "gold" | "mony";
   receiver: string;
 }
 

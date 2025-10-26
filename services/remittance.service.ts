@@ -1,7 +1,6 @@
 import ApiClient from "@/lib/apiClient";
 import { BaseResponse, BasePaginationResponse } from "@/lib/response.interface";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
 
 const apiClient = new ApiClient("https://yellowgold.liara.run");
 
@@ -9,14 +8,14 @@ const apiClient = new ApiClient("https://yellowgold.liara.run");
 export interface Transfer {
   id: string;
   value: number;
-  valueType: "gold" | "money";
+  valueType: "gold" | "mony";
   date: string;
   receiver: string;
 }
 
 export interface CreateTransferRequest {
   value: number;
-  valueType: "gold" | "money";
+  valueType: "gold" | "mony";
   receiver: string;
 }
 
@@ -36,13 +35,8 @@ export const useCreateTransfer = () => {
   return useMutation({
     mutationFn: (data: CreateTransferRequest) =>
       apiClient.post<BaseResponse<Transfer>>("/transfer", data),
-    onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ["transfers"] });
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user-transfers"] });
-      toast.success("حواله با موفقیت ایجاد شد");
-    },
-    onError: (error: any) => {
-      toast.error("خطا در ایجاد حواله: " + (error?.message || "خطای نامشخص"));
     },
   });
 };
@@ -108,12 +102,6 @@ export const useUpdateTransferStatus = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transfers"] });
       queryClient.invalidateQueries({ queryKey: ["user-transfers"] });
-      toast.success("وضعیت حواله به‌روزرسانی شد");
-    },
-    onError: (error: any) => {
-      toast.error(
-        "خطا در به‌روزرسانی وضعیت: " + (error?.message || "خطای نامشخص")
-      );
     },
   });
 };
@@ -128,10 +116,6 @@ export const useCancelTransfer = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transfers"] });
       queryClient.invalidateQueries({ queryKey: ["user-transfers"] });
-      toast.success("حواله لغو شد");
-    },
-    onError: (error: any) => {
-      toast.error("خطا در لغو حواله: " + (error?.message || "خطای نامشخص"));
     },
   });
 };

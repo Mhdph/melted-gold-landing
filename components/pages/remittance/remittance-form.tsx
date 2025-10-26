@@ -1,3 +1,4 @@
+"use client";
 import type React from "react";
 import { useState } from "react";
 import {
@@ -17,31 +18,35 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Remittance, RemittanceUnit } from "./types";
+import { CreateTransferRequest, Remittance, RemittanceUnit } from "./types";
+import { Loader2Icon } from "lucide-react";
+import { useCreateTransfer } from "@/services/remittance.service";
+import { toast } from "sonner";
 
 interface RemittanceFormProps {
-  onSubmit: (remittance: Remittance) => void;
+  onSubmit: (remittance: CreateTransferRequest) => void;
+  isPending: boolean;
 }
 
-export default function RemittanceForm({ onSubmit }: RemittanceFormProps) {
+export default function RemittanceForm({
+  onSubmit,
+  isPending,
+}: RemittanceFormProps) {
   const [amount, setAmount] = useState("");
   const [unit, setUnit] = useState<RemittanceUnit>("گرم طلا");
   const [recipient, setRecipient] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!amount || !recipient) return;
 
-    const newRemittance: Remittance = {
-      id: Date.now().toString(),
-      date: new Date().toLocaleDateString("fa-IR"),
-      amount: Number.parseFloat(amount),
-      unit,
-      recipient,
-      status: "در انتظار",
+    const newTransfer: CreateTransferRequest = {
+      value: Number.parseFloat(amount),
+      valueType: unit === "گرم طلا" ? "gold" : "mony",
+      receiver: recipient,
     };
 
-    onSubmit(newRemittance);
+    onSubmit(newTransfer);
     setAmount("");
     setRecipient("");
   };
@@ -55,7 +60,7 @@ export default function RemittanceForm({ onSubmit }: RemittanceFormProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form className="space-y-4">
           <div className="flex gap-4 items-center">
             <div className="space-y-2">
               <Label htmlFor="amount" className="text-cream">
@@ -107,10 +112,16 @@ export default function RemittanceForm({ onSubmit }: RemittanceFormProps) {
           </div>
 
           <Button
+            onClick={handleSubmit}
             type="submit"
             className="bg-[#d8c070] hover:bg-[#BFA67A] text-gray-800 font-bold py-4 w-40 rounded-xl transition-all hover:shadow-lg disabled:opacity-50"
+            disabled={isPending}
           >
-            ثبت حواله
+            {isPending ? (
+              <Loader2Icon className="w-4 h-4 animate-spin" />
+            ) : (
+              "ثبت حواله"
+            )}
           </Button>
         </form>
       </CardContent>

@@ -6,7 +6,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Pagination,
   PaginationContent,
@@ -15,13 +14,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import {
-  Calendar,
-  User,
-  Weight,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { Calendar, User, Weight } from "lucide-react";
 import { Remittance } from "./types";
 import RemittanceFilters from "./remittance-filters";
 import { SortBy, FilterUnit } from "./types";
@@ -79,38 +72,38 @@ export default function RemittanceList({
                     <Weight className="h-5 w-5 text-gold" />
                   </div>
                   <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg font-bold text-cream">
-                        {remittance.amount.toLocaleString("fa-IR")}
-                      </span>
-                      <span className="text-sm text-cream/60">
-                        {remittance.unit}
-                      </span>
-                    </div>
+                    <Badge
+                      variant={
+                        remittance.valueType === "gold"
+                          ? "default"
+                          : "secondary"
+                      }
+                      className={
+                        remittance.valueType === "gold"
+                          ? "bg-green-500/20 text-green-400 border-green-500/30"
+                          : "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
+                      }
+                    >
+                      {remittance.value +
+                        " " +
+                        (remittance.valueType === "gold" ? "گرم طلا" : "ریال")}
+                    </Badge>
                     <div className="flex items-center gap-4 text-sm text-cream/60">
                       <div className="flex items-center gap-1">
                         <User className="h-4 w-4" />
-                        <span>{remittance.recipient}</span>
+                        <span>{remittance.receiver}</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Calendar className="h-4 w-4" />
-                        <span>{remittance.date}</span>
+                        <span>
+                          {new Date(remittance.date).toLocaleDateString(
+                            "fa-IR"
+                          )}
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
-                <Badge
-                  variant={
-                    remittance.status === "تکمیل شده" ? "default" : "secondary"
-                  }
-                  className={
-                    remittance.status === "تکمیل شده"
-                      ? "bg-green-500/20 text-green-400 border-green-500/30"
-                      : "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
-                  }
-                >
-                  {remittance.status}
-                </Badge>
               </div>
             </div>
           ))}

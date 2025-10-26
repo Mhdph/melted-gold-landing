@@ -33,6 +33,7 @@ export default function RemittancePage() {
     isLoading,
     isError,
     error,
+    refetch,
   } = useGetUserTransfers({
     page: currentPage,
     limit: pageSize,
@@ -45,26 +46,23 @@ export default function RemittancePage() {
   });
   const { data: statsData } = useGetTransferStats();
 
-  const handleNewRemittance = async (newRemittance: Remittance) => {
-    // Get current user ID from localStorage or use phone number as fallback
-    const currentUserId =
-      localStorage.getItem("userId") ||
-      localStorage.getItem("phone") ||
-      "unknown-user";
-
+  const handleNewRemittance = async (newRemittance: CreateTransferRequest) => {
     const transferData: CreateTransferRequest = {
       value: newRemittance.value,
-      valueType: newRemittance.valueType as "gold" | "money",
+      valueType: newRemittance.valueType as "gold" | "mony",
       receiver: newRemittance.receiver,
     };
 
-    console.log("Creating transfer with data:", transferData);
-
     try {
       await createTransfer.mutateAsync(transferData);
+      console.log("Transfer created successfully");
+      refetch();
     } catch (error) {
       console.error("Error creating transfer:", error);
+    } finally {
+      refetch();
     }
+    window.location.reload();
   };
 
   // Convert API data to component format
@@ -191,7 +189,10 @@ export default function RemittancePage() {
         )}
 
         {/* New Remittance Form */}
-        <RemittanceForm onSubmit={handleNewRemittance} />
+        <RemittanceForm
+          onSubmit={handleNewRemittance}
+          isPending={createTransfer.isPending}
+        />
 
         {/* Remittance History */}
         <RemittanceList
