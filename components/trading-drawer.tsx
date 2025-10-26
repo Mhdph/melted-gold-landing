@@ -43,8 +43,8 @@ export function TradingDrawer({
   const [description, setDescription] = useState("");
   const isBuy = type === "buy";
   const tradePrice = isBuy
-    ? priceData.msg.buyMithqal
-    : priceData.msg.sellMithqal;
+    ? priceData.msg.buyMithqal || 0
+    : priceData.msg.sellMithqal || 0;
   const totalValue = amount ? Number.parseFloat(amount) * tradePrice : 0;
 
   const handleSubmit = async (e: React.FormEvent) => {
