@@ -144,6 +144,7 @@ export function TradingDrawer({
               onChange={(e) => setAmount(e.target.value)}
               required
               className="placeholder:!text-gray-500"
+              autoFocus
             />
             <InputGroupAddon align="inline-end">
               <div className="pl-2">گرم </div>
