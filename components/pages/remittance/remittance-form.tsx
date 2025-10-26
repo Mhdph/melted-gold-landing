@@ -1,6 +1,7 @@
 "use client";
 import type React from "react";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Card,
   CardContent,
@@ -18,10 +19,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CreateTransferRequest, Remittance, RemittanceUnit } from "./types";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { CreateTransferRequest } from "./types";
 import { Loader2Icon } from "lucide-react";
-import { useCreateTransfer } from "@/services/remittance.service";
-import { toast } from "sonner";
+import {
+  remittanceFormSchema,
+  RemittanceFormData,
+} from "./remittance-form-schema";
 
 interface RemittanceFormProps {
   onSubmit: (remittance: CreateTransferRequest) => void;
@@ -32,23 +43,24 @@ export default function RemittanceForm({
   onSubmit,
   isPending,
 }: RemittanceFormProps) {
-  const [amount, setAmount] = useState("");
-  const [unit, setUnit] = useState<RemittanceUnit>("گرم طلا");
-  const [recipient, setRecipient] = useState("");
+  const form = useForm<RemittanceFormData>({
+    resolver: zodResolver(remittanceFormSchema),
+    defaultValues: {
+      value: 0,
+      valueType: "gold",
+      receiver: "",
+    },
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!amount || !recipient) return;
-
+  const handleSubmit = (data: RemittanceFormData) => {
     const newTransfer: CreateTransferRequest = {
-      value: Number.parseFloat(amount),
-      valueType: unit === "گرم طلا" ? "gold" : "mony",
-      receiver: recipient,
+      value: data.value,
+      valueType: data.valueType,
+      receiver: data.receiver,
     };
 
     onSubmit(newTransfer);
-    setAmount("");
-    setRecipient("");
+    form.reset();
   };
 
   return (
@@ -60,70 +72,92 @@ export default function RemittanceForm({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form className="space-y-4">
-          <div className="flex gap-4 items-center">
-            <div className="space-y-2">
-              <Label htmlFor="amount" className="text-cream">
-                مقدار
-              </Label>
-              <Input
-                id="amount"
-                type="number"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                placeholder="مقدار را وارد کنید"
-                className="bg-navy border-gold/30 text-cream w-full xl:w-96"
-                required
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
+            <div className="flex gap-4 items-start">
+              <FormField
+                control={form.control}
+                name="value"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="text-cream">مقدار</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        placeholder="مقدار را وارد کنید"
+                        className="bg-navy border-gold/30 text-cream"
+                        {...field}
+                        onChange={(e) =>
+                          field.onChange(parseFloat(e.target.value) || 0)
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-400" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="valueType"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="text-cream">واحد</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="bg-navy border-gold/30 text-cream">
+                          <SelectValue placeholder="انتخاب واحد" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="gold">گرم طلا</SelectItem>
+                        <SelectItem value="mony">ریال</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="text-red-400" />
+                  </FormItem>
+                )}
               />
             </div>
 
-            <div className="space-y-2 mt-2">
-              <Label htmlFor="unit" className="text-cream">
-                واحد
-              </Label>
-              <Select
-                value={unit}
-                onValueChange={(value: RemittanceUnit) => setUnit(value)}
-              >
-                <SelectTrigger className="bg-navy border-gold/30 mb-2 text-cream">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="گرم طلا">گرم طلا</SelectItem>
-                  <SelectItem value="ریال">ریال</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="recipient" className="text-cream">
-              نام گیرنده
-            </Label>
-            <Input
-              id="recipient"
-              type="text"
-              value={recipient}
-              onChange={(e) => setRecipient(e.target.value)}
-              placeholder="نام گیرنده را وارد کنید"
-              className="bg-navy border-gold/30 text-cream w-full xl:w-96"
-              required
+            <FormField
+              control={form.control}
+              name="receiver"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-cream">نام گیرنده</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="نام گیرنده را وارد کنید"
+                      className="bg-navy border-gold/30 text-cream"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-400" />
+                </FormItem>
+              )}
             />
-          </div>
 
-          <Button
-            onClick={handleSubmit}
-            type="submit"
-            className="bg-[#d8c070] hover:bg-[#BFA67A] text-gray-800 font-bold py-4 w-40 rounded-xl transition-all hover:shadow-lg disabled:opacity-50"
-            disabled={isPending}
-          >
-            {isPending ? (
-              <Loader2Icon className="w-4 h-4 animate-spin" />
-            ) : (
-              "ثبت حواله"
-            )}
-          </Button>
-        </form>
+            <Button
+              type="submit"
+              className="bg-[#d8c070] hover:bg-[#BFA67A] text-gray-800 font-bold py-4 w-40 rounded-xl transition-all hover:shadow-lg disabled:opacity-50"
+              disabled={isPending}
+            >
+              {isPending ? (
+                <Loader2Icon className="w-4 h-4 animate-spin" />
+              ) : (
+                "ثبت حواله"
+              )}
+            </Button>
+          </form>
+        </Form>
       </CardContent>
     </Card>
   );
