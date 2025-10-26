@@ -9,7 +9,7 @@ export interface Transfer {
   id: string;
   value: number;
   valueType: "gold" | "mony";
-  date: string;
+  createdAt: string;
   receiver: string;
 }
 

@@ -87,6 +87,11 @@ const getNavigationData = (isAdmin: boolean) => ({
                 icon: Activity,
                 href: "/dashboard/admin/settings",
               },
+              {
+                title: "مدیریت انتقالات",
+                icon: Activity,
+                href: "/dashboard/admin/transfers",
+              },
             ]
           : []),
       ],
