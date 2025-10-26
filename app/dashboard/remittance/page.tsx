@@ -56,13 +56,10 @@ export default function RemittancePage() {
     try {
       await createTransfer.mutateAsync(transferData);
       console.log("Transfer created successfully");
-      refetch();
     } catch (error) {
       console.error("Error creating transfer:", error);
     } finally {
-      refetch();
     }
-    window.location.reload();
   };
 
   // Convert API data to component format

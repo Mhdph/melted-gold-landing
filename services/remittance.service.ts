@@ -1,6 +1,7 @@
 import ApiClient from "@/lib/apiClient";
 import { BaseResponse, BasePaginationResponse } from "@/lib/response.interface";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 const apiClient = new ApiClient("https://yellowgold.liara.run");
 
@@ -35,8 +36,12 @@ export const useCreateTransfer = () => {
   return useMutation({
     mutationFn: (data: CreateTransferRequest) =>
       apiClient.post<BaseResponse<Transfer>>("/transfer", data),
+    onError: () => {
+      toast.error("خطا در ثبت حواله");
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user-transfers"] });
+      toast.success("حواله با موفقیت ثبت شد");
     },
   });
 };
