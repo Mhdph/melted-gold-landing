@@ -30,3 +30,10 @@ export const useApproveUser = () => {
     },
   });
 };
+
+export const useChangeUserStatus = () => {
+  return useMutation({
+    mutationFn: ({ status }: { status: boolean }) =>
+      apiClient.put<BaseResponse<any>>(`/setting/user`, { status }),
+  });
+};
