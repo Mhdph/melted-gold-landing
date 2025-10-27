@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import PageTitle from "@/components/page-title";
-import { TradingDrawer } from "@/components/trading-drawer";
+import { TradingDialog } from "@/components/trading-drawer";
 import QuickTradeButtons from "@/components/pages/trading/quick-trade-buttons";
 import TradeHistoryList from "@/components/pages/trading/trade-history-list";
 import { Trade } from "@/components/pages/trading/types";
@@ -63,7 +63,7 @@ export default function TradingPage() {
 
       {/* Trading Drawer */}
       {priceData ? (
-        <TradingDrawer
+        <TradingDialog
           isOpen={drawerOpen}
           onClose={handleCloseDrawer}
           type={drawerType}

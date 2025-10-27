@@ -5,6 +5,13 @@ import { toast } from "sonner";
 
 const apiClient = new ApiClient("https://yellowgold.liara.run");
 
+// Transfer status enum
+export enum TransferStatus {
+  inProgress = "inProgress",
+  reject = "reject",
+  success = "success",
+}
+
 // Types for remittance/transfer data
 export interface Transfer {
   id: string;
@@ -12,6 +19,7 @@ export interface Transfer {
   valueType: "gold" | "mony";
   createdAt: string;
   receiver: string;
+  status: TransferStatus;
 }
 
 export interface CreateTransferRequest {

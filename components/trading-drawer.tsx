@@ -1,17 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/ui/drawer";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { TrendingUp, TrendingDown, XIcon } from "lucide-react";
 import { Separator } from "./ui/separator";
@@ -20,7 +20,7 @@ import { Textarea } from "./ui/textarea";
 import { GoldPriceData } from "@/hooks/use-gold-price-websocket";
 import { useCreateTransaction } from "@/services/trade-service";
 
-interface TradingDrawerProps {
+interface TradingDialogProps {
   isOpen: boolean;
   onClose: () => void;
   type: "buy" | "sell";
@@ -29,23 +29,33 @@ interface TradingDrawerProps {
   priceData: GoldPriceData;
 }
 
-export function TradingDrawer({
+export function TradingDialog({
   isOpen,
   onClose,
   type,
   currentPrice,
   onTradeComplete,
   priceData,
-}: TradingDrawerProps) {
+}: TradingDialogProps) {
   const { toast } = useToast();
   const createTransactionMutation = useCreateTransaction();
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
+  const amountInputRef = useRef<HTMLInputElement>(null);
   const isBuy = type === "buy";
   const tradePrice = isBuy
     ? priceData.msg.buyMithqal || 0
     : priceData.msg.sellMithqal || 0;
   const totalValue = amount ? Number.parseFloat(amount) * tradePrice : 0;
+
+  // Focus input when dialog opens
+  useEffect(() => {
+    if (isOpen && amountInputRef.current) {
+      setTimeout(() => {
+        amountInputRef.current?.focus();
+      }, 100);
+    }
+  }, [isOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,19 +111,14 @@ export function TradingDrawer({
   };
 
   return (
-    <Drawer open={isOpen} onOpenChange={handleClose} direction="bottom">
-      <DrawerContent className="bg-white  flex justify-center items-center border-gold/20">
-        <div className=" flex items-center px-6 justify-between  w-full  py-2">
-          <p className="text-gold text-sm">
+    <Dialog open={isOpen} onOpenChange={handleClose}>
+      <DialogContent className="bg-white border-gold/20 max-w-md mx-auto">
+        <DialogHeader>
+          <DialogTitle className="text-gold text-lg text-center">
             {isBuy ? "خرید آبشده نقدی" : "فروش آبشده نقدی"}
-          </p>
-          <XIcon onClick={handleClose} className="size-4" />
-        </div>
-        <Separator />
-        <form
-          onSubmit={handleSubmit}
-          className="px-4 space-y-6 py-2 bg-white md:w-1/2 "
-        >
+          </DialogTitle>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Price Display */}
 
           <div className="bg-gray-300 mt-2 justify-between rounded-lg border-black p-2 border flex">
@@ -138,6 +143,7 @@ export function TradingDrawer({
 
           <InputGroup>
             <InputGroupInput
+              ref={amountInputRef}
               placeholder="وزن"
               value={amount}
               id="amount"
@@ -145,6 +151,8 @@ export function TradingDrawer({
               required
               className="placeholder:!text-gray-500"
               autoFocus
+              inputMode="decimal"
+              pattern="[0-9]*"
             />
             <InputGroupAddon align="inline-end">
               <div className="pl-2">گرم </div>
@@ -168,35 +176,33 @@ export function TradingDrawer({
             onChange={(e) => setDescription(e.target.value)}
             className="bg-navy border-gold/30 text-cream text-lg h-12 placeholder:!text-gray-500"
           />
-          <DrawerFooter className="px-0 mb-2">
-            <div className="flex gap-3">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleClose}
-                className="flex-1 border-gold/30 text-cream hover:bg-gold/10"
-              >
-                انصراف
-              </Button>
-              <Button
-                type="submit"
-                disabled={createTransactionMutation.isPending}
-                className={`flex-1 font-bold   ${
-                  isBuy
-                    ? "bg-[#D4AF37] hover:bg-[#BFA67A] text-[#0F1724]"
-                    : "bg-red-500 hover:bg-red-600 text-white"
-                }`}
-              >
-                {createTransactionMutation.isPending
-                  ? "در حال ثبت..."
-                  : isBuy
-                  ? "ثبت خرید"
-                  : "ثبت فروش"}
-              </Button>
-            </div>
-          </DrawerFooter>
+          <DialogFooter className="flex gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleClose}
+              className="flex-1 border-gold/30 text-cream hover:bg-gold/10"
+            >
+              انصراف
+            </Button>
+            <Button
+              type="submit"
+              disabled={createTransactionMutation.isPending}
+              className={`flex-1 font-bold   ${
+                isBuy
+                  ? "bg-[#D4AF37] hover:bg-[#BFA67A] text-[#0F1724]"
+                  : "bg-red-500 hover:bg-red-600 text-white"
+              }`}
+            >
+              {createTransactionMutation.isPending
+                ? "در حال ثبت..."
+                : isBuy
+                ? "ثبت خرید"
+                : "ثبت فروش"}
+            </Button>
+          </DialogFooter>
         </form>
-      </DrawerContent>
-    </Drawer>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Transfer } from "@/services/remittance.service";
+import { Transfer, TransferStatus } from "@/services/remittance.service";
 
 interface TransferTableProps {
   transfers: Transfer[];
@@ -25,6 +25,30 @@ export default function TransferTable({ transfers }: TransferTableProps) {
     return `${value} تومان`;
   };
 
+  const getStatusBadge = (status: TransferStatus) => {
+    const statusConfig = {
+      [TransferStatus.inProgress]: {
+        label: "در حال انجام",
+        className: "bg-blue-100/10 text-blue-400 border-blue-400/30",
+      },
+      [TransferStatus.reject]: {
+        label: "رد شده",
+        className: "bg-red-100/10 text-red-400 border-red-400/30",
+      },
+      [TransferStatus.success]: {
+        label: "موفق",
+        className: "bg-green-100/10 text-green-400 border-green-400/30",
+      },
+    };
+
+    const config = statusConfig[status];
+    return (
+      <Badge variant="outline" className={config.className}>
+        {config.label}
+      </Badge>
+    );
+  };
+
   return (
     <Card className="bg-white border-gold/20">
       <CardContent>
@@ -40,6 +64,9 @@ export default function TransferTable({ transfers }: TransferTableProps) {
                 </th>
                 <th className="text-right py-3 px-4 text-cream/80 font-medium">
                   مقدار
+                </th>
+                <th className="text-right py-3 px-4 text-cream/80 font-medium">
+                  وضعیت
                 </th>
                 <th className="text-right py-3 px-4 text-cream/80 font-medium">
                   تاریخ
@@ -69,6 +96,9 @@ export default function TransferTable({ transfers }: TransferTableProps) {
                   </td>
                   <td className="py-4 px-4 text-cream/80 font-medium">
                     {formatValue(transfer.value, transfer.valueType)}
+                  </td>
+                  <td className="py-4 px-4">
+                    {getStatusBadge(transfer.status)}
                   </td>
                   <td className="py-4 px-4 text-cream/60 text-sm">
                     {formatDate(transfer.createdAt)}

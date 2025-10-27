@@ -1,3 +1,9 @@
+export enum TransferStatus {
+  inProgress = "inProgress",
+  reject = "reject",
+  success = "success",
+}
+
 export interface Transfer {
   id: string;
   createdAt: string;
@@ -5,6 +11,7 @@ export interface Transfer {
   receiver: string;
   value: string;
   valueType: "gold" | "mony";
+  status: TransferStatus;
 }
 
 export interface PaginationMeta {
