@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useGetTransfers, Transfer } from "@/services/remittance.service";
+import { useQueryClient } from "@tanstack/react-query";
 import TransferTable from "@/components/pages/admin/transfers/transfer-table";
 import PaginationControls from "@/components/pages/admin/transfers/pagination-controls";
 import TransferFilters from "@/components/pages/admin/transfers/transfer-filters";
@@ -9,6 +10,7 @@ import ErrorMessage from "@/components/ui/error-message";
 import { FilterStatus } from "@/components/pages/admin/transfers/types";
 
 function AdminTransfersPage() {
+  const queryClient = useQueryClient();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [searchQuery, setSearchQuery] = useState("");
@@ -51,6 +53,11 @@ function AdminTransfersPage() {
     setCurrentPage(1); // Reset to first page when changing filter
   };
 
+  const handleTransferUpdate = () => {
+    // Force refetch of transfers data
+    queryClient.invalidateQueries({ queryKey: ["transfers"] });
+  };
+
   const handleClearFilters = () => {
     setSearchQuery("");
     setFilterStatus("all");
@@ -79,7 +86,10 @@ function AdminTransfersPage() {
         onClearFilters={handleClearFilters}
       />
 
-      <TransferTable transfers={filteredTransfers} />
+      <TransferTable
+        transfers={filteredTransfers}
+        onTransferUpdate={handleTransferUpdate}
+      />
 
       {meta.itemCount > 0 && (
         <PaginationControls

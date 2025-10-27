@@ -108,24 +108,10 @@ export const useUpdateTransferStatus = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, status }: { id: string; status: string }) =>
-      apiClient.patch<BaseResponse<Transfer>>(`/transfer/${id}/status`, {
+    mutationFn: ({ id, status }: { id: string; status: TransferStatus }) =>
+      apiClient.put<BaseResponse<Transfer>>(`/transfer/${id}`, {
         status,
       }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["transfers"] });
-      queryClient.invalidateQueries({ queryKey: ["user-transfers"] });
-    },
-  });
-};
-
-// Cancel Transfer
-export const useCancelTransfer = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (id: string) =>
-      apiClient.patch<BaseResponse<Transfer>>(`/transfer/${id}/cancel`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transfers"] });
       queryClient.invalidateQueries({ queryKey: ["user-transfers"] });
