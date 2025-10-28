@@ -4,6 +4,7 @@ import { ArrowLeft, Lock } from "lucide-react";
 import { Label } from "../ui/label";
 import { Step } from "../login-form";
 import { useGetLoginCode, useLogin } from "@/services/auth-service";
+import { useChangeUserStatus } from "@/services/user-service";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -19,6 +20,7 @@ function LoginOtp({ setStep }: LoginOtpProps) {
   const { isLoading, isSuccess } = useGetLoginCode(phone!, enabled);
 
   const { mutate: login, isPending } = useLogin();
+  const { mutate: changeUserStatus } = useChangeUserStatus();
   const router = useRouter();
 
   const handleOtpChange = (index: number, value: string) => {
@@ -45,6 +47,22 @@ function LoginOtp({ setStep }: LoginOtpProps) {
           console.log(data, "salam");
           localStorage.setItem("token", data?.access_token);
           localStorage.setItem("role", data.roles);
+
+          // Check if user is admin and call the service
+          if (data.roles === "admin") {
+            changeUserStatus(
+              { status: true },
+              {
+                onSuccess: () => {
+                  console.log("Admin status updated successfully");
+                },
+                onError: (error) => {
+                  console.error("Failed to update admin status:", error);
+                  // Don't show error toast as this is not critical for login
+                },
+              }
+            );
+          }
 
           router.push("/dashboard/trading");
         },
