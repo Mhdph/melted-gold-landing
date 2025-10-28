@@ -69,10 +69,22 @@ export const useApproveTransaction = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) =>
-      apiClient.put(`/Transaction/${id}`, { status: "success" }),
-    onSuccess: () => {
+    mutationFn: async (id: string) => {
+      console.log("Approving transaction with ID:", id);
+      const response = await apiClient.put(`/Transaction/${id}`, {
+        status: "success",
+      });
+      console.log("Approve response:", response);
+      return response;
+    },
+    onSuccess: (data, variables) => {
+      console.log("Transaction approved successfully:", variables);
+      // Invalidate all transaction-related queries
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["user-transactions"] });
+    },
+    onError: (error, variables) => {
+      console.error("Error approving transaction:", error, variables);
     },
   });
 };
@@ -81,10 +93,22 @@ export const useRejectTransaction = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) =>
-      apiClient.put(`/Transaction/${id}`, { status: "reject" }),
-    onSuccess: () => {
+    mutationFn: async (id: string) => {
+      console.log("Rejecting transaction with ID:", id);
+      const response = await apiClient.put(`/Transaction/${id}`, {
+        status: "reject",
+      });
+      console.log("Reject response:", response);
+      return response;
+    },
+    onSuccess: (data, variables) => {
+      console.log("Transaction rejected successfully:", variables);
+      // Invalidate all transaction-related queries
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["user-transactions"] });
+    },
+    onError: (error, variables) => {
+      console.error("Error rejecting transaction:", error, variables);
     },
   });
 };
