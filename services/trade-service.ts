@@ -22,6 +22,7 @@ export interface Transaction {
   type: TransactionType;
   amount: number;
   accept: boolean;
+  status?: string; // Add status field for backend compatibility
   createdAt: string;
   weight: number;
 }
@@ -69,7 +70,7 @@ export const useApproveTransaction = () => {
 
   return useMutation({
     mutationFn: (id: string) =>
-      apiClient.put(`/Transaction/${id}`, { accept: true }),
+      apiClient.put(`/Transaction/${id}`, { status: "success" }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
     },
@@ -81,7 +82,7 @@ export const useRejectTransaction = () => {
 
   return useMutation({
     mutationFn: (id: string) =>
-      apiClient.put(`/Transaction/${id}`, { accept: false }),
+      apiClient.put(`/Transaction/${id}`, { status: "reject" }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
     },

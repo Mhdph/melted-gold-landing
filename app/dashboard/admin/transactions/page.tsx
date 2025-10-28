@@ -8,6 +8,7 @@ import {
   Transaction,
   FilterStatus,
 } from "@/components/pages/admin/transactions/types";
+import { isPending } from "@/components/pages/admin/transactions/utils";
 import {
   useApproveTransaction,
   useGetTransactions,
@@ -62,7 +63,6 @@ export default function TransactionsApprovalPage() {
         toast({
           title: "تراکنش رد شد",
           description: `تراکنش ${userName} رد شد.`,
-          variant: "destructive",
         });
       },
       onError: (error) => {
@@ -86,9 +86,7 @@ export default function TransactionsApprovalPage() {
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error?.message}</div>;
   if (!transactionsData) return <div>No transactions found</div>;
-  const pendingCount = transactionsData?.data.filter(
-    (tx) => tx.accept === false
-  ).length;
+  const pendingCount = transactionsData?.data.filter(isPending).length;
 
   return (
     <div className="p-6 lg:p-8 space-y-6">
