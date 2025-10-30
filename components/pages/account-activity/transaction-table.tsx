@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Transaction } from "./type";
+import { useLastTransaction } from "@/hooks/use-get-last-transaction-websocket";
 
 function TransactionTable({
   filteredTransactions,

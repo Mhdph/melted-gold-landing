@@ -21,15 +21,19 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { useLastTransaction } from "@/hooks/use-get-last-transaction-websocket";
 
 export default function TransactionsApprovalPage() {
   const { toast } = useToast();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filterStatus, setFilterStatus] = useState<FilterStatus>("pending");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10);
   const approveTransaction = useApproveTransaction();
   const rejectTransaction = useRejectTransaction();
+
+  const { transactions, isConnected } = useLastTransaction();
+
+  console.log("first", transactions);
+  console.log("isConnected", isConnected);
 
   const {
     data: transactionsData,
