@@ -3,6 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Check, X } from "lucide-react";
 import { Transaction } from "./types";
 import TransactionDetailsDialog from "./transaction-details-dialog";
+import {
+  isPending,
+  isApproved,
+  getStatusText,
+  getStatusClasses,
+} from "./utils";
 
 interface TransactionTableProps {
   transactions: Transaction[];
@@ -86,26 +92,18 @@ export default function TransactionTable({
                   </td>
                   <td className="py-4 px-4">
                     <span
-                      className={`text-xs px-3 py-1 rounded-full ${
-                        tx.accept === false
-                          ? "bg-gold/10 text-gold"
-                          : tx.accept === true
-                          ? "bg-green-400/10 text-green-400"
-                          : "bg-red-400/10 text-red-400"
-                      }`}
+                      className={`text-xs px-3 py-1 rounded-full ${getStatusClasses(
+                        tx
+                      )}`}
                     >
-                      {tx.accept === false
-                        ? "در انتظار"
-                        : tx.accept === true
-                        ? "تایید شده"
-                        : "رد شده"}
+                      {getStatusText(tx)}
                     </span>
                   </td>
 
                   <td className="py-4 px-4">
                     <div className="flex gap-2">
                       <TransactionDetailsDialog transaction={tx} />
-                      {tx.accept === false && (
+                      {isPending(tx) && (
                         <>
                           <Button
                             size="sm"

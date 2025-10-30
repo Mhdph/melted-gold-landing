@@ -1,52 +1,72 @@
 import { Transaction } from "./types";
 
-export const sampleTransactions: Transaction[] = [
-  {
-    id: "1",
-    userName: "علی محمدی",
-    userPhone: "09123456789",
-    type: "buy",
-    weight: 10,
-    price: 2850000,
-    totalAmount: 28500000,
-    date: "1403/09/15 - 14:30",
-    status: "pending",
-    paymentMethod: "کارت به کارت",
-  },
-  {
-    id: "2",
-    userName: "سارا احمدی",
-    userPhone: "09121234567",
-    type: "sell",
-    weight: 5,
-    price: 2840000,
-    totalAmount: 14200000,
-    date: "1403/09/15 - 12:15",
-    status: "pending",
-    paymentMethod: "واریز به حساب",
-  },
-  {
-    id: "3",
-    userName: "محمد رضایی",
-    userPhone: "09131234567",
-    type: "buy",
-    weight: 20,
-    price: 2850000,
-    totalAmount: 57000000,
-    date: "1403/09/14 - 16:45",
-    status: "approved",
-    paymentMethod: "کارت به کارت",
-  },
-  {
-    id: "4",
-    userName: "فاطمه کریمی",
-    userPhone: "09141234567",
-    type: "buy",
-    weight: 3,
-    price: 2850000,
-    totalAmount: 8550000,
-    date: "1403/09/14 - 10:20",
-    status: "pending",
-    paymentMethod: "درگاه پرداخت",
-  },
-];
+// Helper function to check if transaction is pending
+export const isPending = (tx: Transaction) => {
+  // Prioritize status field over accept field
+  if (tx.status) {
+    return tx.status === "inProgress";
+  }
+  return tx.accept === false;
+};
+
+// Helper function to check if transaction is approved
+export const isApproved = (tx: Transaction) => {
+  // Prioritize status field over accept field
+  if (tx.status) {
+    return tx.status === "success";
+  }
+  return tx.accept === true;
+};
+
+// Helper function to check if transaction is rejected
+export const isRejected = (tx: Transaction) => {
+  // Prioritize status field over accept field
+  if (tx.status) {
+    return tx.status === "reject";
+  }
+  return tx.accept !== true && tx.accept !== false;
+};
+
+// Helper function to get transaction status display text
+export const getStatusText = (tx: Transaction) => {
+  // Prioritize status field over accept field
+  if (tx.status) {
+    switch (tx.status) {
+      case "inProgress":
+        return "در انتظار";
+      case "success":
+        return "تایید شده";
+      case "reject":
+        return "رد شده";
+      default:
+        return "نامشخص";
+    }
+  }
+
+  // Fallback to accept field
+  if (tx.accept === false) return "در انتظار";
+  if (tx.accept === true) return "تایید شده";
+  return "رد شده";
+};
+
+// Helper function to get transaction status CSS classes
+export const getStatusClasses = (tx: Transaction) => {
+  // Prioritize status field over accept field
+  if (tx.status) {
+    switch (tx.status) {
+      case "inProgress":
+        return "bg-gold/10 text-gold";
+      case "success":
+        return "bg-green-400/10 text-green-400";
+      case "reject":
+        return "bg-red-400/10 text-red-400";
+      default:
+        return "bg-gray-400/10 text-gray-400";
+    }
+  }
+
+  // Fallback to accept field
+  if (tx.accept === false) return "bg-gold/10 text-gold";
+  if (tx.accept === true) return "bg-green-400/10 text-green-400";
+  return "bg-red-400/10 text-red-400";
+};

@@ -10,6 +10,7 @@ export interface Transaction {
   type: TransactionType;
   amount: number;
   accept: boolean;
+  status?: string; // Add status field for backend compatibility
   createdAt: string;
   weight: number;
 }

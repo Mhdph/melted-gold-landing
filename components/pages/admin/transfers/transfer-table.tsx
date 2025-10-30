@@ -2,6 +2,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
   Form,
   FormControl,
   FormField,
@@ -13,7 +19,7 @@ import {
   TransferStatus,
   useUpdateTransferStatus,
 } from "@/services/remittance.service";
-import { CheckCircle, XCircle } from "lucide-react";
+import { MoreHorizontal, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -147,36 +153,43 @@ export default function TransferTable({
 
   const getStatusActions = (transfer: Transfer) => {
     return (
-      <div className="flex gap-1">
-        {transfer.status !== TransferStatus.success && (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
           <Button
+            variant="ghost"
             size="sm"
-            variant="outline"
-            onClick={() =>
-              handleStatusUpdate(transfer.id, TransferStatus.success)
-            }
+            className="h-8 w-8 p-0 hover:bg-cream/10"
             disabled={updateTransferStatusMutation.isPending}
-            className="h-8 px-2 text-green-600 border-green-400 hover:bg-green-50"
-            title="تأیید انتقال"
           >
-            <CheckCircle className="w-3 h-3" />
+            <span className="sr-only">باز کردن منو</span>
+            <MoreHorizontal className="h-4 w-4" />
           </Button>
-        )}
-        {transfer.status !== TransferStatus.reject && (
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() =>
-              handleStatusUpdate(transfer.id, TransferStatus.reject)
-            }
-            disabled={updateTransferStatusMutation.isPending}
-            className="h-8 px-2 text-red-600 border-red-400 hover:bg-red-50"
-            title="رد انتقال"
-          >
-            <XCircle className="w-3 h-3" />
-          </Button>
-        )}
-      </div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="bg-white border-gold/20">
+          {transfer.status !== TransferStatus.success && (
+            <DropdownMenuItem
+              onClick={() =>
+                handleStatusUpdate(transfer.id, TransferStatus.success)
+              }
+              className="text-green-600 hover:bg-green-50 cursor-pointer"
+            >
+              <CheckCircle className="mr-2 h-4 w-4" />
+              تأیید انتقال
+            </DropdownMenuItem>
+          )}
+          {transfer.status !== TransferStatus.reject && (
+            <DropdownMenuItem
+              onClick={() =>
+                handleStatusUpdate(transfer.id, TransferStatus.reject)
+              }
+              className="text-red-600 hover:bg-red-50 cursor-pointer"
+            >
+              <XCircle className="mr-2 h-4 w-4" />
+              رد انتقال
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
     );
   };
 
@@ -201,10 +214,10 @@ export default function TransferTable({
                     وضعیت
                   </th>
                   <th className="text-right py-3 px-4 text-cream/80 font-medium">
-                    عملیات
+                    تاریخ
                   </th>
                   <th className="text-right py-3 px-4 text-cream/80 font-medium">
-                    تاریخ
+                    عملیات
                   </th>
                 </tr>
               </thead>
@@ -235,10 +248,10 @@ export default function TransferTable({
                     <td className="py-4 px-4">
                       {getStatusBadge(transfer.status)}
                     </td>
-                    <td className="py-4 px-4">{getStatusActions(transfer)}</td>
                     <td className="py-4 px-4 text-cream/60 text-sm">
                       {formatDate(transfer.createdAt)}
                     </td>
+                    <td className="py-4 px-4">{getStatusActions(transfer)}</td>
                   </tr>
                 ))}
               </tbody>
