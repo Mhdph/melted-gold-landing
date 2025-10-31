@@ -8,12 +8,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { useGoldPriceWebSocket } from "@/hooks/use-gold-price-websocket";
-import { GoldPriceData } from "@/hooks/use-gold-price-websocket";
 interface QuickTradeButtonsProps {
   currentPrice: number;
   onBuyClick: () => void;
   onSellClick: () => void;
-  priceData: GoldPriceData;
+  priceData: any;
 }
 
 export default function QuickTradeButtons({
