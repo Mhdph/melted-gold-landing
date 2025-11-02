@@ -7,10 +7,7 @@ import QuickTradeButtons from "@/components/pages/trading/quick-trade-buttons";
 import TradeHistoryList from "@/components/pages/trading/trade-history-list";
 import { Trade } from "@/components/pages/trading/types";
 import { sampleTrades } from "@/components/pages/trading/utils";
-import {
-  GoldPriceData,
-  useGoldPriceWebSocket,
-} from "@/hooks/use-gold-price-websocket";
+import { useGoldPriceWebSocket } from "@/hooks/use-gold-price-websocket";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function TradingPage() {
@@ -18,8 +15,7 @@ export default function TradingPage() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [drawerType, setDrawerType] = useState<"buy" | "sell">("buy");
   const [trades, setTrades] = useState<Trade[]>(sampleTrades);
-  const { isConnected, priceData, error, lastMessage } =
-    useGoldPriceWebSocket();
+  const { isConnected, goldPrice } = useGoldPriceWebSocket();
   const handleOpenDrawer = (type: "buy" | "sell") => {
     setDrawerType(type);
     setDrawerOpen(true);
@@ -44,12 +40,12 @@ export default function TradingPage() {
           />
 
           {/* Quick Trade Section */}
-          {priceData ? (
+          {goldPrice ? (
             <QuickTradeButtons
               currentPrice={currentPrice}
               onBuyClick={() => handleOpenDrawer("buy")}
               onSellClick={() => handleOpenDrawer("sell")}
-              priceData={priceData as GoldPriceData}
+              priceData={goldPrice}
             />
           ) : (
             <div className="text-center text-zinc-500">
@@ -62,14 +58,14 @@ export default function TradingPage() {
       </div>
 
       {/* Trading Drawer */}
-      {priceData ? (
+      {goldPrice ? (
         <TradingDialog
           isOpen={drawerOpen}
           onClose={handleCloseDrawer}
           type={drawerType}
           currentPrice={currentPrice}
           onTradeComplete={handleTradeComplete}
-          priceData={priceData as GoldPriceData}
+          priceData={goldPrice}
         />
       ) : (
         <div className="text-center text-gray-500">
