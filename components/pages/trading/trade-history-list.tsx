@@ -108,7 +108,7 @@ export default function TradeHistoryList({ trades }: TradeHistoryListProps) {
                 </div>
                 <div className="text-left md:text-right">
                   <p className="text-lg font-bold  text-gold">
-                    {trade.amount.toLocaleString("fa-IR")} ریال
+                    {new Intl.NumberFormat("fa-IR").format(trade.amount)} ریال
                   </p>
                 </div>
               </div>

@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Form } from "@/components/ui/form";
 import TransactionFilters from "@/components/pages/admin/transactions/transaction-filters";
 import TransactionTable from "@/components/pages/admin/transactions/transaction-table";
+import LastTransactionCard from "@/components/pages/admin/transactions/last-transaction-card";
 import {
   Transaction,
   FilterStatus,
@@ -30,6 +31,7 @@ import {
 } from "@/components/ui/pagination";
 import { useLastTransaction } from "@/hooks/use-get-last-transaction-websocket";
 import { useState } from "react";
+import Loading from "@/components/ui/loading";
 
 export default function TransactionsApprovalPage() {
   const { toast } = useToast();
@@ -54,9 +56,6 @@ export default function TransactionsApprovalPage() {
   const rejectTransaction = useRejectTransaction();
 
   const { transactions, isConnected } = useLastTransaction();
-
-  console.log("first", transactions);
-  console.log("isConnected", isConnected);
 
   const {
     data: transactionsData,
@@ -202,6 +201,17 @@ export default function TransactionsApprovalPage() {
           onSearchChange={setSearchQuery}
           onFilterChange={setFilterStatus}
         /> */}
+
+        {/* Last Transaction Card */}
+        {transactions?.msg ? (
+          <LastTransactionCard
+            transaction={transactions.msg}
+            onApprove={handleApprove}
+            onReject={handleReject}
+          />
+        ) : (
+          <Loading />
+        )}
 
         {/* Transaction Table */}
         <TransactionTable
