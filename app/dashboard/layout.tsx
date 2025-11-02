@@ -12,6 +12,8 @@ import type React from "react";
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useGetTransactionWebSocket } from "@/hooks/use-get-transaction";
+import { useGetTransferWebSocket } from "@/hooks/use-get-transfer";
 
 export default function DashboardLayout({
   children,
@@ -52,6 +54,9 @@ export default function DashboardLayout({
       router.push("/");
     }
   }, [router]);
+
+  useGetTransactionWebSocket();
+  useGetTransferWebSocket();
   return (
     <SidebarProvider>
       <AppSidebar side="right" />
