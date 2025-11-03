@@ -5,6 +5,7 @@ import { GeistMono } from "geist/font/mono";
 import { Analytics } from "@vercel/analytics/next";
 import { Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
+import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 import { Providers } from "@/components/provider";
@@ -61,6 +62,7 @@ export default function RootLayout({
           <Providers>{children}</Providers>
         </Suspense>
         <Toaster />
+        <SonnerToaster />
         <Analytics />
       </body>
     </html>

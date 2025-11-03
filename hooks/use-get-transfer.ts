@@ -8,13 +8,21 @@ export const useGetTransferWebSocket = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const previousHaveTransfer = useRef<boolean>(false);
 
-  // Show toast when haveTransfer changes from false to true
+  // Show toast when haveTransaction changes from false to true
   useEffect(() => {
+    console.log(
+      "haveTransfer changed:",
+      haveTransfer,
+      "previous:",
+      previousHaveTransfer.current
+    );
     // Only show toast when it changes from false to true
     if (haveTransfer && !previousHaveTransfer.current) {
+      console.log("Showing toast for new transfer");
       toast.info("انتقال جدید", {
         description: "یک انتقال جدید برای بررسی وجود دارد",
-        duration: 5000,
+        duration: 10000,
+        position: "top-center",
       });
     }
     // Update the ref to track previous value
@@ -55,26 +63,22 @@ export const useGetTransferWebSocket = () => {
       setIsConnected(false);
     });
 
-    // Listen to haveTransfer event (similar structure to haveTransaction)
+    // Listen to haveTransaction event
     socketInstance.on("haveTransfer", (data) => {
-      if (data?.msg?.haveTransfer !== undefined) {
-        setHaveTransfer(data.msg.haveTransfer);
-      } else if (data?.haveTransfer !== undefined) {
-        setHaveTransfer(data.haveTransfer);
-      }
-    });
+      const newValue = data?.msg?.haveTransfer ?? data?.haveTransfer;
+      console.log(newValue, "newValue");
 
-    // Also listen to newTransfer event (when a new transfer is created)
-    socketInstance.on("newTransfer", (data) => {
-      // Show toast immediately when newTransfer event is received
-      if (data) {
+      // Show toast when newValue is true and it changed from false
+      if (newValue === true && !previousHaveTransfer.current) {
         toast.info("انتقال جدید", {
           description: "یک انتقال جدید برای بررسی وجود دارد",
-          duration: 5000,
+          duration: 10000,
+          position: "top-center",
         });
-        // Also update the state for consistency
-        setHaveTransfer(true);
       }
+      // Update the ref before setting state
+      previousHaveTransfer.current = newValue;
+      setHaveTransfer(newValue);
     });
 
     setSocket(socketInstance);
