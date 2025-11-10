@@ -2,14 +2,12 @@
 import { useState } from "react";
 import {
   useGetTransfers,
-  Transfer,
   useUpdateTransferStatus,
   TransferStatus,
 } from "@/services/remittance.service";
 import { useQueryClient } from "@tanstack/react-query";
 import TransferTable from "@/components/pages/admin/transfers/transfer-table";
 import PaginationControls from "@/components/pages/admin/transfers/pagination-controls";
-import TransferFilters from "@/components/pages/admin/transfers/transfer-filters";
 import Loading from "@/components/ui/loading";
 import ErrorMessage from "@/components/ui/error-message";
 import { FilterStatus } from "@/components/pages/admin/transfers/types";
@@ -144,13 +142,13 @@ function AdminTransfersPage() {
           onReject={handleReject}
         />
       )}
-      <TransferFilters
+      {/* <TransferFilters
         searchQuery={searchQuery}
         filterStatus={filterStatus}
         onSearchChange={handleSearchChange}
         onFilterChange={handleFilterChange}
         onClearFilters={handleClearFilters}
-      />
+      /> */}
 
       <TransferTable
         transfers={filteredTransfers}

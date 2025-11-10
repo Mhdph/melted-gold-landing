@@ -84,7 +84,7 @@ export default function TransactionTable({
                   </td>
 
                   <td className="py-4 px-4 text-cream">
-                    {new Intl.NumberFormat("fa-IR").format(tx.amount)} تومان{" "}
+                    {new Intl.NumberFormat("fa-IR").format(tx.amount)} ریال{" "}
                   </td>
 
                   <td className="py-4 px-4 text-cream/80 text-sm">
