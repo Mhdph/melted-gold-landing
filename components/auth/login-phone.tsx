@@ -5,6 +5,7 @@ import { Phone } from "lucide-react";
 import { Label } from "../ui/label";
 import { useGetLoginCode } from "@/services/auth-service";
 import { Step } from "../login-form";
+import { persianToEnglish } from "@/lib/utils";
 
 interface LoginPhoneProps {
   setStep: (step: Step) => void;
@@ -42,7 +43,10 @@ function LoginPhone({ setStep }: LoginPhoneProps) {
             type="tel"
             placeholder="09123456789"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={(e) => {
+              const convertedValue = persianToEnglish(e.target.value);
+              setPhone(convertedValue);
+            }}
             className="pr-10 text-left dir-ltr bg-white border-[#e8e3d6] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
             required
             pattern="09[0-9]{9}"

@@ -7,6 +7,7 @@ import { useGetLoginCode, useLogin } from "@/services/auth-service";
 import { useChangeUserStatus } from "@/services/user-service";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { persianToEnglish } from "@/lib/utils";
 
 interface LoginOtpProps {
   setStep: (step: Step) => void;
@@ -26,12 +27,15 @@ function LoginOtp({ setStep }: LoginOtpProps) {
   const handleOtpChange = (index: number, value: string) => {
     if (value.length > 1) return;
 
+    // Convert Persian digits to English
+    const convertedValue = persianToEnglish(value);
+
     const newOtp = [...otp];
-    newOtp[index] = value;
+    newOtp[index] = convertedValue;
     setOtp(newOtp);
 
     // Auto-focus next input
-    if (value && index < 5) {
+    if (convertedValue && index < 5) {
       const nextInput = document.getElementById(`otp-${index + 1}`);
       nextInput?.focus();
     }
