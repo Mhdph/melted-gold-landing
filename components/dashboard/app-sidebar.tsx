@@ -59,11 +59,7 @@ const getNavigationData = (isAdmin: boolean) => ({
           icon: TrendingDown,
           href: "/dashboard/price-changes",
         },
-        {
-          title: "گردش حساب",
-          icon: Activity,
-          href: "/dashboard/account-activity",
-        },
+
         {
           title: "درباره ما",
           icon: Info,
