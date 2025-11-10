@@ -2,6 +2,20 @@ import { useEffect, useState, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 import { toast } from "sonner";
 
+// Helper function to play ringtone
+const playRingtone = () => {
+  try {
+    const audio = new Audio("/ringtone.mp3");
+    audio.volume = 0.7; // Set volume to 70%
+    audio.play().catch((error) => {
+      // Handle autoplay restrictions (browser may block autoplay)
+      console.warn("Could not play ringtone:", error);
+    });
+  } catch (error) {
+    console.warn("Error creating audio:", error);
+  }
+};
+
 export const useGetTransferWebSocket = () => {
   const [haveTransfer, setHaveTransfer] = useState<boolean>(false);
   const [isConnected, setIsConnected] = useState<boolean>(false);
@@ -19,6 +33,7 @@ export const useGetTransferWebSocket = () => {
     // Only show toast when it changes from false to true
     if (haveTransfer && !previousHaveTransfer.current) {
       console.log("Showing toast for new transfer");
+      playRingtone();
       toast.info("انتقال جدید", {
         description: "یک انتقال جدید برای بررسی وجود دارد",
         duration: 10000,
@@ -70,6 +85,7 @@ export const useGetTransferWebSocket = () => {
 
       // Show toast when newValue is true and it changed from false
       if (newValue === true && !previousHaveTransfer.current) {
+        playRingtone();
         toast.info("انتقال جدید", {
           description: "یک انتقال جدید برای بررسی وجود دارد",
           duration: 10000,
