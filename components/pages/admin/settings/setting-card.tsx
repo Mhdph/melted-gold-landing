@@ -218,9 +218,9 @@ export default function SettingCard({
             {translateSettingKey(setting.key)}
           </CardTitle>
           <div className="flex items-center gap-2">
-            <Badge className={getTypeBadgeColor(setting.type)}>
+            {/* <Badge className={getTypeBadgeColor(setting.type)}>
               {setting.type}
-            </Badge>
+            </Badge> */}
             {!isEditing && (
               <Button
                 size="sm"
