@@ -81,7 +81,7 @@ export default function LastTransactionCard({
             <div>
               <p className="text-sm text-cream/60 mb-1">مبلغ کل</p>
               <p className="text-cream">
-                {amountNumber.toLocaleString("fa-IR")} تومان
+                {amountNumber.toLocaleString("fa-IR")} ریال
               </p>
             </div>
             {transaction.livePrice && (

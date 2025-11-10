@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check, X } from "lucide-react";
+import { useState, useEffect } from "react";
 import { TransferStatus } from "@/services/remittance.service";
 
 interface LastTransfer {
@@ -26,6 +27,15 @@ export default function LastTransferCard({
   onApprove,
   onReject,
 }: LastTransferCardProps) {
+  const [isActionPending, setIsActionPending] = useState(false);
+
+  // Reset pending state when transfer status changes (via WebSocket update)
+  useEffect(() => {
+    if (transfer.status !== TransferStatus.inProgress) {
+      setIsActionPending(false);
+    }
+  }, [transfer.status]);
+
   if (!transfer) return null;
 
   const formatDate = (dateString: string) => {
@@ -74,7 +84,28 @@ export default function LastTransferCard({
     );
   };
 
-  const canApproveReject = transfer.status === TransferStatus.inProgress;
+  const canApproveReject =
+    transfer.status === TransferStatus.inProgress && !isActionPending;
+
+  const handleApprove = async () => {
+    setIsActionPending(true);
+    try {
+      await onApprove(transfer.id);
+    } finally {
+      // Keep buttons hidden even if there's an error
+      // The status will update via WebSocket
+    }
+  };
+
+  const handleReject = async () => {
+    setIsActionPending(true);
+    try {
+      await onReject(transfer.id);
+    } finally {
+      // Keep buttons hidden even if there's an error
+      // The status will update via WebSocket
+    }
+  };
 
   return (
     <Card className="bg-white border-gold/20">
@@ -121,7 +152,9 @@ export default function LastTransferCard({
             </div>
             <div>
               <p className="text-sm text-cream/60 mb-1">تاریخ</p>
-              <p className="text-cream/80 text-sm">{formatDate(transfer.createdAt)}</p>
+              <p className="text-cream/80 text-sm">
+                {formatDate(transfer.createdAt)}
+              </p>
             </div>
           </div>
 
@@ -129,20 +162,22 @@ export default function LastTransferCard({
             <div className="flex gap-2 pt-4 border-t border-gold/10">
               <Button
                 size="sm"
-                onClick={() => onApprove(transfer.id)}
-                className="bg-green-500 hover:bg-green-600 text-white flex-1"
+                onClick={handleApprove}
+                disabled={isActionPending}
+                className="bg-green-500 hover:bg-green-600 text-white flex-1 disabled:opacity-50"
               >
                 <Check className="h-4 w-4 ml-1" />
-                تایید
+                {isActionPending ? "در حال تایید..." : "تایید"}
               </Button>
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => onReject(transfer.id)}
-                className="border-red-400/30 text-red-400 hover:bg-red-400/10 flex-1"
+                onClick={handleReject}
+                disabled={isActionPending}
+                className="border-red-400/30 text-red-400 hover:bg-red-400/10 flex-1 disabled:opacity-50"
               >
                 <X className="h-4 w-4 ml-1" />
-                رد
+                {isActionPending ? "در حال رد..." : "رد"}
               </Button>
             </div>
           )}
