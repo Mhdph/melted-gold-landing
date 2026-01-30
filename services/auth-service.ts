@@ -2,8 +2,9 @@ import ApiClient from "@/lib/apiClient";
 import { BaseResponse } from "@/lib/response.interface";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { API_URL } from "./constant";
 
-const apiClient = new ApiClient("https://yellowgold.liara.run/auth");
+const apiClient = new ApiClient(`${API_URL}/auth`);
 
 export const useGetLoginCode = (slug: string, enabled: boolean) =>
   useQuery({

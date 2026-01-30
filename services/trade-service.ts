@@ -1,8 +1,9 @@
 import ApiClient from "@/lib/apiClient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BaseResponse, BasePaginationResponse } from "@/lib/response.interface";
+import { API_URL } from "./constant";
 
-const apiClient = new ApiClient("https://yellowgold.liara.run");
+const apiClient = new ApiClient(`${API_URL}`);
 
 export type TransactionType = "buy" | "sell";
 export type TransactionStatus = "pending" | "approved" | "rejected";
@@ -45,7 +46,7 @@ export const useGetTransactions = (page: number = 1, limit: number = 10) =>
     queryKey: ["transactions", page, limit],
     queryFn: () =>
       apiClient.get<BasePaginationResponse<Transaction[]>>(
-        `/Transaction?filter={}&search={}&page=${page}&limit=${limit}`
+        `/Transaction?filter={}&search={}&page=${page}&limit=${limit}`,
       ),
   });
 
@@ -54,7 +55,7 @@ export const useCreateTransaction = () =>
     mutationFn: (data: CreateTransactionRequest) =>
       apiClient.post<BaseResponse<CreateTransactionResponse>>(
         "/Transaction",
-        data
+        data,
       ),
   });
 

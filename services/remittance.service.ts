@@ -3,8 +3,9 @@ import { BaseResponse, BasePaginationResponse } from "@/lib/response.interface";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-const apiClient = new ApiClient("https://yellowgold.liara.run");
+import { API_URL } from "./constant";
 
+const apiClient = new ApiClient(`${API_URL}`);
 // Transfer status enum
 export enum TransferStatus {
   inProgress = "inProgress",

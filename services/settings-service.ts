@@ -1,8 +1,9 @@
 import ApiClient from "@/lib/apiClient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const apiClient = new ApiClient("https://yellowgold.liara.run");
+import { API_URL } from "./constant";
 
+const apiClient = new ApiClient(`${API_URL}`);
 export interface Setting {
   id: string;
   createdAt: string;
