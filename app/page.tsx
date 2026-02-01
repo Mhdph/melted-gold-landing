@@ -28,8 +28,13 @@ export default function LoginPage() {
               برای دسترسی به پنل کاربری وارد شوید
             </p>
           </div>
-
           <LoginForm />
+          <div className="flex items-center gap-0.5 justify-center mt-3">
+            <p className=" text-sm text-[#6b6b6b]">اکانت کاربری ندارید؟</p>
+            <Link className="text-sm" href="/signup">
+              ساخت حساب
+            </Link>
+          </div>
         </div>
       </div>
     </div>

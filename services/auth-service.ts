@@ -18,10 +18,27 @@ interface LoginParams {
   otpCode: string;
 }
 
+interface SignUpParams {
+  mobile: string;
+  name: string;
+  lastName: string;
+}
+
 export const useLogin = () => {
   return useMutation({
     mutationFn: (params: LoginParams) =>
       apiClient.post<BaseResponse<any>>(`/login`, params),
+
+    onError: () => {
+      toast.error("Failed to login");
+    },
+  });
+};
+
+export const useSignUp = () => {
+  return useMutation({
+    mutationFn: (params: SignUpParams) =>
+      apiClient.post<BaseResponse<any>>(`/signup`, params),
 
     onError: () => {
       toast.error("Failed to login");
