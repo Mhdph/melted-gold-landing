@@ -28,7 +28,7 @@ export const useGetTransferWebSocket = () => {
       "haveTransfer changed:",
       haveTransfer,
       "previous:",
-      previousHaveTransfer.current
+      previousHaveTransfer.current,
     );
     // Only show toast when it changes from false to true
     if (haveTransfer && !previousHaveTransfer.current) {
@@ -60,7 +60,7 @@ export const useGetTransferWebSocket = () => {
     }
 
     // Create socket connection with token as query parameter
-    const socketInstance = io("wss://yellowgold.liara.run", {
+    const socketInstance = io("wss://api-zarvangold.runflare.run", {
       query: { token },
       transports: ["websocket"],
     });

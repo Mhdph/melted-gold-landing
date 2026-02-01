@@ -28,7 +28,7 @@ export const useGetTransactionWebSocket = () => {
       "haveTransaction changed:",
       haveTransaction,
       "previous:",
-      previousHaveTransaction.current
+      previousHaveTransaction.current,
     );
     // Only show toast when it changes from false to true
     if (haveTransaction && !previousHaveTransaction.current) {
@@ -60,7 +60,7 @@ export const useGetTransactionWebSocket = () => {
     }
 
     // Create socket connection with token as query parameter
-    const socketInstance = io("wss://yellowgold.liara.run", {
+    const socketInstance = io("wss://api-zarvangold.runflare.run", {
       query: { token },
       transports: ["websocket"],
     });

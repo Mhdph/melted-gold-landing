@@ -20,7 +20,7 @@ export const useLastTransfer = () => {
     }
 
     // Create socket connection with token as query parameter
-    const socketInstance = io("wss://yellowgold.liara.run", {
+    const socketInstance = io("wss://api-zarvangold.runflare.run", {
       query: { token },
       transports: ["websocket"],
     });
