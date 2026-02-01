@@ -1,18 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { LogOutIcon, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Sidebar } from "./sidebar";
 import { SidebarTrigger } from "../ui/sidebar";
 import Image from "next/image";
 import logo from "@/assets/images/logo-no-name.png";
 import { useAdminStatusWebSocket } from "@/hooks/use-admin-status-websocket";
+import { useRouter } from "next/navigation";
 
 export function DashboardHeader() {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { adminStatus, isConnected } = useAdminStatusWebSocket();
+  const navigate = useRouter();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -28,6 +29,11 @@ export function DashboardHeader() {
       minute: "2-digit",
       hour12: false,
     });
+  };
+
+  const handleLogOut = () => {
+    localStorage.removeItem("token");
+    navigate.push("/");
   };
 
   const formatDate = (date: Date) => {
@@ -54,7 +60,13 @@ export function DashboardHeader() {
           height={60}
           className="mr-5 md:hidden"
         />
-
+        <div
+          onClick={() => handleLogOut()}
+          className="flex gap-1 cursor-pointer items-center text-white"
+        >
+          <p className="text-sm"> خروج </p>
+          <LogOutIcon className="size-5" />
+        </div>
         {/* Right - Menu */}
       </div>
 
@@ -78,13 +90,15 @@ export function DashboardHeader() {
               <div
                 className={cn(
                   "rounded-full p-[2px]",
-                  adminStatus.msg.adminStatus ? "bg-green-300" : "bg-gray-300"
+                  adminStatus.msg.adminStatus ? "bg-green-300" : "bg-gray-300",
                 )}
               >
                 <div
                   className={cn(
                     "w-1 h-1 rounded-full",
-                    adminStatus.msg.adminStatus ? "bg-green-600" : "bg-gray-600"
+                    adminStatus.msg.adminStatus
+                      ? "bg-green-600"
+                      : "bg-gray-600",
                   )}
                 ></div>
               </div>
