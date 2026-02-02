@@ -88,6 +88,11 @@ const getNavigationData = (isAdmin: boolean) => ({
                 icon: Activity,
                 href: "/dashboard/admin/transfers",
               },
+              {
+                title: "مدیریت محصولات",
+                icon: Activity,
+                href: "/dashboard/admin/products",
+              },
             ]
           : []),
       ],
@@ -156,7 +161,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                                 className={cn(
                                   pathname === item.href
                                     ? "size-5 !text-slate-900"
-                                    : "size-5 !text-[#D7B46A] "
+                                    : "size-5 !text-[#D7B46A] ",
                                 )}
                               />
                               {item.title}
