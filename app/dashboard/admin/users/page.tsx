@@ -1,12 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
-import UserFilters from "@/components/pages/admin/users/user-filters";
 import UserTable from "@/components/pages/admin/users/user-table";
-import { User, FilterStatus } from "@/components/pages/admin/users/types";
-import { sampleUsers } from "@/components/pages/admin/users/utils";
-import { useApproveUser, useGetUsers } from "@/services/user-service";
 import {
   Pagination,
   PaginationContent,
@@ -15,20 +9,29 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { useToast } from "@/hooks/use-toast";
+import {
+  useApproveUser,
+  useChangeUserRole,
+  useGetUsers,
+} from "@/services/user-service";
+import { useState } from "react";
 
 export default function UsersApprovalPage() {
   const { toast } = useToast();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filterStatus, setFilterStatus] = useState<FilterStatus>("pending");
+
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10);
+
   const {
     data: usersData,
     isLoading,
     isError,
     error,
   } = useGetUsers(currentPage, pageSize);
+
   const { mutate: approveUser, isPending: isApproving } = useApproveUser();
+  const { mutate: changeRole, isPending: isChangingRole } = useChangeUserRole();
 
   const handleApprove = (userId: string, userName: string) => {
     approveUser(userId, {
@@ -38,16 +41,26 @@ export default function UsersApprovalPage() {
           description: `${userName} با موفقیت تایید شد و می‌تواند از سیستم استفاده کند.`,
         });
       },
-      onError: (error) => {
+      onError: (err) => {
         toast({
           title: "خطا در تایید کاربر",
-          description: error.message,
+          description: err.message,
           variant: "destructive",
         });
       },
     });
   };
 
+  const handleChangeRole = (userId: string, newType: string) => {
+    changeRole(
+      { userId, type: newType },
+      {
+        onSuccess: () => {
+          // toast already handled in mutation
+        },
+      },
+    );
+  };
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
@@ -60,29 +73,27 @@ export default function UsersApprovalPage() {
   if (isError) return <div>Error: {error?.message}</div>;
   if (!usersData) return <div>No users found</div>;
   const pendingCount = usersData.data.filter((u) => u.verify === false).length;
-
   return (
     <div className="p-6 lg:p-8 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gold mb-2">تایید کاربران</h1>
-          <p className="text-cream/60">{pendingCount} کاربر در انتظار تایید</p>
+          <p className="text-cream/60">
+            {usersData?.data.filter((u) => u.verify === false).length ?? 0}{" "}
+            کاربر در انتظار تایید
+          </p>
         </div>
       </div>
 
-      {/* Filters */}
-      {/* <UserFilters
-        searchQuery={searchQuery}
-        filterStatus={filterStatus}
-        onSearchChange={setSearchQuery}
-        onFilterChange={setFilterStatus}
-      /> */}
+      {/* Table – now with role change */}
+      <UserTable
+        users={usersData?.data ?? []}
+        onApprove={handleApprove}
+        onChangeRole={handleChangeRole}
+      />
 
-      {/* User Table */}
-      <UserTable users={usersData.data} onApprove={handleApprove} />
-
-      {/* Pagination */}
+      {/* Pagination ... */}
       {totalPages > 1 && (
         <div className="flex justify-center mt-6">
           <Pagination>
@@ -116,7 +127,7 @@ export default function UsersApprovalPage() {
                       {page}
                     </PaginationLink>
                   </PaginationItem>
-                )
+                ),
               )}
 
               <PaginationItem>

@@ -2,10 +2,8 @@ import ApiClient from "@/lib/apiClient";
 import { BaseResponse, BasePaginationResponse } from "@/lib/response.interface";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { apiClient } from "./constant";
 
-import { API_URL } from "./constant";
-
-const apiClient = new ApiClient(`${API_URL}`);
 // Transfer status enum
 export enum TransferStatus {
   inProgress = "inProgress",

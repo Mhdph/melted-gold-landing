@@ -1,9 +1,6 @@
-import ApiClient from "@/lib/apiClient";
+import { BasePaginationResponse, BaseResponse } from "@/lib/response.interface";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { BaseResponse, BasePaginationResponse } from "@/lib/response.interface";
-import { API_URL } from "./constant";
-
-const apiClient = new ApiClient(`${API_URL}`);
+import { apiClient } from "./constant";
 
 export type TransactionType = "buy" | "sell";
 export type TransactionStatus = "pending" | "approved" | "rejected";

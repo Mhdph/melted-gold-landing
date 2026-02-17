@@ -16,7 +16,7 @@ export const useGoldPriceWebSocket = () => {
     }
 
     // Create socket connection with token as query parameter
-    const socketInstance = io("wss://api-zarvangold.runflare.run", {
+    const socketInstance = io("wss://api.zarvan.gold", {
       query: { token },
       transports: ["websocket"],
     });
@@ -35,7 +35,8 @@ export const useGoldPriceWebSocket = () => {
     });
 
     // Listen to adminStatus event
-    socketInstance.on("updatePrice", (data) => {
+    socketInstance.on("updateProductPrices", (data) => {
+      console.log(data, "data");
       setGoldPrice(data);
     });
 

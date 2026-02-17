@@ -1,10 +1,8 @@
-import ApiClient from "@/lib/apiClient";
+import { BasePaginationResponse } from "@/lib/response.interface";
 import { useQuery } from "@tanstack/react-query";
-import { BaseResponse, BasePaginationResponse } from "@/lib/response.interface";
 
-import { API_URL } from "./constant";
+import { apiClient } from "./constant";
 
-const apiClient = new ApiClient(`${API_URL}`);
 export interface PriceData {
   createdAt: string;
   buy: number;

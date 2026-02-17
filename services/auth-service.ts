@@ -2,9 +2,7 @@ import ApiClient from "@/lib/apiClient";
 import { BaseResponse } from "@/lib/response.interface";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { API_URL } from "./constant";
-
-const apiClient = new ApiClient(`${API_URL}/auth`);
+import { apiClient } from "./constant";
 
 export const useGetLoginCode = (slug: string, enabled: boolean) =>
   useQuery({
@@ -27,7 +25,7 @@ interface SignUpParams {
 export const useLogin = () => {
   return useMutation({
     mutationFn: (params: LoginParams) =>
-      apiClient.post<BaseResponse<any>>(`/login`, params),
+      apiClient.post<BaseResponse<any>>(`/auth/login`, params),
 
     onError: () => {
       toast.error("Failed to login");
@@ -38,7 +36,7 @@ export const useLogin = () => {
 export const useSignUp = () => {
   return useMutation({
     mutationFn: (params: SignUpParams) =>
-      apiClient.post<BaseResponse<any>>(`/signup`, params),
+      apiClient.post<BaseResponse<any>>(`/auth/signup`, params),
 
     onError: () => {
       toast.error("Failed to login");

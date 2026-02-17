@@ -1,9 +1,7 @@
 import ApiClient from "@/lib/apiClient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { apiClient } from "./constant";
 
-import { API_URL } from "./constant";
-
-const apiClient = new ApiClient(`${API_URL}`);
 export interface Setting {
   id: string;
   createdAt: string;

@@ -1,9 +1,9 @@
 import { BasePaginationResponse, BaseResponse } from "@/lib/response.interface";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { API_URL } from "./constant";
 import ApiClient from "@/lib/apiClient";
 import { toast } from "sonner";
 import { IProducts } from "@/components/pages/admin/products/type";
+import { apiClient } from "./constant";
 
 export interface TransferFilters {
   status?: string;
@@ -14,7 +14,6 @@ export interface TransferFilters {
   limit?: number;
 }
 
-const apiClient = new ApiClient(`${API_URL}`);
 export const useGetProducts = (filters: TransferFilters = {}) => {
   const queryParams = new URLSearchParams();
 

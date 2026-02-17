@@ -1,9 +1,7 @@
-import ApiClient from "@/lib/apiClient";
+import { BasePaginationResponse, BaseResponse } from "@/lib/response.interface";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { BaseResponse, BasePaginationResponse } from "@/lib/response.interface";
-import { API_URL } from "./constant";
-
-const apiClient = new ApiClient(`${API_URL}`);
+import { toast } from "sonner";
+import { apiClient } from "./constant";
 
 export const useGetUsers = (page: number = 1, limit: number = 10) =>
   useQuery({
@@ -36,5 +34,29 @@ export const useChangeUserStatus = () => {
   return useMutation({
     mutationFn: ({ status }: { status: boolean }) =>
       apiClient.put<BaseResponse<any>>(`/setting/user`, { status }),
+  });
+};
+
+interface ChangeRolePayload {
+  type: string;
+}
+
+export const useChangeUserRole = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ userId, type }: { userId: string; type: string }) =>
+      apiClient.put(`/user/${userId}`, { type } as ChangeRolePayload),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("نقش کاربر با موفقیت تغییر یافت");
+    },
+
+    onError: (error: any) => {
+      toast.error("خطا در تغییر نقش کاربر", {
+        description: error?.response?.data?.message || "لطفاً دوباره تلاش کنید",
+      });
+    },
   });
 };
