@@ -1,3 +1,4 @@
+import { webSocketUrl } from "@/services/constant";
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
@@ -20,7 +21,7 @@ export const useLastTransfer = () => {
     }
 
     // Create socket connection with token as query parameter
-    const socketInstance = io("wss://api-zarvangold.runflare.run", {
+    const socketInstance = io(webSocketUrl, {
       query: { token },
       transports: ["websocket"],
     });

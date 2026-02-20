@@ -1,13 +1,10 @@
 import { webSocketUrl } from "@/services/constant";
+import { PHASE_PRODUCTION_SERVER } from "next/dist/shared/lib/constants";
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
-interface AdminStatusData {
-  adminStatus: boolean;
-}
-
-export const useAdminStatusWebSocket = () => {
-  const [adminStatus, setAdminStatus] = useState<any>(null);
+export const useProductWebSocket = () => {
+  const [product, setProduct] = useState<any>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [socket, setSocket] = useState<Socket | null>(null);
 
@@ -40,8 +37,9 @@ export const useAdminStatusWebSocket = () => {
     });
 
     // Listen to adminStatus event
-    socketInstance.on("adminStatus", (data: AdminStatusData) => {
-      setAdminStatus(data);
+    socketInstance.on("updateProductPrices", (data) => {
+      console.log(data, "product");
+      setProduct(data);
     });
 
     setSocket(socketInstance);
@@ -53,7 +51,7 @@ export const useAdminStatusWebSocket = () => {
   }, []);
 
   return {
-    adminStatus,
+    product,
     isConnected,
     socket,
   };

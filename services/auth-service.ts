@@ -7,7 +7,7 @@ import { apiClient } from "./constant";
 export const useGetLoginCode = (slug: string, enabled: boolean) =>
   useQuery({
     queryKey: ["auth", slug],
-    queryFn: () => apiClient.get<any>(`/code/${slug}`),
+    queryFn: () => apiClient.get<any>(`/auth/code/${slug}`),
     enabled,
   });
 
