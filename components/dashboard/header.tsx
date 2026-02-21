@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { LogOutIcon, Menu, X } from "lucide-react";
+import { LogOutIcon, Menu, X, Sun, Moon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { Sidebar } from "./sidebar";
 import { SidebarTrigger } from "../ui/sidebar";
@@ -14,6 +15,12 @@ export function DashboardHeader() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const { adminStatus, isConnected } = useAdminStatusWebSocket();
   const navigate = useRouter();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -60,12 +67,26 @@ export function DashboardHeader() {
           height={60}
           className="mr-5 md:hidden"
         />
-        <div
-          onClick={() => handleLogOut()}
-          className="flex gap-1 cursor-pointer items-center text-white"
-        >
-          <p className="text-sm"> خروج </p>
-          <LogOutIcon className="size-5" />
+        <div className="flex items-center gap-3">
+          {mounted && (
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="flex gap-1 cursor-pointer items-center text-slate-100 dark:text-white"
+            >
+              {theme === "dark" ? (
+                <Sun className="size-5" />
+              ) : (
+                <Moon className="size-5" />
+              )}
+            </button>
+          )}
+          <div
+            onClick={() => handleLogOut()}
+            className="flex gap-1 cursor-pointer items-center text-slate-100 dark:text-white"
+          >
+            <p className="text-sm"> خروج </p>
+            <LogOutIcon className="size-5" />
+          </div>
         </div>
         {/* Right - Menu */}
       </div>

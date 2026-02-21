@@ -30,7 +30,7 @@ export default function TradingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F6F5EE] flex" dir="rtl">
+    <div className="min-h-screen bg-[#F6F5EE]  flex" dir="rtl">
       <div className="flex-1">
         <main className="container mx-auto px-4 py-8 space-y-6">
           {/* Page Header */}
@@ -40,7 +40,7 @@ export default function TradingPage() {
           />
 
           {/* Quick Trade Section */}
-          {goldPrice ? (
+          {/* {goldPrice ? (
             <QuickTradeButtons
               currentPrice={currentPrice}
               onBuyClick={() => handleOpenDrawer("buy")}
@@ -51,14 +51,14 @@ export default function TradingPage() {
             <div className="text-center text-zinc-500">
               <Skeleton className="w-full bg-zinc-200 animate-pulse h-52" />
             </div>
-          )}
+          )} */}
           {/* Trade History */}
           <TradeHistoryList trades={trades} />
         </main>
       </div>
 
       {/* Trading Drawer */}
-      {goldPrice ? (
+      {/* {goldPrice ? (
         <TradingDialog
           isOpen={drawerOpen}
           onClose={handleCloseDrawer}
@@ -71,7 +71,7 @@ export default function TradingPage() {
         <div className="text-center text-gray-500">
           <Skeleton className="w-full bg-zinc-200 animate-pulse h-52" />
         </div>
-      )}
+      )} */}
     </div>
   );
 }

@@ -64,7 +64,7 @@ export default function DashboardLayout({
         <DashboardHeader />
         <div
           dir="rtl"
-          className="flex flex-1 bg-[#F6F5EE] flex-col gap-4 p-4 pb-20 md:pb-4"
+          className="flex flex-1 bg-[#F6F5EE] dark:bg-slate-900 flex-col gap-4 p-4 pb-20 md:pb-4"
         >
           {children}
         </div>

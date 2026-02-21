@@ -41,8 +41,8 @@ export default function RemittancePage() {
       filterUnit === "all"
         ? undefined
         : filterUnit === "گرم طلا"
-        ? "remittance"
-        : "transfer",
+          ? "remittance"
+          : "transfer",
   });
   const { data: statsData } = useGetTransferStats();
 
@@ -83,7 +83,7 @@ export default function RemittancePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#F6F5EE]" dir="rtl">
+      <div className="min-h-screen" dir="rtl">
         <main className="px-4 py-4 space-y-6">
           <div className="flex items-center justify-center h-64">
             <div className="text-gray-600">در حال بارگذاری حواله‌ها...</div>
@@ -95,7 +95,7 @@ export default function RemittancePage() {
 
   if (isError) {
     return (
-      <div className="min-h-screen bg-[#F6F5EE]" dir="rtl">
+      <div className="min-h-screen " dir="rtl">
         <main className="px-4 py-4 space-y-6">
           <Card className="bg-red-50 border-red-200">
             <CardContent className="p-6">
@@ -176,7 +176,7 @@ export default function RemittancePage() {
               <CardContent>
                 <div className="text-2xl font-bold text-purple-600">
                   {new Intl.NumberFormat("fa-IR").format(
-                    statsData.data.totalAmount
+                    statsData.data.totalAmount,
                   )}
                 </div>
                 <p className="text-xs text-gray-500">ریال</p>
