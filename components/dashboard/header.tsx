@@ -92,26 +92,30 @@ export function DashboardHeader() {
       </div>
 
       {/* Date/Time Bar */}
-      <div className="bg-gray-200 border-t border-gray-300 px-4 py-2">
+      <div className="bg-gray-200 dark:bg-slate-800 border-t border-gray-300 px-4 py-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center ">
-            <div className="text-gray-700 text-sm font-medium">
+            <div className="text-gray-700 dark:text-white text-sm font-medium">
               {formatDate(currentTime)}
             </div>
-            <span className="text-gray-700 text-sm font-medium">-</span>
-            <div className="text-gray-700 text-sm font-medium">
+            <span className="text-gray-700 dark:text-white text-sm font-medium">
+              -
+            </span>
+            <div className="text-gray-700 dark:text-white text-sm font-medium">
               {formatTime(currentTime)}
             </div>
           </div>
           {adminStatus?.msg.adminStatus && (
             <div className="flex items-center gap-2 ">
-              <span className="text-slate-800 text-sm font-medium">
+              <span className="text-slate-800 dark:text-white text-sm font-medium">
                 {adminStatus.msg.adminStatus ? "مدیر آنلاین" : "مدیر آفلاین"}
               </span>
               <div
                 className={cn(
                   "rounded-full p-[2px]",
-                  adminStatus.msg.adminStatus ? "bg-green-300" : "bg-gray-300",
+                  adminStatus.msg.adminStatus
+                    ? "bg-green-300"
+                    : "bg-gray-300 dark:bg-slate-700"
                 )}
               >
                 <div
@@ -119,7 +123,7 @@ export function DashboardHeader() {
                     "w-1 h-1 rounded-full",
                     adminStatus.msg.adminStatus
                       ? "bg-green-600"
-                      : "bg-gray-600",
+                      : "bg-gray-600 dark:bg-slate-700"
                   )}
                 ></div>
               </div>

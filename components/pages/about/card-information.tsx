@@ -4,7 +4,7 @@ import { MessageSquareIcon, PhoneCallIcon, PhoneIcon } from "lucide-react";
 function CardInformation() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <Card className="bg-white border-gold/20">
+      <Card className="bg-white dark:bg-slate-800 border-gold/20">
         <CardContent className="pt-6">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center">
@@ -20,7 +20,7 @@ function CardInformation() {
         </CardContent>
       </Card>
 
-      <Card className="bg-white border-gold/20">
+      <Card className="bg-white dark:bg-slate-800 border-gold/20">
         <CardContent className="pt-6">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center">
@@ -36,7 +36,7 @@ function CardInformation() {
         </CardContent>
       </Card>
 
-      <Card className="bg-white border-gold/20">
+      <Card className="bg-white dark:bg-slate-800 border-gold/20">
         <CardContent className="pt-6">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center">

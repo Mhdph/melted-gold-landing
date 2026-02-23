@@ -194,7 +194,7 @@ export default function TransferTable({
   };
 
   return (
-    <Card className="bg-white border-gold/20">
+    <Card className="bg-white dark:bg-slate-800 border-gold/20">
       <CardContent>
         <Form {...form}>
           <div className="overflow-x-auto">

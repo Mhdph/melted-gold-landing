@@ -53,7 +53,7 @@ export default function LastTransactionCard({
   const canApproveReject = isPending(statusObject as any);
 
   return (
-    <Card className="bg-white border-gold/20">
+    <Card className="bg-white dark:bg-slate-800 border-gold/20">
       <CardHeader>
         <CardTitle className="text-gold text-xl">
           آخرین تراکنش ثبت شده

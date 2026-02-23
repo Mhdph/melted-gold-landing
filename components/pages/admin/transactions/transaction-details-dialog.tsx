@@ -28,7 +28,7 @@ export default function TransactionDetailsDialog({
           <Eye className="h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-white border-gold/20 text-cream">
+      <DialogContent className="bg-white dark:bg-slate-800 border-gold/20 text-cream">
         <DialogHeader>
           <DialogTitle className="text-gold">
             جزئیات تراکنش #{transaction.id}

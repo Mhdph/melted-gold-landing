@@ -44,7 +44,10 @@ export default function AdminDashboard() {
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
-            <Card key={stat.title} className="bg-navy/50 border-gold/20">
+            <Card
+              key={stat.title}
+              className="bg-navy/50 dark:bg-slate-800 border-gold/20"
+            >
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium text-cream/80">
                   {stat.title}

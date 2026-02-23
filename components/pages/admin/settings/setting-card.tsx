@@ -211,7 +211,7 @@ export default function SettingCard({
   };
 
   return (
-    <Card className="bg-white border-gold/20 hover:border-gold/30 transition-colors">
+    <Card className="bg-white dark:bg-slate-800 border-gold/20 hover:border-gold/30 transition-colors">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-gold text-lg">
@@ -241,7 +241,7 @@ export default function SettingCard({
             <div className="space-y-2">
               <Label className="text-cream/80 text-sm">مقدار فعلی:</Label>
               {!isEditing ? (
-                <div className="p-3 bg-white rounded-lg border border-gold/10">
+                <div className="p-3 bg-white dark:bg-slate-900 rounded-lg border border-gold/10">
                   <span className="text-cream ">
                     {formatValue(setting.value, setting.type)}
                   </span>

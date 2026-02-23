@@ -41,8 +41,8 @@ export default function RemittancePage() {
       filterUnit === "all"
         ? undefined
         : filterUnit === "گرم طلا"
-          ? "remittance"
-          : "transfer",
+        ? "remittance"
+        : "transfer",
   });
   const { data: statsData } = useGetTransferStats();
 
@@ -110,7 +110,7 @@ export default function RemittancePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F6F5EE]" dir="rtl">
+    <div className="min-h-screen bg-[#F6F5EE] dark:bg-slate-800" dir="rtl">
       <main className="px-4 py-4 space-y-6">
         {/* Page Header */}
         <PageTitle
@@ -136,7 +136,7 @@ export default function RemittancePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-gray-200">
+            <Card className="bg-white dark:bg-slate-800 border-gray-200">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-gray-600">
                   در انتظار
@@ -151,7 +151,7 @@ export default function RemittancePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-gray-200">
+            <Card className="bg-white dark:bg-slate-800 border-gray-200">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-gray-600">
                   تکمیل شده
@@ -166,7 +166,7 @@ export default function RemittancePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-gray-200">
+            <Card className="bg-white dark:bg-slate-800 border-gray-200">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-gray-600">
                   مبلغ کل
@@ -176,7 +176,7 @@ export default function RemittancePage() {
               <CardContent>
                 <div className="text-2xl font-bold text-purple-600">
                   {new Intl.NumberFormat("fa-IR").format(
-                    statsData.data.totalAmount,
+                    statsData.data.totalAmount
                   )}
                 </div>
                 <p className="text-xs text-gray-500">ریال</p>

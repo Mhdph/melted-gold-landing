@@ -4,7 +4,7 @@ import React from "react";
 
 function Address() {
   return (
-    <Card className="bg-white border-gold/20">
+    <Card className="bg-white dark:bg-slate-800 border-gold/20">
       <CardContent className="pt-6">
         <div className="flex items-start gap-3">
           <div className="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0">

@@ -51,7 +51,7 @@ const TableFooter = React.forwardRef<
     ref={ref}
     className={cn(
       "bg-muted/50 border-t font-medium [&>tr]:last:border-b-0",
-      className,
+      className
     )}
     {...props}
   />
@@ -66,8 +66,8 @@ const TableRow = React.forwardRef<
     data-slot="table-row"
     ref={ref}
     className={cn(
-      "hover:bg-muted/50 data-[state=selected]:bg-muted border-simotel-border border-b text-gray-700 transition-colors dark:hover:bg-transparent/30",
-      className,
+      "hover:bg-muted/50 data-[state=selected]:bg-muted border-simotel-border border-b text-gray-700 dark:text-gray-200 transition-colors dark:hover:bg-transparent/30",
+      className
     )}
     {...props}
   />
@@ -84,7 +84,7 @@ const TableHead = React.forwardRef<
       ref={ref}
       className={cn(
         "text-simotel-title h-10! text-right px-4 align-middle font-medium has-[role=checkbox]:w-px [&:has([role=checkbox])]:pr-0",
-        className,
+        className
       )}
       {...props}
     />
@@ -101,7 +101,7 @@ const TableCell = React.forwardRef<
     ref={ref}
     className={cn(
       "text-simotel-text p-2.5 px-4 align-middle text-sm font-normal [&:has([role=checkbox])]:pr-0",
-      className,
+      className
     )}
     {...props}
   />

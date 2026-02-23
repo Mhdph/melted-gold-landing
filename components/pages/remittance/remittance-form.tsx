@@ -64,7 +64,7 @@ export default function RemittanceForm({
   };
 
   return (
-    <Card className="bg-white border-gold/20">
+    <Card className="bg-white dark:bg-slate-800 border-gold/20">
       <CardHeader>
         <CardTitle className="text-gold">ثبت حواله جدید</CardTitle>
         <CardDescription className="text-cream/60">

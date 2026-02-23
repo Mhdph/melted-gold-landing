@@ -39,7 +39,7 @@ export default function UsersApprovalPage() {
 
       {/* Table – now with role change */}
 
-      <div className="bg-white py-8 px-4 rounded-lg">
+      <div className="bg-white dark:bg-slate-800  py-8 px-4 rounded-lg">
         {" "}
         <UserTable data={usersData?.data ?? []} columns={columns} />
         <PaginationList

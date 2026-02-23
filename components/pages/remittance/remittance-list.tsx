@@ -41,7 +41,7 @@ export default function RemittanceList({
   onPageChange,
 }: RemittanceListProps) {
   return (
-    <Card className="bg-white border-gold/20">
+    <Card className="bg-white dark:bg-slate-800 border-gold/20">
       <CardHeader>
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>

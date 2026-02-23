@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 function AboutCard() {
   return (
-    <Card className="bg-white border-gold/20">
+    <Card className="bg-white dark:bg-slate-800 border-gold/20">
       <CardHeader>
         <CardTitle className="text-gold text-2xl">درباره زروان </CardTitle>
       </CardHeader>

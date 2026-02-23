@@ -13,12 +13,12 @@ export default function ProductsTable({ products }: ProductsTableProps) {
   const [modalOpen, setModalOpen] = useState(false);
 
   const [selectedProduct, setSelectedProduct] = useState<IProducts | null>(
-    null,
+    null
   );
 
   return (
     <>
-      <Card className="bg-white border-gold/20">
+      <Card className="bg-white dark:bg-slate-800 border-gold/20">
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -69,25 +69,25 @@ export default function ProductsTable({ products }: ProductsTableProps) {
                     </td>
                     <td className="py-4 px-4 text-cream">
                       {new Intl.NumberFormat("fa-IR").format(
-                        product.buyAmountGeneral,
+                        product.buyAmountGeneral
                       )}{" "}
                       ریال
                     </td>
                     <td className="py-4 px-4 text-cream">
                       {new Intl.NumberFormat("fa-IR").format(
-                        product.sellAmountGeneral,
+                        product.sellAmountGeneral
                       )}{" "}
                       ریال
                     </td>
                     <td className="py-4 px-4 text-cream">
                       {new Intl.NumberFormat("fa-IR").format(
-                        product.buyAmountPartnerShip,
+                        product.buyAmountPartnerShip
                       )}{" "}
                       ریال
                     </td>
                     <td className="py-4 px-4 text-cream">
                       {new Intl.NumberFormat("fa-IR").format(
-                        product.sellAmountPartnerShip,
+                        product.sellAmountPartnerShip
                       )}{" "}
                       ریال
                     </td>

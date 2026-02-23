@@ -22,7 +22,7 @@ export default function TransactionTable({
   onReject,
 }: TransactionTableProps) {
   return (
-    <Card className="bg-white border-gold/20">
+    <Card className="bg-white dark:bg-slate-800 border-gold/20">
       <CardContent>
         <div className="overflow-x-auto">
           <table className="w-full">

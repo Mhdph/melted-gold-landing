@@ -30,7 +30,7 @@ export default function PaginationControls({
   const totalPages = Math.ceil(meta.itemCount / meta.limit);
 
   return (
-    <div className="flex items-center justify-between px-6 py-4 border-t border-gold/20 bg-white rounded-md">
+    <div className="flex items-center justify-between px-6 py-4 border-t border-gold/20 bg-white rounded-md dark:bg-slate-800">
       <div className="flex items-center gap-2 text-cream/60 text-sm">
         <span>نمایش</span>
         <Select

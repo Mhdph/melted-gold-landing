@@ -28,7 +28,12 @@ export function Providers({ children, ...props }: ThemeProviderProps) {
     },
   });
   return (
-    <NextThemesProvider {...props}>
+    <NextThemesProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      {...props}
+    >
       <QueryClientProvider client={queryClient}>
         <TabCloseHandler />
         {children}
