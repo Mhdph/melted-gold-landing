@@ -1,13 +1,6 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { TrendingUp, TrendingDown } from "lucide-react";
-import { useGoldPriceWebSocket } from "@/hooks/use-gold-price-websocket";
 import { useGetSettings } from "@/services/settings-service";
 interface QuickTradeButtonsProps {
   currentPrice: number;
@@ -60,40 +53,27 @@ export default function QuickTradeButtons({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-0  ">
       {/* Main Trading Card */}
       {priceData && priceData.msg && (
-        <Card className="bg-[#F6F5EE] border-0 py-2 shadow-none">
-          <CardHeader className="text-center pb-2">
-            <CardTitle className="text-gray-800 text-xl font-semibold">
-              آبشده نقدی
+        <Card className="bg-[#F6F5EE] border-0 py-0 shadow-none">
+          <CardContent className="p-3 mt-2 bg-white rounded-md ">
+            <CardTitle className="text-gray-800 text-base mb-2 font-normal text-right">
+              {priceData?.msg?.productName || "بدون نام"}
             </CardTitle>
-          </CardHeader>
-          {/* Price Info Card */}
-          <Card className="bg-gray-300 border border-gray-600 rounded-sm gap-0 py-2 shadow-none">
-            <CardContent className="py-0">
-              <div className="flex justify-between items-center">
-                <p className="text-gray-600 text-sm">نرخ هر گرم طلا</p>
-                <p className="text-gray-800 font-semibold">
-                  {buyGerm.toLocaleString("fa-IR")} تومان
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-          <CardContent className="p-0">
             <div className="grid grid-cols-2 gap-4">
               {/* Buy Panel */}
               <div
                 onClick={handleBuyClick}
-                className={`bg-white rounded-lg p-4 border border-gray-200 ${
+                className={`bg-white  p-4 border border-gray-200 ${
                   !canBuy
                     ? "opacity-50 cursor-not-allowed"
                     : "cursor-pointer hover:shadow-md transition-shadow"
                 }`}
               >
                 <div className="flex flex-col items-center space-y-3">
-                  <div
-                    className={`w-8 h-8 border-2 rounded flex items-center justify-center ${
+                  {/* <div
+                    className={`w-8 h-8 border-2  flex items-center justify-center ${
                       canBuy ? "border-green-500" : "border-gray-400"
                     }`}
                   >
@@ -102,26 +82,26 @@ export default function QuickTradeButtons({
                         canBuy ? "text-green-500" : "text-gray-400"
                       }`}
                     />
-                  </div>
-                  <h3
+                  </div> */}
+                  {/* <h3
                     className={`font-bold text-lg ${
                       canBuy ? "text-gray-800" : "text-gray-400"
                     }`}
                   >
                     بخرید
-                  </h3>
-                  <p className="text-gray-500 text-sm">
+                  </h3> */}
+                  {/* <p className="text-gray-500 text-sm">
                     گرم: {buyGerm.toLocaleString("fa-IR")}
-                  </p>
+                  </p> */}
                   <Button
                     disabled={!canBuy}
-                    className={`w-full border-0 rounded-lg py-2 ${
+                    className={`w-full border-0  py-2 ${
                       canBuy
                         ? "bg-green-500 hover:bg-green-600 text-white"
                         : "bg-gray-300 text-gray-500 cursor-not-allowed"
                     }`}
                   >
-                    {buyMithqal.toLocaleString("fa-IR")}
+                    {/* {buyMithqal.toLocaleString("fa-IR")} */}بخرید
                   </Button>
                   {!canBuy && (
                     <p className="text-xs text-red-500 text-center">
@@ -133,15 +113,15 @@ export default function QuickTradeButtons({
               {/* Sell Panel */}
               <div
                 onClick={handleSellClick}
-                className={`bg-white rounded-lg p-4 border border-gray-200 ${
+                className={`bg-white  p-4 border border-gray-200 ${
                   !canSell
                     ? "opacity-50 cursor-not-allowed"
                     : "cursor-pointer hover:shadow-md transition-shadow"
                 }`}
               >
                 <div className="flex flex-col items-center space-y-3">
-                  <div
-                    className={`w-8 h-8 border-2 rounded flex items-center justify-center ${
+                  {/* <div
+                    className={`w-8 h-8 border-2  flex items-center justify-center ${
                       canSell ? "border-red-500" : "border-gray-400"
                     }`}
                   >
@@ -150,26 +130,26 @@ export default function QuickTradeButtons({
                         canSell ? "text-red-400" : "text-gray-400"
                       }`}
                     />
-                  </div>
-                  <h3
+                  </div> */}
+                  {/* <h3
                     className={`font-bold text-lg ${
                       canSell ? "text-gray-800" : "text-gray-400"
                     }`}
                   >
                     بفروشید
-                  </h3>
-                  <p className="text-gray-500 text-sm">
+                  </h3> */}
+                  {/* <p className="text-gray-500 text-sm">
                     گرم : {sellGerm.toLocaleString("fa-IR")}
-                  </p>
+                  </p> */}
                   <Button
                     disabled={!canSell}
-                    className={`w-full border-0 rounded-lg py-2 ${
+                    className={`w-full border-0  py-2 ${
                       canSell
                         ? "bg-red-500 hover:bg-red-600 text-white"
                         : "bg-gray-300 text-gray-500 cursor-not-allowed"
                     }`}
                   >
-                    {sellMithqal.toLocaleString("fa-IR")}
+                    {/* {sellMithqal.toLocaleString("fa-IR")} */} بفروشید
                   </Button>
                   {!canSell && (
                     <p className="text-xs text-red-500 text-center">
