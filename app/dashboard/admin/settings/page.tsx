@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import SettingsSummary from "@/components/pages/admin/settings/settings-summary";
 import SettingCard from "@/components/pages/admin/settings/setting-card";
+import PriceModeCard from "@/components/pages/admin/settings/price-mode-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -89,6 +90,10 @@ export default function SettingsPage() {
 
       {/* Settings Tabs */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Price Mode Card */}
+        <PriceModeCard />
+        
+        {/* Other Settings Cards */}
         {settings?.map((setting) => (
           <SettingCard
             key={setting.id}

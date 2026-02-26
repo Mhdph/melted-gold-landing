@@ -33,3 +33,31 @@ export const useUpdateSetting = () => {
     },
   });
 };
+
+export interface PriceMode {
+  isManualMode: boolean;
+  currentPrice: number;
+  changePercent: string;
+}
+
+export const useGetPriceMode = () =>
+  useQuery({
+    queryKey: ["priceMode"],
+    queryFn: () => apiClient.get<PriceMode>("/price/mode"),
+  });
+
+export interface UpdatePriceModeRequest {
+  enabled: boolean;
+}
+
+export const useUpdatePriceMode = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: UpdatePriceModeRequest) =>
+      apiClient.put("/price/manual-mode", data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["priceMode"] });
+    },
+  });
+};
