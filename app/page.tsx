@@ -31,7 +31,7 @@ export default function LoginPage() {
           <LoginForm />
           <div className="flex items-center gap-0.5 justify-center mt-3">
             <p className=" text-sm text-[#6b6b6b]">اکانت کاربری ندارید؟</p>
-            <Link className="text-sm" href="/signup">
+            <Link className="text-sm text-gray-500 " href="/signup">
               ساخت حساب
             </Link>
           </div>

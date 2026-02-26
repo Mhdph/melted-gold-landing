@@ -38,7 +38,7 @@ function LoginPhone({ setStep }: LoginPhoneProps) {
 
   const phoneValue = form.watch("phone");
 
-  const { isLoading, isSuccess } = useGetLoginCode(phoneValue, enabled);
+  const { isLoading, isSuccess,isError,error } = useGetLoginCode(phoneValue, enabled);
 
   const onSubmit = (data: FormValues) => {
     setEnabled(true);
@@ -78,7 +78,7 @@ function LoginPhone({ setStep }: LoginPhoneProps) {
                     type="tel"
                     placeholder="09123456789"
                     maxLength={11}
-                    className="pr-10 text-left dir-ltr bg-white border-[#e8e3d6] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
+                    className="pr-10 text-left dir-ltr bg-white dark:bg-white dark:text-gray-900 border-[#e8e3d6] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
                     onChange={(e) => {
                       const converted = persianToEnglish(e.target.value);
                       field.onChange(converted);
@@ -87,7 +87,7 @@ function LoginPhone({ setStep }: LoginPhoneProps) {
                 </div>
               </FormControl>
 
-              <p className="text-xs text-[#6b6b6b]">
+              <p className="text-xs  text-[#6b6b6b]">
                 کد تایید به این شماره ارسال می‌شود
               </p>
 
@@ -95,7 +95,7 @@ function LoginPhone({ setStep }: LoginPhoneProps) {
             </FormItem>
           )}
         />
-
+         {isError && error && <p className="text-red-500 text-center">خظایی پیش آمده ممکن است کاربری با این شماره وجود نداشته باشد</p>}
         <Button
           type="submit"
           disabled={isLoading || phoneValue.length !== 11}

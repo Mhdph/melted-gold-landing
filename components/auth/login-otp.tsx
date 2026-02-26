@@ -127,7 +127,7 @@ function LoginOtp({ setStep }: LoginOtpProps) {
               value={digit}
               onChange={(e) => handleOtpChange(index, e.target.value)}
               onKeyDown={(e) => handleOtpKeyDown(index, e)}
-              className="w-12 h-14 text-center text-2xl font-bold border-2 border-[#e8e3d6] rounded-lg focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37] focus:outline-none transition-all"
+              className="w-12 h-14 dark:text-black text-center text-2xl font-bold border-2 border-[#e8e3d6] rounded-lg focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37] focus:outline-none transition-all"
             />
           ))}
         </div>

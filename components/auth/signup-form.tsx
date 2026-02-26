@@ -90,9 +90,10 @@ export default function SignUpForm({ setStep }: SignUpFormProps) {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>نام</FormLabel>
+                  <FormLabel className="dark:text-black">نام</FormLabel>
                   <FormControl>
-                    <Input placeholder="حسن" {...field} />
+                    <Input                     className=" text-right dir-ltr bg-white dark:bg-white dark:text-gray-900 border-[#e8e3d6] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
+  placeholder="حسن" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -105,9 +106,10 @@ export default function SignUpForm({ setStep }: SignUpFormProps) {
               name="lastName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>نام خانوادگی</FormLabel>
+                  <FormLabel className="dark:text-black">نام خانوادگی</FormLabel>
                   <FormControl>
-                    <Input placeholder="رضایی" {...field} />
+                    <Input                     className=" text-right dir-ltr bg-white dark:bg-white dark:text-gray-900 border-[#e8e3d6] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
+ placeholder="رضایی" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -120,11 +122,12 @@ export default function SignUpForm({ setStep }: SignUpFormProps) {
               name="mobile"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>شماره موبایل</FormLabel>
+                  <FormLabel className="dark:text-black">شماره موبایل</FormLabel>
                   <FormControl>
-                    <Input
+                    <Input 
+                                        className="pr-10 text-left dir-ltr bg-white dark:bg-white dark:text-gray-900 border-[#e8e3d6] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
+
                       placeholder="۰۹۱۵۱۰۱۰۱۱۱"
-                      {...field}
                       onChange={(e) => {
                         // Optional: clean input in real-time
                         const value = e.target.value.replace(/[^\d+]/g, "");
