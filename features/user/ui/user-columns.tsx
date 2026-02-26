@@ -8,11 +8,23 @@ import ActionButtons from "./action-buttons";
 export const columns: ColumnDef<IUser>[] = [
   {
     accessorKey: "name",
-    header: "نام",
+    header: "نام", 
+    cell: ({ row }) => {
+      const user = row.original;
+      return (
+        <div>
+          {user.name} {user.lastName}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "mobile",
     header: "موبایل",
+  }, 
+  {
+    accessorKey: "type",
+    header: "نوع کاربر",
   },
   {
     accessorKey: "verify",

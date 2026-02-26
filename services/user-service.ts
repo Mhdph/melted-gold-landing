@@ -12,11 +12,11 @@ export const useGetUsers = (page: number = 1, limit: number = 10) =>
       ),
   });
 
-export const useOneGetUser = (id: string) =>
+export const useOneMyUserInfo = () =>
   useQuery({
-    queryKey: ["user", id],
-    queryFn: () => apiClient.get<BasePaginationResponse<any[]>>(`/users/${id}`),
-  });
+    queryKey: ["user", "me"],
+    queryFn: () => apiClient.get<any>(`/user/me/profile`),
+  }); 
 
 export const useApproveUser = () => {
   const queryClient = useQueryClient();
