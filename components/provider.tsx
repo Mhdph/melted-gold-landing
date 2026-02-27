@@ -6,7 +6,6 @@ import {
   type ThemeProviderProps,
 } from "next-themes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { TabCloseHandler } from "./tab-close-handler";
 
 export function Providers({ children, ...props }: ThemeProviderProps) {
   const queryClient = new QueryClient({
@@ -35,7 +34,6 @@ export function Providers({ children, ...props }: ThemeProviderProps) {
       {...props}
     >
       <QueryClientProvider client={queryClient}>
-        <TabCloseHandler />
         {children}
       </QueryClientProvider>
     </NextThemesProvider>
