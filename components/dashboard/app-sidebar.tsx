@@ -28,6 +28,7 @@ import {
   TrendingDown,
   Info,
   SmartphoneIcon,
+  User,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -59,7 +60,12 @@ const getNavigationData = (isAdmin: boolean) => ({
           icon: TrendingDown,
           href: "/dashboard/price-changes",
         },
-
+        
+        {
+          title: "پروفایل",
+          icon: User,
+          href: "/dashboard/profile",
+        },
         {
           title: "درباره ما",
           icon: Info,
