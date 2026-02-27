@@ -10,6 +10,19 @@ export interface PriceChangeData {
   timestamp: string;
 }
 
+const playRingtone = () => {
+  try {
+    const audio = new Audio("/ringtone.mp3");
+    audio.volume = 0.7; // Set volume to 70%
+    audio.play().catch((error) => {
+      // Handle autoplay restrictions (browser may block autoplay)
+      console.warn("Could not play ringtone:", error);
+    });
+  } catch (error) {
+    console.warn("Error creating audio:", error);
+  }
+};
+
 export const usePriceNotificationWebSocket = () => {
   const [priceChangeData, setPriceChangeData] =
     useState<PriceChangeData | null>(null);
@@ -62,6 +75,7 @@ export const usePriceNotificationWebSocket = () => {
     socketInstance.on("priceChangeNotification", (data: PriceChangeData) => {
       console.log(priceChangeData, "priceChangeData");
       setPriceChangeData(data);
+      playRingtone();
 
       // Show toast notification to user
       const priceFormatted = new Intl.NumberFormat("fa-IR").format(data.price);
