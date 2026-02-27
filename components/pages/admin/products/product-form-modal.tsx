@@ -37,6 +37,9 @@ const productSchema = z.object({
     .number({ invalid_type_error: "مقدار باید عدد باشد" })
     .min(0, { message: "حداقل ۰" }),
   isDealActive: z.boolean().default(false),
+  unitType: z.enum(["gram", "teedad"], {
+    required_error: "نوع واحد الزامی است",
+  }),
 });
 
 type ProductFormValues = z.infer<typeof productSchema>;
@@ -52,6 +55,7 @@ interface ProductFormModalProps {
     buyAmountPartnerShip: number;
     buyAmountGeneral: number;
     isDealActive: boolean;
+    unitType: "gram" | "teedad";
   } | null; // null → create mode
 }
 
@@ -74,6 +78,7 @@ export default function ProductFormModal({
           buyAmountPartnerShip: product.buyAmountPartnerShip,
           buyAmountGeneral: product.buyAmountGeneral,
           isDealActive: product.isDealActive,
+          unitType: product.unitType,
         }
       : {
           name: "",
@@ -82,6 +87,7 @@ export default function ProductFormModal({
           buyAmountPartnerShip: 0,
           buyAmountGeneral: 0,
           isDealActive: false,
+          unitType: "gram",
         },
     mode: "onChange",
   });

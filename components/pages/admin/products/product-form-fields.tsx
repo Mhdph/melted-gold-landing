@@ -11,6 +11,13 @@ import {
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox"; // optional alternative
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function ProductFormFields() {
   const { control } = useFormContext();
@@ -27,6 +34,29 @@ export default function ProductFormFields() {
             <FormControl>
               <Input placeholder="مثال: سکه تمام  " {...field} />
             </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      {/* Unit Type */}
+      <FormField
+        control={control}
+        name="unitType"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>نوع واحد</FormLabel>
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <FormControl>
+                <SelectTrigger>
+                  <SelectValue placeholder="انتخاب نوع واحد" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                <SelectItem value="gram">گرم</SelectItem>
+                <SelectItem value="teedad">تعداد</SelectItem>
+              </SelectContent>
+            </Select>
             <FormMessage />
           </FormItem>
         )}
