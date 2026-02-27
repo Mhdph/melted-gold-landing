@@ -136,7 +136,7 @@ export function DashboardHeader() {
               {formatTime(currentTime)}
             </div>
           </div>
-          {socketStatus.msg && (
+          {socketStatus?.msg && (
             <div className="flex items-center gap-2 ">
               <span className="text-slate-800 dark:text-white text-sm font-medium">
                 {socketStatus.msg.adminStatus ? "مدیر آنلاین" : "مدیر آفلاین"}
