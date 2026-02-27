@@ -22,10 +22,10 @@ export default function QuickTradeButtons({
 
   // Get permission settings
   const buyPermission = settings?.find(
-    (setting) => setting.key === "permission Buy"
+    (setting) => setting.key === "permission Buy",
   );
   const sellPermission = settings?.find(
-    (setting) => setting.key === "permission Sell"
+    (setting) => setting.key === "permission Sell",
   );
 
   // Check if permissions are enabled (default to true if not found)
@@ -56,16 +56,16 @@ export default function QuickTradeButtons({
     <div className="space-y-0  ">
       {/* Main Trading Card */}
       {priceData && priceData.msg && (
-        <Card className="bg-[#F6F5EE] border-0 py-0 shadow-none">
-          <CardContent className="p-3 mt-2 bg-white rounded-md ">
-            <CardTitle className="text-gray-800 text-base mb-2 font-normal text-right">
+        <Card className="bg-[#F6F5EE] dark:bg-slate-800 border-0 py-0 shadow-none">
+          <CardContent className="p-3 mt-2 bg-white dark:bg-slate-800 rounded-md ">
+            <CardTitle className="text-gray-800  dark:text-gray-200 text-base mb-2 font-normal text-right">
               {priceData?.msg?.productName || "بدون نام"}
             </CardTitle>
             <div className="grid grid-cols-2 gap-4">
               {/* Buy Panel */}
               <div
                 onClick={handleBuyClick}
-                className={`bg-white  p-4 border border-gray-200 ${
+                className={`bg-white dark:bg-slate-800  p-4 border border-gray-200 dark:border-slate-700 ${
                   !canBuy
                     ? "opacity-50 cursor-not-allowed"
                     : "cursor-pointer hover:shadow-md transition-shadow"
@@ -95,13 +95,14 @@ export default function QuickTradeButtons({
                   </p> */}
                   <Button
                     disabled={!canBuy}
-                    className={`w-full border-0  py-2 ${
+                    className={`w-full border-0 flex items-center justify-center gap-2 py-2 ${
                       canBuy
                         ? "bg-green-500 hover:bg-green-600 text-white"
                         : "bg-gray-300 text-gray-500 cursor-not-allowed"
                     }`}
                   >
-                    {/* {buyMithqal.toLocaleString("fa-IR")} */}بخرید
+                    <p> {buyMithqal.toLocaleString("fa-IR")}</p>
+                    <p>بخرید</p>
                   </Button>
                   {!canBuy && (
                     <p className="text-xs text-red-500 text-center">
@@ -113,7 +114,7 @@ export default function QuickTradeButtons({
               {/* Sell Panel */}
               <div
                 onClick={handleSellClick}
-                className={`bg-white  p-4 border border-gray-200 ${
+                className={`bg-white dark:bg-slate-800  p-4 border border-gray-200 dark:border-slate-700 ${
                   !canSell
                     ? "opacity-50 cursor-not-allowed"
                     : "cursor-pointer hover:shadow-md transition-shadow"
@@ -143,13 +144,14 @@ export default function QuickTradeButtons({
                   </p> */}
                   <Button
                     disabled={!canSell}
-                    className={`w-full border-0  py-2 ${
+                    className={`w-full border-0 flex items-center justify-center gap-2 py-2 ${
                       canSell
                         ? "bg-red-500 hover:bg-red-600 text-white"
                         : "bg-gray-300 text-gray-500 cursor-not-allowed"
                     }`}
                   >
-                    {/* {sellMithqal.toLocaleString("fa-IR")} */} بفروشید
+                    <p> {sellMithqal.toLocaleString("fa-IR")}</p>
+                    <p>بفروشید</p>
                   </Button>
                   {!canSell && (
                     <p className="text-xs text-red-500 text-center">

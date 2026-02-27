@@ -1,17 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -20,9 +10,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
+import { useCreateTransaction } from "@/services/trade-service";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
 import { Textarea } from "./ui/textarea";
-import { useCreateTransaction } from "@/services/trade-service";
 
 // Convert Persian digits to English digits
 const persianToEnglish = (str: string): string => {
@@ -48,7 +42,7 @@ const tradingFormSchema = z.object({
       },
       {
         message: "وزن باید عددی مثبت باشد",
-      }
+      },
     ),
   description: z.string().optional(),
 });
@@ -157,20 +151,15 @@ export function TradingDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="bg-white border-gold/20 max-w-md mx-auto">
-        <DialogHeader>
-          <DialogTitle className="text-gold text-lg text-center">
-            {isBuy ? "خرید آبشده نقدی" : "فروش آبشده نقدی"}
-          </DialogTitle>
-        </DialogHeader>
+      <DialogContent className="bg-white dark:bg-slate-800 border-gold/20 max-w-md mx-auto">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
             className="space-y-6"
           >
             {/* Price Display */}
-            <div className="bg-gray-300 mt-2 justify-between rounded-lg border-black p-2 border flex">
-              <div className="flex items-center gap-1 border-black">
+            <div className="bg-gray-300 dark:bg-slate-800 dark:border-slate-700 mt-2 justify-between rounded-lg border-black p-2 border flex">
+              <div className="flex items-center gap-1 border-black dark:border-slate-700">
                 <p className="text-cream/80">گرم:</p>
                 <p className="text-gold font-bold">
                   {isBuy
@@ -179,7 +168,7 @@ export function TradingDialog({
                 </p>
                 <p>تومان</p>
               </div>
-              <div className="border-r pl-2 border-black"></div>
+              <div className="border-r pl-2 border-black dark:border-slate-700"></div>
               <div className="flex items-center gap-1 pl-2  border-black">
                 <p className="text-cream/80">مثقال:</p>
                 <p className="text-gold font-bold">
@@ -197,24 +186,27 @@ export function TradingDialog({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <InputGroup>
+                    <InputGroup className="dark:bg-slate-800">
                       <InputGroupInput
+                        className="placeholder:!text-gray-500 dark:border dark:bg-slate-800 dark:border-slate-700"
                         ref={amountInputRef}
                         placeholder="وزن"
                         value={field.value}
                         id="amount"
                         onChange={(e) => {
                           const convertedValue = persianToEnglish(
-                            e.target.value
+                            e.target.value,
                           );
                           field.onChange(convertedValue);
                         }}
-                        className="placeholder:!text-gray-500"
                         autoFocus
                         inputMode="decimal"
                         pattern="[0-9]*"
                       />
-                      <InputGroupAddon align="inline-end">
+                      <InputGroupAddon
+                        className="dark:bg-slate-800"
+                        align="inline-end"
+                      >
                         <div className="pl-2">گرم </div>
                       </InputGroupAddon>
                     </InputGroup>
@@ -227,11 +219,12 @@ export function TradingDialog({
             {/* Total Value Display */}
             <InputGroup>
               <InputGroupInput
+                className="placeholder:!text-gray-500 dark:bg-slate-800 dark:border-slate-700 dark:border"
                 placeholder="مبلغ کل"
                 value={totalValue.toLocaleString("fa-IR")}
                 disabled
               />
-              <InputGroupAddon align="inline-end">
+              <InputGroupAddon className="dark:bg-slate-800" align="inline-end">
                 <div className="pl-2">تومان </div>
               </InputGroupAddon>
             </InputGroup>
@@ -275,8 +268,8 @@ export function TradingDialog({
                 {createTransactionMutation.isPending
                   ? "در حال ثبت..."
                   : isBuy
-                  ? "ثبت خرید"
-                  : "ثبت فروش"}
+                    ? "ثبت خرید"
+                    : "ثبت فروش"}
               </Button>
             </DialogFooter>
           </form>
