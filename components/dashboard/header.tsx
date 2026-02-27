@@ -8,18 +8,29 @@ import { Sidebar } from "./sidebar";
 import { SidebarTrigger } from "../ui/sidebar";
 import Image from "next/image";
 import logo from "@/assets/images/logo-no-name.png";
-import { useAdminStatusWebSocket } from "@/hooks/use-admin-status-websocket";
 import { useRouter } from "next/navigation";
+import {
+  useGetAdminStatus,
+  useUpdateAdminStatus,
+} from "@/services/settings-service";
+import { Button } from "@/components/ui/button";
 
 export function DashboardHeader() {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const { adminStatus, isConnected } = useAdminStatusWebSocket();
   const navigate = useRouter();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  // Fetch admin status via REST API
+  const { data: adminStatus } = useGetAdminStatus();
+  const updateAdminStatus = useUpdateAdminStatus();
 
   useEffect(() => {
     setMounted(true);
+    // Check if user is admin
+    const role = localStorage.getItem("role");
+    setIsAdmin(role === "admin");
   }, []);
 
   useEffect(() => {
@@ -40,7 +51,13 @@ export function DashboardHeader() {
 
   const handleLogOut = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
     navigate.push("/");
+  };
+
+  const handleToggleAdminStatus = () => {
+    const newStatus = !adminStatus?.adminStatus;
+    updateAdminStatus.mutate({ adminStatus: newStatus });
   };
 
   const formatDate = (date: Date) => {
@@ -80,6 +97,17 @@ export function DashboardHeader() {
               )}
             </button>
           )}
+          {isAdmin && (
+            <Button
+              onClick={handleToggleAdminStatus}
+              disabled={updateAdminStatus.isPending}
+              size="sm"
+              variant={adminStatus?.adminStatus ? "default" : "outline"}
+              className="bg-green-600 hover:bg-green-700 text-white border-green-600"
+            >
+              {adminStatus?.adminStatus ? "آنلاین" : "آفلاین"}
+            </Button>
+          )}
           <div
             onClick={() => handleLogOut()}
             className="flex gap-1 cursor-pointer items-center text-slate-100 dark:text-white"
@@ -105,15 +133,15 @@ export function DashboardHeader() {
               {formatTime(currentTime)}
             </div>
           </div>
-          {adminStatus?.msg.adminStatus && (
+          {adminStatus && (
             <div className="flex items-center gap-2 ">
               <span className="text-slate-800 dark:text-white text-sm font-medium">
-                {adminStatus.msg.adminStatus ? "مدیر آنلاین" : "مدیر آفلاین"}
+                {adminStatus.adminStatus ? "مدیر آنلاین" : "مدیر آفلاین"}
               </span>
               <div
                 className={cn(
                   "rounded-full p-[2px]",
-                  adminStatus.msg.adminStatus
+                  adminStatus.adminStatus
                     ? "bg-green-300"
                     : "bg-gray-300 dark:bg-slate-700"
                 )}
@@ -121,7 +149,7 @@ export function DashboardHeader() {
                 <div
                   className={cn(
                     "w-1 h-1 rounded-full",
-                    adminStatus.msg.adminStatus
+                    adminStatus.adminStatus
                       ? "bg-green-600"
                       : "bg-gray-600 dark:bg-slate-700"
                   )}

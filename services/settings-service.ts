@@ -61,3 +61,29 @@ export const useUpdatePriceMode = () => {
     },
   });
 };
+
+export interface AdminStatus {
+  adminStatus: boolean;
+}
+
+export const useGetAdminStatus = () =>
+  useQuery({
+    queryKey: ["adminStatus"],
+    queryFn: () => apiClient.get<AdminStatus>("/price/admin-status"),
+  });
+
+export interface UpdateAdminStatusRequest {
+  adminStatus: boolean;
+}
+
+export const useUpdateAdminStatus = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: UpdateAdminStatusRequest) =>
+      apiClient.put("/price/admin-status", data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["adminStatus"] });
+    },
+  });
+};
