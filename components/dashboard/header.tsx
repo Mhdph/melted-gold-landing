@@ -14,6 +14,7 @@ import {
   useUpdateAdminStatus,
 } from "@/services/settings-service";
 import { Button } from "@/components/ui/button";
+import { useAdminStatusWebSocket } from "@/hooks/use-admin-status-websocket";
 
 export function DashboardHeader() {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -21,6 +22,7 @@ export function DashboardHeader() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const { adminStatus: socketStatus } = useAdminStatusWebSocket();
 
   // Fetch admin status via REST API
   const { data: adminStatus } = useGetAdminStatus();
@@ -68,6 +70,7 @@ export function DashboardHeader() {
       day: "numeric",
     });
   };
+
   return (
     <div className="bg-[#000e1f]  text-white">
       {/* Main Header */}
@@ -133,15 +136,15 @@ export function DashboardHeader() {
               {formatTime(currentTime)}
             </div>
           </div>
-          {adminStatus && (
+          {socketStatus.msg && (
             <div className="flex items-center gap-2 ">
               <span className="text-slate-800 dark:text-white text-sm font-medium">
-                {adminStatus.adminStatus ? "مدیر آنلاین" : "مدیر آفلاین"}
+                {socketStatus.msg.adminStatus ? "مدیر آنلاین" : "مدیر آفلاین"}
               </span>
               <div
                 className={cn(
                   "rounded-full p-[2px]",
-                  adminStatus.adminStatus
+                  socketStatus.msg.adminStatus
                     ? "bg-green-300"
                     : "bg-gray-300 dark:bg-slate-700",
                 )}
@@ -149,7 +152,7 @@ export function DashboardHeader() {
                 <div
                   className={cn(
                     "w-1 h-1 rounded-full",
-                    adminStatus.adminStatus
+                    socketStatus.msg.adminStatus
                       ? "bg-green-600"
                       : "bg-gray-600 dark:bg-slate-700",
                   )}
