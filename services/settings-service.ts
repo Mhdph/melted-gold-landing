@@ -73,7 +73,7 @@ export const useGetAdminStatus = () =>
   });
 
 export interface UpdateAdminStatusRequest {
-  adminStatus: boolean;
+  enabled: boolean;
 }
 
 export const useUpdateAdminStatus = () => {

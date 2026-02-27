@@ -57,7 +57,7 @@ export function DashboardHeader() {
 
   const handleToggleAdminStatus = () => {
     const newStatus = !adminStatus?.adminStatus;
-    updateAdminStatus.mutate({ adminStatus: newStatus });
+    updateAdminStatus.mutate({ enabled: newStatus });
   };
 
   const formatDate = (date: Date) => {
@@ -102,10 +102,10 @@ export function DashboardHeader() {
               onClick={handleToggleAdminStatus}
               disabled={updateAdminStatus.isPending}
               size="sm"
-              variant={adminStatus?.adminStatus ? "default" : "outline"}
-              className="bg-green-600 hover:bg-green-700 text-white border-green-600"
+              variant="outline"
+              className=" bg-transparent"
             >
-              {adminStatus?.adminStatus ? "آنلاین" : "آفلاین"}
+              تغییر وضعیت ادمین{" "}
             </Button>
           )}
           <div
@@ -143,7 +143,7 @@ export function DashboardHeader() {
                   "rounded-full p-[2px]",
                   adminStatus.adminStatus
                     ? "bg-green-300"
-                    : "bg-gray-300 dark:bg-slate-700"
+                    : "bg-gray-300 dark:bg-slate-700",
                 )}
               >
                 <div
@@ -151,7 +151,7 @@ export function DashboardHeader() {
                     "w-1 h-1 rounded-full",
                     adminStatus.adminStatus
                       ? "bg-green-600"
-                      : "bg-gray-600 dark:bg-slate-700"
+                      : "bg-gray-600 dark:bg-slate-700",
                   )}
                 ></div>
               </div>
