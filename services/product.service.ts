@@ -63,9 +63,7 @@ export const useUpdateProduct = () => {
 
   return useMutation({
     mutationFn: ({ id, input }: { id: string; input: CreateTransferRequest }) =>
-      apiClient.put<BaseResponse<IProducts>>(`/product/${id}`, {
-        input,
-      }),
+      apiClient.put<BaseResponse<IProducts>>(`/product/${id}`, input),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },

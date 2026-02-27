@@ -80,7 +80,7 @@ export const usePriceNotificationWebSocket = () => {
       // Show toast notification to user
       const priceFormatted = new Intl.NumberFormat("fa-IR").format(data.price);
       toast.success("تغییر قیمت", {
-        description: `قیمت جدید: ${priceFormatted} تومان (تغییر: ${data.changePercent}%)`,
+        description: "قیمت جدید اعمال شد",
         duration: 5000,
       });
     });
