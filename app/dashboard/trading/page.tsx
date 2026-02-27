@@ -48,6 +48,7 @@ export default function TradingPage() {
             productId: p.productId,
             productName: p.productName,
             percentageChange: p.percentageChange,
+            unitType: p.unitType,
           },
         }
       : null;

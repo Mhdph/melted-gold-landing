@@ -207,7 +207,11 @@ export function TradingDialog({
                         className="dark:bg-slate-800"
                         align="inline-end"
                       >
-                        <div className="pl-2">گرم </div>
+                        <div className="pl-2">
+                          {priceData?.msg?.unitType === "gram"
+                            ? "گرم"
+                            : "تعداد"}
+                        </div>
                       </InputGroupAddon>
                     </InputGroup>
                   </FormControl>
