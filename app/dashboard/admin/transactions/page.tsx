@@ -67,16 +67,9 @@ export default function TransactionsApprovalPage() {
 
   const handleApprove = async (transactionId: string, userName: string) => {
     try {
-      console.log(
-        "Attempting to approve transaction:",
-        transactionId,
-        userName
-      );
-
       // Validate form data
       const isValid = await form.trigger();
       if (!isValid) {
-        console.log("Form validation failed");
         toast({
           title: "خطا در اعتبارسنجی",
           description: "لطفاً فرم را به درستی پر کنید",
@@ -85,10 +78,8 @@ export default function TransactionsApprovalPage() {
         return;
       }
 
-      console.log("Form validation passed, calling mutation");
       approveTransaction.mutate(transactionId, {
         onSuccess: () => {
-          console.log("Transaction approved successfully");
           toast({
             title: "تراکنش تایید شد",
             description: `تراکنش ${userName} با موفقیت تایید و پردازش شد.`,
@@ -96,7 +87,6 @@ export default function TransactionsApprovalPage() {
           refetch();
         },
         onError: (error) => {
-          console.error("Transaction approval failed:", error);
           toast({
             title: "خطا در تایید تراکنش",
             description: error.message,
@@ -105,7 +95,6 @@ export default function TransactionsApprovalPage() {
         },
       });
     } catch (error) {
-      console.error("Unexpected error in handleApprove:", error);
       toast({
         title: "خطا در پردازش",
         description: "خطایی در پردازش درخواست رخ داد",
@@ -116,12 +105,9 @@ export default function TransactionsApprovalPage() {
 
   const handleReject = async (transactionId: string, userName: string) => {
     try {
-      console.log("Attempting to reject transaction:", transactionId, userName);
-
       // Validate form data
       const isValid = await form.trigger();
       if (!isValid) {
-        console.log("Form validation failed");
         toast({
           title: "خطا در اعتبارسنجی",
           description: "لطفاً فرم را به درستی پر کنید",
@@ -130,10 +116,8 @@ export default function TransactionsApprovalPage() {
         return;
       }
 
-      console.log("Form validation passed, calling mutation");
       rejectTransaction.mutate(transactionId, {
         onSuccess: () => {
-          console.log("Transaction rejected successfully");
           toast({
             title: "تراکنش رد شد",
             description: `تراکنش ${userName} رد شد.`,
@@ -166,7 +150,6 @@ export default function TransactionsApprovalPage() {
 
   // Form submission handler
   const onSubmit = (data: TransactionFiltersFormData) => {
-    console.log("Form submitted with data:", data);
     // Handle form submission logic here
   };
 
@@ -254,7 +237,7 @@ export default function TransactionsApprovalPage() {
                         {page}
                       </PaginationLink>
                     </PaginationItem>
-                  )
+                  ),
                 )}
 
                 <PaginationItem>

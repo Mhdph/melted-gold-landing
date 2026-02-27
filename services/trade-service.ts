@@ -68,15 +68,12 @@ export const useApproveTransaction = () => {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      console.log("Approving transaction with ID:", id);
       const response = await apiClient.put(`/Transaction/${id}`, {
         status: "success",
       });
-      console.log("Approve response:", response);
       return response;
     },
     onSuccess: (data, variables) => {
-      console.log("Transaction approved successfully:", variables);
       // Invalidate all transaction-related queries
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       queryClient.invalidateQueries({ queryKey: ["user-transactions"] });
@@ -92,15 +89,12 @@ export const useRejectTransaction = () => {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      console.log("Rejecting transaction with ID:", id);
       const response = await apiClient.put(`/Transaction/${id}`, {
         status: "reject",
       });
-      console.log("Reject response:", response);
       return response;
     },
     onSuccess: (data, variables) => {
-      console.log("Transaction rejected successfully:", variables);
       // Invalidate all transaction-related queries
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       queryClient.invalidateQueries({ queryKey: ["user-transactions"] });

@@ -31,8 +31,6 @@ export default function LastTransactionCard({
   // Convert amount string to number for display
   const amountNumber = parseFloat(transaction.amount);
 
-  console.log("transaction", transaction);
-
   // Create a transaction-like object for status utilities
   const statusObject = {
     id: transaction.id,
@@ -42,8 +40,8 @@ export default function LastTransactionCard({
       transaction.status === "inProgress"
         ? false
         : transaction.status === "success"
-        ? true
-        : null,
+          ? true
+          : null,
     amount: amountNumber,
     weight: transaction.weight,
     createdAt: transaction.createdAt,
@@ -89,7 +87,7 @@ export default function LastTransactionCard({
                 <p className="text-sm text-cream/60 mb-1">قیمت زنده هر گرم</p>
                 <p className="text-cream font-mono">
                   {new Intl.NumberFormat("fa-IR").format(
-                    Number(transaction.livePrice)
+                    Number(transaction.livePrice),
                   )}{" "}
                 </p>
               </div>
@@ -104,7 +102,7 @@ export default function LastTransactionCard({
               <p className="text-sm text-cream/60 mb-1">وضعیت</p>
               <span
                 className={`text-xs px-3 py-1 rounded-full inline-block ${getStatusClasses(
-                  statusObject as any
+                  statusObject as any,
                 )}`}
               >
                 {getStatusText(statusObject as any)}

@@ -25,15 +25,8 @@ export const useGetTransferWebSocket = () => {
 
   // Show toast when haveTransaction changes from false to true
   useEffect(() => {
-    console.log(
-      "haveTransfer changed:",
-      haveTransfer,
-      "previous:",
-      previousHaveTransfer.current,
-    );
     // Only show toast when it changes from false to true
     if (haveTransfer && !previousHaveTransfer.current) {
-      console.log("Showing toast for new transfer");
       playRingtone();
       toast.info("انتقال جدید", {
         description: "یک انتقال جدید برای بررسی وجود دارد",
@@ -82,7 +75,6 @@ export const useGetTransferWebSocket = () => {
     // Listen to haveTransaction event
     socketInstance.on("haveTransfer", (data) => {
       const newValue = data?.msg?.haveTransfer ?? data?.haveTransfer;
-      console.log(newValue, "newValue");
 
       // Show toast when newValue is true and it changed from false
       if (newValue === true && !previousHaveTransfer.current) {

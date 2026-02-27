@@ -28,23 +28,19 @@ export const useLastTransaction = () => {
 
     // Connection event handlers
     socketInstance.on("connect", () => {
-      console.log("Socket connected last transaction");
       setIsConnected(true);
     });
 
     socketInstance.on("disconnect", () => {
-      console.log("Socket disconnected last transaction");
       setIsConnected(false);
     });
 
     socketInstance.on("connect_error", (error) => {
-      console.error("Socket connection error last transaction:", error);
       setIsConnected(false);
     });
 
     // Listen to adminStatus event
     socketInstance.on("newTransaction", (data: AdminStatusData) => {
-      console.log("transaction status received:", data);
       setTransactions(data);
     });
 

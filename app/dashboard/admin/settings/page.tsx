@@ -35,7 +35,7 @@ export default function SettingsPage() {
             variant: "destructive",
           });
         },
-      }
+      },
     );
   };
 
@@ -76,8 +76,6 @@ export default function SettingsPage() {
     );
   }
 
-  console.log(settings);
-
   return (
     <div className="p-6 lg:p-8 space-y-6">
       {/* Header */}
@@ -92,7 +90,7 @@ export default function SettingsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Price Mode Card */}
         <PriceModeCard />
-        
+
         {/* Other Settings Cards */}
         {settings?.map((setting) => (
           <SettingCard

@@ -11,9 +11,8 @@ export interface PriceChangeData {
 }
 
 export const usePriceNotificationWebSocket = () => {
-  const [priceChangeData, setPriceChangeData] = useState<PriceChangeData | null>(
-    null
-  );
+  const [priceChangeData, setPriceChangeData] =
+    useState<PriceChangeData | null>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [socket, setSocket] = useState<Socket | null>(null);
 
@@ -37,7 +36,6 @@ export const usePriceNotificationWebSocket = () => {
 
     // Only connect if notifications are enabled
     if (!priceNotification?.enabled) {
-      console.log("Price notifications are disabled");
       return;
     }
 
@@ -50,22 +48,19 @@ export const usePriceNotificationWebSocket = () => {
     // Connection event handlers
     socketInstance.on("connect", () => {
       setIsConnected(true);
-      console.log("Price notification WebSocket connected");
     });
 
     socketInstance.on("disconnect", () => {
       setIsConnected(false);
-      console.log("Price notification WebSocket disconnected");
     });
 
     socketInstance.on("connect_error", (error) => {
       setIsConnected(false);
-      console.error("Price notification WebSocket error:", error);
     });
 
     // Listen to price change notification event
     socketInstance.on("priceChangeNotification", (data: PriceChangeData) => {
-      console.log("Price change notification received:", data);
+      console.log(priceChangeData, "priceChangeData");
       setPriceChangeData(data);
 
       // Show toast notification to user

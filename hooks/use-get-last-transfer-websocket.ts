@@ -28,23 +28,19 @@ export const useLastTransfer = () => {
 
     // Connection event handlers
     socketInstance.on("connect", () => {
-      console.log("Socket connected last transfer");
       setIsConnected(true);
     });
 
     socketInstance.on("disconnect", () => {
-      console.log("Socket disconnected last transfer");
       setIsConnected(false);
     });
 
     socketInstance.on("connect_error", (error) => {
-      console.error("Socket connection error last transfer:", error);
       setIsConnected(false);
     });
 
     // Listen to adminStatus event
     socketInstance.on("newTransfer", (data: AdminStatusData) => {
-      console.log("transfer status received:", data);
       setTransfers(data);
     });
 

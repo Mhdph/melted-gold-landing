@@ -36,7 +36,6 @@ export const useGoldPriceWebSocket = () => {
 
     // Listen to adminStatus event
     socketInstance.on("updatePrice", (data) => {
-      console.log(data, "data");
       setGoldPrice(data);
     });
 

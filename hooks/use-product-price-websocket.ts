@@ -38,7 +38,6 @@ export const useProductWebSocket = () => {
 
     // Listen to adminStatus event
     socketInstance.on("updateProductPrices", (data) => {
-      console.log(data, "product");
       setProduct(data);
     });
 

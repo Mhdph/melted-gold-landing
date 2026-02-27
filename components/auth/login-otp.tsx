@@ -48,7 +48,6 @@ function LoginOtp({ setStep }: LoginOtpProps) {
       { mobile: phone!, otpCode: otp.join("") },
       {
         onSuccess: (data) => {
-          console.log(data, "salam");
           localStorage.setItem("token", data?.access_token);
           localStorage.setItem("role", data.roles);
 
@@ -57,14 +56,12 @@ function LoginOtp({ setStep }: LoginOtpProps) {
             changeUserStatus(
               { status: true },
               {
-                onSuccess: () => {
-                  console.log("Admin status updated successfully");
-                },
+                onSuccess: () => {},
                 onError: (error) => {
                   console.error("Failed to update admin status:", error);
                   // Don't show error toast as this is not critical for login
                 },
-              }
+              },
             );
           }
 
@@ -73,7 +70,7 @@ function LoginOtp({ setStep }: LoginOtpProps) {
         onError: () => {
           toast.error("کد تایید یا شماره تماس نادرست است");
         },
-      }
+      },
     );
   };
 

@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useGetTransactionWebSocket } from "@/hooks/use-get-transaction";
 import { useGetTransferWebSocket } from "@/hooks/use-get-transfer";
+import { usePriceNotificationWebSocket } from "@/hooks/use-price-notification-websocket";
 
 export default function DashboardLayout({
   children,
@@ -57,6 +58,8 @@ export default function DashboardLayout({
 
   useGetTransactionWebSocket();
   useGetTransferWebSocket();
+  usePriceNotificationWebSocket();
+
   return (
     <SidebarProvider>
       <AppSidebar side="right" />

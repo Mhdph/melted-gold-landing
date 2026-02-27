@@ -15,8 +15,6 @@ export default function QuickTradeButtons({
   onSellClick,
   priceData,
 }: QuickTradeButtonsProps) {
-  console.log(priceData, "priceData");
-
   // Fetch settings to check permissions
   const { data: settings } = useGetSettings();
 

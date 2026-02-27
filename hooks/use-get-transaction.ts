@@ -25,15 +25,8 @@ export const useGetTransactionWebSocket = () => {
 
   // Show toast when haveTransaction changes from false to true
   useEffect(() => {
-    console.log(
-      "haveTransaction changed:",
-      haveTransaction,
-      "previous:",
-      previousHaveTransaction.current,
-    );
     // Only show toast when it changes from false to true
     if (haveTransaction && !previousHaveTransaction.current) {
-      console.log("Showing toast for new transaction");
       playRingtone();
       toast.info("تراکنش جدید", {
         description: "یک تراکنش جدید برای بررسی وجود دارد",
@@ -82,7 +75,6 @@ export const useGetTransactionWebSocket = () => {
     // Listen to haveTransaction event
     socketInstance.on("haveTransaction", (data) => {
       const newValue = data?.msg?.haveTransaction ?? data?.haveTransaction;
-      console.log(newValue, "newValue");
 
       // Show toast when newValue is true and it changed from false
       if (newValue === true && !previousHaveTransaction.current) {

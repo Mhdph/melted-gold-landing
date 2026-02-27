@@ -33,9 +33,6 @@ export function useWebSocket({
 
   const connect = () => {
     try {
-      console.log("Connecting to Socket.IO:", url);
-      console.log("Token being used:", token);
-
       const socket = io(url, {
         query: token ? { token } : undefined,
         auth: token ? { token } : undefined,
@@ -57,11 +54,6 @@ export function useWebSocket({
       socketRef.current = socket;
 
       socket.on("connect", () => {
-        console.log("Socket.IO connected");
-        console.log("Socket ID:", socket.id);
-        console.log("Socket query params:", socket.io.opts.query);
-        console.log("Socket auth:", (socket.io.opts as any).auth);
-        console.log("Socket extra headers:", socket.io.opts.extraHeaders);
         setIsConnected(true);
         setError(null);
         reconnectAttemptsRef.current = 0;
@@ -69,7 +61,6 @@ export function useWebSocket({
       });
 
       socket.on("disconnect", (reason) => {
-        console.log("Socket.IO disconnected:", reason);
         setIsConnected(false);
         onClose?.();
       });
@@ -88,21 +79,18 @@ export function useWebSocket({
 
       // Listen for gold price updates - this matches your server's event name
       socket.on("updatePrice", (data) => {
-        console.log("Gold price update received:", data);
         setLastMessage(data);
         onMessage?.(data);
       });
 
       // Listen for admin status updates
       socket.on("adminStatus", (data) => {
-        console.log("Admin status update received:", data);
         setLastMessage(data);
         onMessage?.(data);
       });
 
       // Listen for other potential events
       socket.on("message", (data) => {
-        console.log("Socket.IO message received:", data);
         setLastMessage(data);
         onMessage?.(data);
       });

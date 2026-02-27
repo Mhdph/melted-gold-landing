@@ -41,8 +41,8 @@ export default function RemittancePage() {
       filterUnit === "all"
         ? undefined
         : filterUnit === "گرم طلا"
-        ? "remittance"
-        : "transfer",
+          ? "remittance"
+          : "transfer",
   });
   const { data: statsData } = useGetTransferStats();
 
@@ -55,10 +55,8 @@ export default function RemittancePage() {
 
     try {
       await createTransfer.mutateAsync(transferData);
-      console.log("Transfer created successfully");
     } catch (error) {
       console.error("Error creating transfer:", error);
-    } finally {
     }
   };
 
@@ -176,7 +174,7 @@ export default function RemittancePage() {
               <CardContent>
                 <div className="text-2xl font-bold text-purple-600">
                   {new Intl.NumberFormat("fa-IR").format(
-                    statsData.data.totalAmount
+                    statsData.data.totalAmount,
                   )}
                 </div>
                 <p className="text-xs text-gray-500">ریال</p>

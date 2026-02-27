@@ -6,7 +6,6 @@ import { usePriceNotificationWebSocket } from "@/hooks/use-price-notification-we
 
 export default function ProfilePage() {
   // Initialize price notification WebSocket for price change notifications
-  usePriceNotificationWebSocket();
 
   return (
     <div className="p-6 lg:p-8 space-y-6">

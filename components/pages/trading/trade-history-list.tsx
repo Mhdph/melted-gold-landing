@@ -28,7 +28,6 @@ export default function TradeHistoryList({ trades }: TradeHistoryListProps) {
     error,
   } = useGetUserTransactions();
 
-  console.log(transactions);
   return (
     <Card className="border-gold/20">
       <CardHeader>
@@ -99,7 +98,7 @@ export default function TradeHistoryList({ trades }: TradeHistoryListProps) {
                         <Calendar className="h-4 w-4 hidden md:inline" />
                         <span>
                           {new Date(trade.createdAt).toLocaleDateString(
-                            "fa-IR"
+                            "fa-IR",
                           )}
                         </span>
                       </div>
