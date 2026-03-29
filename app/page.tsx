@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen  flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#000e1f] font-vazir flex items-center justify-center p-4">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-20 w-64 h-64 bg-[#d7b46a] opacity-5 rounded-full blur-3xl" />

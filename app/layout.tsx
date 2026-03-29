@@ -1,13 +1,10 @@
 import type React from "react";
 import type { Metadata } from "next";
-import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
-import { Analytics } from "@vercel/analytics/next";
+
 import { Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import "./globals.css";
-
 import { Providers } from "@/components/provider";
 
 export const metadata: Metadata = {
@@ -42,7 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning>
-      <head>
+      {/* <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -53,17 +50,13 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap"
           rel="stylesheet"
         />
-      </head>
-      <body
-        dir="rtl"
-        className={`font-sans ${GeistSans.variable} ${GeistMono.variable} bg-[#000e1f]`}
-      >
+      </head> */}
+      <body dir="rtl" className="font-vazir">
         <Suspense fallback={<div>Loading...</div>}>
           <Providers>{children}</Providers>
         </Suspense>
         <Toaster />
         <SonnerToaster />
-        <Analytics />
       </body>
     </html>
   );
