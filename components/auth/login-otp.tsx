@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { ArrowLeft, Lock } from "lucide-react";
 import { Label } from "../ui/label";
@@ -11,11 +11,11 @@ import { persianToEnglish } from "@/lib/utils";
 
 interface LoginOtpProps {
   setStep: (step: Step) => void;
+  phone: string;
 }
-function LoginOtp({ setStep }: LoginOtpProps) {
+function LoginOtp({ setStep, phone }: LoginOtpProps) {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [countdown, setCountdown] = useState(0);
-  const phone = localStorage.getItem("phone");
   const [enabled, setEnabled] = useState(false);
 
   const { isLoading, isSuccess } = useGetLoginCode(phone!, enabled);
@@ -74,11 +74,24 @@ function LoginOtp({ setStep }: LoginOtpProps) {
     );
   };
 
-  const handleResendOtp = async () => {
+  const handleResendOtp = () => {
     if (countdown > 0) return;
-    setEnabled(true);
+
+    setEnabled(false);
+    setTimeout(() => setEnabled(true), 0);
+
     setCountdown(120);
   };
+
+  useEffect(() => {
+    if (countdown <= 0) return;
+
+    const timer = setInterval(() => {
+      setCountdown((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [countdown]);
 
   const formatCountdown = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -100,7 +113,11 @@ function LoginOtp({ setStep }: LoginOtpProps) {
           <Label className="text-[#0F1724] font-medium">کد تایید</Label>
           <button
             type="button"
-            onClick={() => setStep("phone")}
+            onClick={() => {
+              setStep("phone");
+              setCountdown(0);
+              setOtp(["", "", "", "", "", ""]);
+            }}
             className="text-sm text-[#D4AF37] hover:underline flex items-center gap-1"
           >
             <ArrowLeft className="w-4 h-4" />

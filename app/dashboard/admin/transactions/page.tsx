@@ -186,13 +186,13 @@ export default function TransactionsApprovalPage() {
         /> */}
 
         {/* Last Transaction Card */}
-        {transactions?.msg && (
+        {/* {transactions?.msg && (
           <LastTransactionCard
             transaction={transactions.msg}
             onApprove={handleApprove}
             onReject={handleReject}
           />
-        )}
+        )} */}
 
         {/* Transaction Table */}
         <TransactionTable

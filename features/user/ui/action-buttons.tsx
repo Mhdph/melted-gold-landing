@@ -9,7 +9,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Check, MoreVertical } from "lucide-react";
-import { useApproveUser, useChangeUserRole } from "@/services/user-service";
+import {
+  useApproveUser,
+  useChangeUserRole,
+  useRejectUser,
+} from "@/services/user-service";
 import { toast } from "sonner";
 
 interface ActionButtonsProps {
@@ -19,6 +23,8 @@ interface ActionButtonsProps {
 
 function ActionButtons({ userId, verify }: ActionButtonsProps) {
   const { mutate: approveUser, isPending: isApproving } = useApproveUser();
+  const { mutate: rejectUser, isPending: isRejecting } = useRejectUser();
+
   const { mutate: changeRole, isPending: isChangingRole } = useChangeUserRole();
 
   const handleApprove = (userId: string) => {
@@ -28,6 +34,17 @@ function ActionButtons({ userId, verify }: ActionButtonsProps) {
       },
       onError: (err) => {
         toast.error("خطا در تایید کاربر");
+      },
+    });
+  };
+
+  const handleReject = (userId: string) => {
+    rejectUser(userId, {
+      onSuccess: () => {
+        toast.success("کاربر غیر فعال شد");
+      },
+      onError: (err) => {
+        toast.error("خطا در تغییر وضغیت کاربر");
       },
     });
   };
@@ -44,7 +61,7 @@ function ActionButtons({ userId, verify }: ActionButtonsProps) {
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu dir="rtl">
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="sm">
           <MoreVertical />
@@ -66,19 +83,21 @@ function ActionButtons({ userId, verify }: ActionButtonsProps) {
 
         <DropdownMenuSeparator />
 
-        {verify === false && (
-          <>
-            <DropdownMenuLabel>تایید کاربر</DropdownMenuLabel>
+        <DropdownMenuLabel>وضعیت کاربر</DropdownMenuLabel>
 
-            <DropdownMenuItem
-              onClick={() => handleApprove(userId)}
-              className="text-green-600 focus:text-green-700"
-            >
-              <Check className="h-4 w-4 ml-2" />
-              تایید
-            </DropdownMenuItem>
-          </>
-        )}
+        <DropdownMenuItem
+          onClick={() => handleApprove(userId)}
+          className="text-green-600 focus:text-green-700"
+        >
+          تایید
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => handleReject(userId)}
+          disabled={isRejecting}
+          className="text-red-600 focus:text-red-700"
+        >
+          عیرفعال کردن
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

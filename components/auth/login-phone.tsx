@@ -20,13 +20,13 @@ import {
 
 interface LoginPhoneProps {
   setStep: (step: Step) => void;
+  setPhone: (phone: string) => void;
 }
-
 type FormValues = {
   phone: string;
 };
 
-function LoginPhone({ setStep }: LoginPhoneProps) {
+function LoginPhone({ setStep, setPhone }: LoginPhoneProps) {
   const [enabled, setEnabled] = useState(false);
 
   const form = useForm<FormValues>({
@@ -38,11 +38,14 @@ function LoginPhone({ setStep }: LoginPhoneProps) {
 
   const phoneValue = form.watch("phone");
 
-  const { isLoading, isSuccess,isError,error } = useGetLoginCode(phoneValue, enabled);
+  const { isLoading, isSuccess, isError, error } = useGetLoginCode(
+    phoneValue,
+    enabled,
+  );
 
   const onSubmit = (data: FormValues) => {
     setEnabled(true);
-    localStorage.setItem("phone", data.phone);
+    setPhone(data.phone);
   };
 
   useEffect(() => {
@@ -95,7 +98,11 @@ function LoginPhone({ setStep }: LoginPhoneProps) {
             </FormItem>
           )}
         />
-         {isError && error && <p className="text-red-500 text-center">خظایی پیش آمده ممکن است کاربری با این شماره وجود نداشته باشد</p>}
+        {isError && error && (
+          <p className="text-red-500 text-center">
+            خظایی پیش آمده ممکن است کاربری با این شماره وجود نداشته باشد
+          </p>
+        )}
         <Button
           type="submit"
           disabled={isLoading || phoneValue.length !== 11}

@@ -38,7 +38,7 @@ function AdminTransfersPage() {
 
   // Filter transfers based on search query
   const filteredTransfers = transfers.filter((transfer) =>
-    transfer.receiver.toLowerCase().includes(searchQuery.toLowerCase())
+    transfer.receiver.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const handlePageChange = (page: number) => {
@@ -135,13 +135,13 @@ function AdminTransfersPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-cream">مدیریت انتقالات</h1>
       </div>
-      {lastTransfers?.msg && (
+      {/* {lastTransfers?.msg && (
         <LastTransferCard
           transfer={lastTransfers.msg}
           onApprove={handleApprove}
           onReject={handleReject}
         />
-      )}
+      )} */}
       {/* <TransferFilters
         searchQuery={searchQuery}
         filterStatus={filterStatus}

@@ -60,12 +60,15 @@ export default function ProfileSettings() {
         onSuccess: () => {
           setIsEditing(false);
         },
-      }
+      },
     );
   };
 
   const handleCancel = () => {
-    form.reset({ name: userProfile?.name || "", lastName: userProfile?.lastName || "" });
+    form.reset({
+      name: userProfile?.name || "",
+      lastName: userProfile?.lastName || "",
+    });
     setIsEditing(false);
   };
 
@@ -102,7 +105,10 @@ export default function ProfileSettings() {
         </CardHeader>
         <CardContent className="space-y-6">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSaveProfile)} className="space-y-4">
+            <form
+              onSubmit={form.handleSubmit(handleSaveProfile)}
+              className="space-y-4"
+            >
               {/* Mobile (Read-only) */}
               <div className="space-y-2">
                 <Label className="text-cream/80 text-sm flex items-center gap-2">
@@ -142,7 +148,9 @@ export default function ProfileSettings() {
                 name="lastName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-cream/80 text-sm">نام خانوادگی</FormLabel>
+                    <FormLabel className="text-cream/80 text-sm">
+                      نام خانوادگی
+                    </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -238,13 +246,6 @@ export default function ProfileSettings() {
               onCheckedChange={handleToggleNotification}
               disabled={updatePriceNotification.isPending}
             />
-          </div>
-          <div className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-            <Shield className="h-4 w-4 text-blue-500" />
-            <p className="text-blue-700 dark:text-blue-300 text-sm">
-              این نوتیفیکیشن‌ها از طریق WebSocket ارسال می‌شوند و در زمان واقعی
-              تغییرات قیمت را به شما اطلاع می‌دهند.
-            </p>
           </div>
         </CardContent>
       </Card>

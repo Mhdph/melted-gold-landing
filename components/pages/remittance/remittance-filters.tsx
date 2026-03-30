@@ -23,7 +23,7 @@ export default function RemittanceFilters({
   return (
     <div className="flex gap-2">
       <Select value={sortBy} onValueChange={onSortChange}>
-        <SelectTrigger className="w-[140px] bg-navy border-gold/30 text-cream">
+        <SelectTrigger className="w-[180px] bg-navy border-gold/30 text-cream">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

@@ -89,7 +89,7 @@ export default function RemittanceForm({
                         type="number"
                         step="0.01"
                         placeholder="مقدار را وارد کنید"
-                        className="bg-navy border-gold/30 text-cream"
+                        className="bg-navy dark:bg-slate-700 dark:text-gray-200 border-gold/30 text-cream"
                         {...field}
                         onChange={(e) =>
                           field.onChange(parseFloat(e.target.value) || 0)
@@ -112,7 +112,7 @@ export default function RemittanceForm({
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="bg-navy border-gold/30 text-cream">
+                        <SelectTrigger className="bg-navy dark:bg-slate-700 dark:text-gray-200 border-gold/30 text-cream">
                           <SelectValue placeholder="انتخاب واحد" />
                         </SelectTrigger>
                       </FormControl>
@@ -136,7 +136,7 @@ export default function RemittanceForm({
                   <FormControl>
                     <Input
                       placeholder="نام گیرنده را وارد کنید"
-                      className="bg-navy border-gold/30 text-cream"
+                      className="bg-navy dark:bg-slate-700 dark:text-gray-200 border-gold/30 text-cream"
                       {...field}
                     />
                   </FormControl>

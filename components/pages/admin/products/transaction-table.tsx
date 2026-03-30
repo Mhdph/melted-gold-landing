@@ -1,14 +1,13 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, X } from "lucide-react";
-import { Transaction } from "./types";
-import TransactionDetailsDialog from "./transaction-details-dialog";
+import { Transaction } from "../transactions/types";
 import {
-  isPending,
-  isApproved,
-  getStatusText,
   getStatusClasses,
-} from "./utils";
+  getStatusText,
+  isPending,
+} from "../transactions/utils";
+import TransactionDetailsDialog from "../transactions/transaction-details-dialog";
 
 interface TransactionTableProps {
   transactions: Transaction[];

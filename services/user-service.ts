@@ -62,7 +62,8 @@ export interface PriceNotification {
 export const useGetPriceNotification = () =>
   useQuery({
     queryKey: ["priceNotification"],
-    queryFn: () => apiClient.get<PriceNotification>(`/user/me/price-notification`),
+    queryFn: () =>
+      apiClient.get<PriceNotification>(`/user/me/price-notification`),
   });
 
 export interface UpdatePriceNotificationRequest {
@@ -76,7 +77,7 @@ export const useUpdatePriceNotification = () => {
     mutationFn: (data: UpdatePriceNotificationRequest) =>
       apiClient.put<BaseResponse<PriceNotification>>(
         `/user/me/price-notification`,
-        data
+        data,
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["priceNotification"] });
@@ -88,7 +89,7 @@ export const useUpdatePriceNotification = () => {
       });
     },
   });
-}; 
+};
 
 export const useApproveUser = () => {
   const queryClient = useQueryClient();
@@ -96,6 +97,18 @@ export const useApproveUser = () => {
   return useMutation({
     mutationFn: (id: string) =>
       apiClient.put<BaseResponse<any>>(`/user/${id}`, { verify: true }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+};
+
+export const useRejectUser = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) =>
+      apiClient.put<BaseResponse<any>>(`/user/${id}`, { verify: false }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
     },

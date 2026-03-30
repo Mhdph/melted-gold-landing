@@ -15,6 +15,7 @@ import {
 } from "@/services/settings-service";
 import { Button } from "@/components/ui/button";
 import { useAdminStatusWebSocket } from "@/hooks/use-admin-status-websocket";
+import { useOneMyUserInfo } from "@/services/user-service";
 
 export function DashboardHeader() {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -23,6 +24,7 @@ export function DashboardHeader() {
   const [mounted, setMounted] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const { adminStatus: socketStatus } = useAdminStatusWebSocket();
+  const { data: user, isLoading } = useOneMyUserInfo();
 
   // Fetch admin status via REST API
   const { data: adminStatus } = useGetAdminStatus();
@@ -58,7 +60,7 @@ export function DashboardHeader() {
   };
 
   const handleToggleAdminStatus = () => {
-    const newStatus = !adminStatus?.adminStatus;
+    const newStatus = !socketStatus.msg.adminStatus;
     updateAdminStatus.mutate({ enabled: newStatus });
   };
 
@@ -125,6 +127,7 @@ export function DashboardHeader() {
       {/* Date/Time Bar */}
       <div className="bg-gray-200 dark:bg-slate-800 border-t border-gray-300 px-4 py-2">
         <div className="flex items-center justify-between">
+          <p>{user?.name + " " + user?.lastName} عزیز خوش آمدید</p>
           <div className="flex items-center ">
             <div className="text-gray-700 dark:text-white text-sm font-medium">
               {formatDate(currentTime)}

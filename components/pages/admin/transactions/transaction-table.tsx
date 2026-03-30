@@ -21,6 +21,7 @@ export default function TransactionTable({
   onApprove,
   onReject,
 }: TransactionTableProps) {
+  console.log(transactions, "transa");
   return (
     <Card className="bg-white dark:bg-slate-800 border-gold/20">
       <CardContent>
@@ -52,7 +53,7 @@ export default function TransactionTable({
               </tr>
             </thead>
             <tbody>
-              {transactions.map((tx) => (
+              {transactions?.map((tx) => (
                 <tr
                   key={tx.id}
                   className="border-b border-gold/10 hover:bg-cream/5"
@@ -93,7 +94,7 @@ export default function TransactionTable({
                   <td className="py-4 px-4">
                     <span
                       className={`text-xs px-3 py-1 rounded-full ${getStatusClasses(
-                        tx
+                        tx,
                       )}`}
                     >
                       {getStatusText(tx)}
