@@ -61,7 +61,7 @@ export default function TransactionTable({
                   <td className="py-4 px-4">
                     <div>
                       <p className="text-xs text-cream/60 font-mono">
-                        {tx.User.mobile}
+                        {tx.user.mobile}
                       </p>
                     </div>
                   </td>
@@ -108,7 +108,7 @@ export default function TransactionTable({
                         <>
                           <Button
                             size="sm"
-                            onClick={() => onApprove(tx.id, tx.User.mobile)}
+                            onClick={() => onApprove(tx.id, tx.user.mobile)}
                             className="bg-green-500 hover:bg-green-600 text-white"
                           >
                             <Check className="h-4 w-4 ml-1" />
@@ -117,7 +117,7 @@ export default function TransactionTable({
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => onReject(tx.id, tx.User.mobile)}
+                            onClick={() => onReject(tx.id, tx.user.mobile)}
                             className="border-red-400/30 text-red-400 hover:bg-red-400/10"
                           >
                             <X className="h-4 w-4 ml-1" />

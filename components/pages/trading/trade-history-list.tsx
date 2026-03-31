@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Trade } from "./types";
 import { useGetUserTransactions } from "@/services/trade-service";
+import { getStatusClasses, getStatusText } from "../admin/transactions/utils";
 
 interface TradeHistoryListProps {
   trades: Trade[];
@@ -70,18 +71,15 @@ export default function TradeHistoryList({ trades }: TradeHistoryListProps) {
                       >
                         {trade.type}
                       </Badge>
-                      <Badge
-                        variant={
-                          trade.accept === true ? "default" : "secondary"
-                        }
-                        className={
-                          trade.accept === true
-                            ? "bg-blue-500/20 text-blue-400 border-blue-500/30"
-                            : "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
-                        }
-                      >
-                        {trade.accept ? "تکمیل شده" : "در انتظار"}
-                      </Badge>
+                      <div>
+                        <span
+                          className={`text-xs px-3 py-1 rounded-full ${getStatusClasses(
+                            trade,
+                          )}`}
+                        >
+                          {getStatusText(trade)}
+                        </span>{" "}
+                      </div>
                     </div>
                     <div className="flex items-center gap-4 text-sm text-cream/60">
                       <div className="flex items-center gap-1">

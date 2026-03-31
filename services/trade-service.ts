@@ -16,11 +16,11 @@ export interface User {
 
 export interface Transaction {
   id: string;
-  User: User;
+  user: User;
   type: TransactionType;
   amount: number;
   accept: boolean;
-  status?: string; // Add status field for backend compatibility
+  status: TransactionStatus; // Add status field for backend compatibility
   createdAt: string;
   weight: number;
 }

@@ -6,6 +6,8 @@ export interface User {
   mobile: string;
   phone: string;
   verify: boolean;
+  name: string;
+  lastName: string;
 }
 
 export interface PaginationMeta {

@@ -96,7 +96,7 @@ export default function TransactionDetailsDialog({
                   نام کاربر
                 </p>
                 <p className="text-sm font-medium text-slate-700 dark:text-cream bg-white dark:bg-slate-800 rounded px-2 py-1 border border-slate-200 dark:border-slate-700">
-                  {transaction.User.mobile}
+                  {transaction.user.name + " " + transaction.user.lastName}
                 </p>
               </div>
               <div className="space-y-1">
@@ -105,7 +105,7 @@ export default function TransactionDetailsDialog({
                   شماره تلفن
                 </p>
                 <p className="text-sm  text-slate-700 dark:text-cream bg-white dark:bg-slate-800 rounded px-2 py-1 border border-slate-200 dark:border-slate-700">
-                  {transaction.User.phone}
+                  {transaction.user.mobile}
                 </p>
               </div>
             </div>

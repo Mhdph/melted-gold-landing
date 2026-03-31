@@ -127,7 +127,11 @@ export function DashboardHeader() {
       {/* Date/Time Bar */}
       <div className="bg-gray-200 dark:bg-slate-800 border-t border-gray-300 px-4 py-2">
         <div className="flex items-center justify-between">
-          <p>{user?.name + " " + user?.lastName} عزیز خوش آمدید</p>
+          {user && (
+            <p className="text-gray-700 dark:text-gray-200">
+              {user?.name + " " + user?.lastName} عزیز خوش آمدید
+            </p>
+          )}
           <div className="flex items-center ">
             <div className="text-gray-700 dark:text-white text-sm font-medium">
               {formatDate(currentTime)}
