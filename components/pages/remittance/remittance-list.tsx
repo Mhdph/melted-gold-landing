@@ -88,7 +88,7 @@ export default function RemittanceList({
                         " " +
                         (remittance.valueType === "gold" ? "گرم طلا" : "ریال")}
                     </Badge>
-                    <div className="flex items-center gap-4 text-sm text-cream/60">
+                    <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-cream/60">
                       <div className="flex items-center gap-1">
                         <User className="h-4 w-4" />
                         <span>{remittance.receiver}</span>
@@ -97,7 +97,7 @@ export default function RemittanceList({
                         <Calendar className="h-4 w-4" />
                         <span>
                           {new Date(remittance.date).toLocaleDateString(
-                            "fa-IR"
+                            "fa-IR",
                           )}
                         </span>
                       </div>
@@ -143,7 +143,7 @@ export default function RemittanceList({
                         {page}
                       </PaginationLink>
                     </PaginationItem>
-                  )
+                  ),
                 )}
 
                 <PaginationItem>

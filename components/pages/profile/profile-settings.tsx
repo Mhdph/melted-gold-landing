@@ -22,6 +22,7 @@ import {
   useGetPriceNotification,
   useUpdatePriceNotification,
 } from "@/services/user-service";
+import ChangePasswordForm from "./change-password";
 
 const profileSchema = z.object({
   name: z.string().min(1, "نام الزامی است"),
@@ -220,6 +221,9 @@ export default function ProfileSettings() {
           </Form>
         </CardContent>
       </Card>
+      {/* change pass */}
+
+      <ChangePasswordForm />
 
       {/* Price Notification Card */}
       <Card className="bg-white dark:bg-slate-800 border-gold/20">

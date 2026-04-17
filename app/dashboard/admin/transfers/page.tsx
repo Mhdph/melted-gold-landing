@@ -6,7 +6,6 @@ import {
   TransferStatus,
 } from "@/services/remittance.service";
 import { useQueryClient } from "@tanstack/react-query";
-import TransferTable from "@/components/pages/admin/transfers/transfer-table";
 import PaginationControls from "@/components/pages/admin/transfers/pagination-controls";
 import Loading from "@/components/ui/loading";
 import ErrorMessage from "@/components/ui/error-message";
@@ -14,6 +13,8 @@ import { FilterStatus } from "@/components/pages/admin/transfers/types";
 import { useLastTransfer } from "@/hooks/use-get-last-transfer-websocket";
 import LastTransferCard from "@/components/pages/admin/transfers/last-transfer-card";
 import { toast } from "sonner";
+import TransferTable from "@/components/pages/admin/transfers/transfer-table";
+import { transferColumns } from "@/components/pages/admin/transfers/transfer-columns";
 
 function AdminTransfersPage() {
   const queryClient = useQueryClient();
@@ -133,7 +134,9 @@ function AdminTransfersPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-cream">مدیریت انتقالات</h1>
+        <h1 className="text-sm md:text-2xl font-bold text-cream">
+          مدیریت انتقالات
+        </h1>
       </div>
       {/* {lastTransfers?.msg && (
         <LastTransferCard
@@ -150,10 +153,7 @@ function AdminTransfersPage() {
         onClearFilters={handleClearFilters}
       /> */}
 
-      <TransferTable
-        transfers={filteredTransfers}
-        onTransferUpdate={handleTransferUpdate}
-      />
+      <TransferTable data={filteredTransfers} columns={transferColumns} />
 
       {meta.itemCount > 0 && (
         <PaginationControls

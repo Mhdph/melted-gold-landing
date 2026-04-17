@@ -43,3 +43,27 @@ export const useSignUp = () => {
     },
   });
 };
+
+export const useLoginWithPassword = () =>
+  useMutation({
+    mutationFn: (data: any) => apiClient.post("/auth/login/pass", data),
+    onError: (e) => toast.error(e?.message ?? "خطا!"),
+  });
+
+// reset-pass request
+export const useResetPasswordRequest = () =>
+  useMutation({
+    mutationFn: (data: any) =>
+      apiClient.post("/auth/reset-password/request", data),
+    onSuccess: () => toast.success("کد ارسال شد"),
+    onError: (e) => toast.error(e?.message ?? "خطا!"),
+  });
+
+// reset-pass confirm
+export const useResetPasswordConfirm = () =>
+  useMutation({
+    mutationFn: (data: any) =>
+      apiClient.post("/auth/reset-password/confirm", data),
+    onSuccess: () => toast.success("رمز عبور با موفقیت تغییر کرد"),
+    onError: (e) => toast.error(e?.message ?? "خطا!"),
+  });

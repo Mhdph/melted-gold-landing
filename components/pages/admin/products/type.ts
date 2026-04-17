@@ -8,4 +8,5 @@ export interface IProducts {
   name: string;
   sellAmountGeneral: number;
   sellAmountPartnerShip: number;
+  unitType: "gram" | "teedad";
 }

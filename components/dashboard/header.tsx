@@ -82,13 +82,13 @@ export function DashboardHeader() {
 
         {/* Center - Logo and Brand */}
 
-        <Image
+        {/* <Image
           src={logo}
           alt="logo"
           width={60}
           height={60}
           className="mr-5 md:hidden"
-        />
+        /> */}
         <div className="flex items-center gap-3">
           {mounted && (
             <button
@@ -128,7 +128,7 @@ export function DashboardHeader() {
       <div className="bg-gray-200 dark:bg-slate-800 border-t border-gray-300 px-4 py-2">
         <div className="flex items-center justify-between">
           {user && (
-            <p className="text-gray-700 dark:text-gray-200">
+            <p className="text-gray-700 hidden md:inline dark:text-gray-200">
               {user?.name + " " + user?.lastName} عزیز خوش آمدید
             </p>
           )}

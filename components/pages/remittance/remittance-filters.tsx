@@ -21,7 +21,7 @@ export default function RemittanceFilters({
   onFilterChange,
 }: RemittanceFiltersProps) {
   return (
-    <div className="flex gap-2">
+    <div className="flex flex-col md:flex-row gap-2">
       <Select value={sortBy} onValueChange={onSortChange}>
         <SelectTrigger className="w-[180px] bg-navy border-gold/30 text-cream">
           <SelectValue />

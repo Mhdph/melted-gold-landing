@@ -55,6 +55,53 @@ export const useUpdateProfile = () => {
   });
 };
 
+export interface ChangePasswordRequest {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export const useChangePassword = () => {
+  return useMutation({
+    mutationFn: (data: ChangePasswordRequest) =>
+      apiClient.post<BaseResponse<any>>(`/auth/change-password`, data),
+
+    onSuccess: () => {
+      toast.success("رمز عبور با موفقیت تغییر کرد");
+    },
+
+    onError: (error: any) => {
+      toast.error("خطا در تغییر رمز عبور", {
+        description: error?.response?.data?.message || "لطفاً دوباره تلاش کنید",
+      });
+    },
+  });
+};
+
+export interface CreateUserRequest {
+  mobile: string;
+  name: string;
+  lastName: string;
+  password: string;
+}
+
+export const useCreateUser = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: CreateUserRequest) => apiClient.post("/user", data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("کاربر با موفقیت ثبت شد");
+    },
+    onError: (error: any) => {
+      toast.error("خطا در ثبت کاربر", {
+        description: error?.response?.data?.message || "لطفاً دوباره تلاش کنید",
+      });
+    },
+  });
+};
+
 export interface PriceNotification {
   enabled: boolean;
 }

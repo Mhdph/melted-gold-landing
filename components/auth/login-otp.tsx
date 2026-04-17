@@ -15,7 +15,7 @@ interface LoginOtpProps {
 }
 function LoginOtp({ setStep, phone }: LoginOtpProps) {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-  const [countdown, setCountdown] = useState(0);
+  const [countdown, setCountdown] = useState(120);
   const [enabled, setEnabled] = useState(false);
 
   const { isLoading, isSuccess } = useGetLoginCode(phone!, enabled);

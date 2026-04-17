@@ -128,7 +128,9 @@ export default function ProductFormModal({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger>
-        <Button>{isUpdate ? "ویرایش محصول" : "افزودن محصول جدید"}</Button>
+        {isUpdate ? null : (
+          <Button>{isUpdate ? "ویرایش محصول" : "افزودن محصول جدید"}</Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[480px]">
         <DialogHeader>

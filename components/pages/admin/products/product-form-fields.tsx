@@ -69,7 +69,7 @@ export default function ProductFormFields() {
           name="sellAmountPartnerShip"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>قیمت فروش (شریک)</FormLabel>
+              <FormLabel>قیمت فروش (همکار)</FormLabel>
               <FormControl>
                 <Input
                   type="number"
@@ -109,7 +109,7 @@ export default function ProductFormFields() {
           name="buyAmountPartnerShip"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>قیمت خرید (شریک)</FormLabel>
+              <FormLabel>قیمت خرید (همکار)</FormLabel>
               <FormControl>
                 <Input
                   type="number"

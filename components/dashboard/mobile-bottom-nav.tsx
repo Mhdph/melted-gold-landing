@@ -2,7 +2,13 @@
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { FileText, Activity, TrendingDown, TrendingUp } from "lucide-react";
+import {
+  FileText,
+  Activity,
+  TrendingDown,
+  TrendingUp,
+  User,
+} from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -27,9 +33,9 @@ const mobileNavItems = [
     href: "/dashboard/price-changes",
   },
   {
-    title: "گردش حساب",
-    icon: Activity,
-    href: "/dashboard/account-activity",
+    title: "پروفایل",
+    icon: User,
+    href: "/dashboard/profile",
   },
 ];
 
@@ -44,10 +50,10 @@ export function MobileBottomNav() {
             <Link
               href={item.href}
               className={cn(
-                "flex items-center flex-col justify-center rounded-full p-2  transition-all duration-300 relative",
+                "flex items-center flex-col text-center justify-center rounded-full p-2  transition-all duration-300 relative",
                 pathname === item.href
                   ? "bg-[#d8c070] hover:bg-[#BFA67A] text-gold shadow-lg shadow-gold/20 scale-105"
-                  : "text-[#F6F5EE] hover:bg-yellow-500/10 hover:scale-105 active:scale-95"
+                  : "text-[#F6F5EE] hover:bg-yellow-500/10 hover:scale-105 active:scale-95",
               )}
             >
               {/* {pathname === item.href && (
@@ -56,7 +62,7 @@ export function MobileBottomNav() {
               <item.icon
                 className={cn(
                   "size-4  transition-transform duration-300",
-                  pathname === item.href ? "text-gold" : "text-[#D7B46A]"
+                  pathname === item.href ? "text-gold" : "text-[#D7B46A]",
                 )}
               />
               <p className="text-[10px] font-medium">{item.title}</p>

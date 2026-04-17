@@ -59,7 +59,7 @@ export default function QuickTradeButtons({
             <CardTitle className="text-gray-800  dark:text-gray-200 text-base mb-2 font-normal text-right">
               {priceData?.msg?.productName || "بدون نام"}
             </CardTitle>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Buy Panel */}
               <div
                 onClick={handleBuyClick}

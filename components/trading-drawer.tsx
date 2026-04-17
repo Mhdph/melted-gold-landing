@@ -158,9 +158,30 @@ export function TradingDialog({
             className="space-y-6"
           >
             {/* Price Display */}
-            <div className="bg-gray-300 dark:bg-slate-800 dark:border-slate-700 mt-2 justify-between rounded-lg border-black p-2 border flex">
-              <div className="flex items-center gap-1 border-black dark:border-slate-700">
-                <p className="text-cream/80">گرم:</p>
+            {priceData?.msg?.unitType === "gram" ? (
+              <div className="bg-gray-300 dark:bg-slate-800 dark:border-slate-700 mt-2 justify-between rounded-lg border-black p-2 border flex">
+                <div className="flex items-center gap-1 border-black dark:border-slate-700">
+                  <p className="text-cream/80">گرم:</p>
+                  <p className="text-gold font-bold">
+                    {isBuy
+                      ? priceData.msg.buyGerm.toLocaleString("fa-IR")
+                      : priceData.msg.sellGerm.toLocaleString("fa-IR")}
+                  </p>
+                  <p>تومان</p>
+                </div>
+                <div className="border-r pl-2 border-black dark:border-slate-700"></div>
+                <div className="flex items-center gap-1 pl-2  border-black">
+                  <p className="text-cream/80">مثقال:</p>
+                  <p className="text-gold font-bold">
+                    {isBuy
+                      ? priceData.msg.buyMithqal.toLocaleString("fa-IR")
+                      : priceData.msg.sellMithqal.toLocaleString("fa-IR")}
+                  </p>
+                  <p>تومان</p>
+                </div>
+              </div>
+            ) : (
+              <div>
                 <p className="text-gold font-bold">
                   {isBuy
                     ? priceData.msg.buyGerm.toLocaleString("fa-IR")
@@ -168,17 +189,7 @@ export function TradingDialog({
                 </p>
                 <p>تومان</p>
               </div>
-              <div className="border-r pl-2 border-black dark:border-slate-700"></div>
-              <div className="flex items-center gap-1 pl-2  border-black">
-                <p className="text-cream/80">مثقال:</p>
-                <p className="text-gold font-bold">
-                  {isBuy
-                    ? priceData.msg.buyMithqal.toLocaleString("fa-IR")
-                    : priceData.msg.sellMithqal.toLocaleString("fa-IR")}
-                </p>
-                <p>تومان</p>
-              </div>
-            </div>
+            )}
 
             <FormField
               control={form.control}

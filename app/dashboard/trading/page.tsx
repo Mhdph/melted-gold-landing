@@ -93,7 +93,7 @@ export default function TradingPage() {
           {/* Quick Trade Section */}
           {products.length ? (
             <>
-              <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-2 md:grid-cols-2 2xl:grid-cols-3">
                 {paginatedProducts.map((p: any) => {
                   const priceData = mapProductToPriceData(p);
                   if (!priceData) return null;

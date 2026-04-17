@@ -36,7 +36,7 @@ export default function TransactionTable({
                   نوع تراکنش
                 </th>
                 <th className="text-right py-3 px-4 text-cream/80 font-medium">
-                  وزن (گرم)
+                  گرم/تعداد
                 </th>
                 <th className="text-right py-3 px-4 text-cream/80 font-medium">
                   مبلغ کل

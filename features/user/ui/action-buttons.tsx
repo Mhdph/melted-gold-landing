@@ -78,10 +78,10 @@ function ActionButtons({ userId, verify }: ActionButtonsProps) {
         <DropdownMenuItem
           onClick={() => handleChangeRole(userId, "PartnerShip")}
         >
-          شریک / همکار
+          همکار
         </DropdownMenuItem>
 
-        <DropdownMenuSeparator />
+        {/* <DropdownMenuSeparator />
 
         <DropdownMenuLabel>وضعیت کاربر</DropdownMenuLabel>
 
@@ -97,7 +97,7 @@ function ActionButtons({ userId, verify }: ActionButtonsProps) {
           className="text-red-600 focus:text-red-700"
         >
           عیرفعال کردن
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
       </DropdownMenuContent>
     </DropdownMenu>
   );

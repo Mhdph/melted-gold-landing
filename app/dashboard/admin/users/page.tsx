@@ -2,6 +2,7 @@
 
 import UserTable from "@/components/pages/admin/users/user-table";
 import { PaginationList } from "@/components/ui/pagination-list";
+import { CreateUserDialog } from "@/features/user/ui/admin-create-user";
 import { columns } from "@/features/user/ui/user-columns";
 import UserHeader from "@/features/user/ui/user-page-header";
 import { useGetUsers } from "@/services/user-service";
@@ -35,8 +36,10 @@ export default function UsersApprovalPage() {
   return (
     <div className="p-6 lg:p-8 space-y-6">
       {/* Header */}
-      <UserHeader usersData={usersData} />
-
+      <div className="flex justify-between items-center">
+        <UserHeader usersData={usersData} />
+        <CreateUserDialog />
+      </div>
       {/* Table – now with role change */}
 
       <div className="bg-white dark:bg-slate-800  py-8 px-4 rounded-lg">

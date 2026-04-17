@@ -118,6 +118,18 @@ function LoginPhone({ setStep, setPhone }: LoginPhoneProps) {
           )}
         </Button>
       </form>
+      <Button
+        type="button"
+        variant="outline"
+        className="w-full mt-3 py-1.5"
+        onClick={() => {
+          const mobile = form.getValues("phone");
+          if (mobile) setPhone(mobile);
+          setStep("password");
+        }}
+      >
+        ورود با رمز عبور
+      </Button>
     </Form>
   );
 }

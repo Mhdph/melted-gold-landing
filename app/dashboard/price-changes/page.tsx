@@ -9,6 +9,7 @@ import PaginationControls from "@/components/pages/price-changes/pagination-cont
 import { TimeRange } from "@/components/pages/price-changes/types";
 import Loading from "@/components/ui/loading";
 import ErrorMessage from "@/components/ui/error-message";
+import { priceColumns } from "@/components/pages/price-changes/price-columns";
 
 export default function PriceChangesPage() {
   const [timeRange, setTimeRange] = useState<TimeRange>("today");
@@ -39,40 +40,37 @@ export default function PriceChangesPage() {
 
   return (
     <div
-      className="min-h-screen bg-[#F6F5EE] dark:bg-slate-800  flex"
+      className="min-h-screen bg-[#F6F5EE] dark:bg-slate-800  flex flex-col gap-2"
       dir="rtl"
     >
-      <div className="flex-1">
-        <main className="container mx-auto py-8 space-y-6">
-          {/* Page Header */}
-          <PageTitle
-            title="تغییرات قیمت طلا"
-            description="نمایش تغییرات قیمت خرید و فروش طلا"
+      {/* Page Header */}
+      <PageTitle
+        title="تغییرات قیمت طلا"
+        description="نمایش تغییرات قیمت خرید و فروش طلا"
+      />
+
+      {/* Current Price Summary */}
+      <PriceSummaryCards latestPrice={priceData[0]} />
+
+      {/* Price Changes Table */}
+      <div>
+        <PriceTable
+          data={priceData}
+          columns={priceColumns}
+          timeRange={timeRange}
+          onTimeRangeChange={setTimeRange}
+        />
+
+        {/* Pagination Controls */}
+        {meta && (
+          <PaginationControls
+            meta={meta as any}
+            currentPage={currentPage}
+            pageSize={pageSize}
+            onPageChange={handlePageChange}
+            onPageSizeChange={handlePageSizeChange}
           />
-
-          {/* Current Price Summary */}
-          <PriceSummaryCards latestPrice={priceData[0]} />
-
-          {/* Price Changes Table */}
-          <div>
-            <PriceTable
-              priceData={priceData}
-              timeRange={timeRange}
-              onTimeRangeChange={setTimeRange}
-            />
-
-            {/* Pagination Controls */}
-            {meta && (
-              <PaginationControls
-                meta={meta as any}
-                currentPage={currentPage}
-                pageSize={pageSize}
-                onPageChange={handlePageChange}
-                onPageSizeChange={handlePageSizeChange}
-              />
-            )}
-          </div>
-        </main>
+        )}
       </div>
     </div>
   );
