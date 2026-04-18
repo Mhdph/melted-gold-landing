@@ -59,6 +59,7 @@
     "react-day-picker": "9.8.0",
     "react-dom": "^19",
     "react-hook-form": "^7.60.0",
+    "react-multi-date-picker": "^4.5.2",
     "react-resizable-panels": "^2.1.7",
     "recharts": "latest",
     "socket.io-client": "^4.8.1",
