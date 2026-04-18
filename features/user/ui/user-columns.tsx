@@ -1,12 +1,27 @@
-"use client";
+// features/user/ui/user-columns.tsx
 
 import { ColumnDef } from "@tanstack/react-table";
 import { IUser } from "../model/user-type";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import ActionButtons from "./action-buttons";
 import StatusActions from "./status-actions";
 
-export const columns: ColumnDef<IUser>[] = [
+// این کال‌بک به جدول پاس داده میشه برای کنترل انتخاب‌ها
+export const columns = (
+  onSelectUser: (id: string, selected: boolean) => void,
+): ColumnDef<IUser>[] => [
+  {
+    id: "select",
+    header: () => <span>انتخاب</span>,
+    cell: ({ row }) => (
+      <Checkbox
+        className="mr-2"
+        checked={row.original.isSelected}
+        onCheckedChange={(checked) => onSelectUser(row.original.id, !!checked)}
+      />
+    ),
+  },
   {
     accessorKey: "name",
     header: "نام",
@@ -28,7 +43,6 @@ export const columns: ColumnDef<IUser>[] = [
     header: "نوع کاربر",
     cell: ({ row }) => {
       const type = row.getValue("type");
-
       return <div>{type === "General" ? "عمومی" : "همکار"}</div>;
     },
   },
@@ -53,21 +67,15 @@ export const columns: ColumnDef<IUser>[] = [
     header: "تغییر وضعیت کاربر",
     cell: ({ row }) => {
       const user = row.original;
-
       return <StatusActions userId={user.id} verify={user.verify} />;
     },
   },
-
   {
     accessorKey: "action",
     header: "عملیات",
     cell: ({ row }) => {
       const user = row.original;
-      return (
-        <div>
-          <ActionButtons userId={user.id} verify={user.verify} />
-        </div>
-      );
+      return <ActionButtons userId={user.id} verify={user.verify} />;
     },
   },
 ];
