@@ -192,7 +192,7 @@ export default function TransactionsApprovalPage() {
       />
 
       {/* Pagination */}
-      <div className="bw-white">
+      <div className="bg-white">
         {meta.itemCount > 0 && (
           <PaginationControls
             meta={meta}
