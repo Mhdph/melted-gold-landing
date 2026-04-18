@@ -28,9 +28,14 @@ export default function ResetPassword({ setStep, phone }: LoginOtpProps) {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-      <Input placeholder="کد ارسال شده" {...form.register("otp")} />
+      <Input
+        className=" text-right bg-white dark:bg-white dark:text-gray-900 border-[#e8e3d6] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
+        placeholder="کد ارسال شده"
+        {...form.register("otp")}
+      />
 
       <Input
+        className=" text-right bg-white dark:bg-white dark:text-gray-900 border-[#e8e3d6] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
         placeholder="رمز جدید"
         type="password"
         {...form.register("newPassword")}

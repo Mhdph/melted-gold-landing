@@ -22,15 +22,24 @@ export default function LoginPassword({ setStep, setPhone }: LoginOtpProps) {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-      <Input placeholder="شماره موبایل" {...form.register("mobile")} />
+      <Input
+        className=" text-right bg-white dark:bg-white dark:text-gray-900 border-[#e8e3d6] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
+        placeholder="شماره موبایل"
+        {...form.register("mobile")}
+      />
 
       <Input
+        className=" text-right bg-white dark:bg-white dark:text-gray-900 border-[#e8e3d6] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
         placeholder="رمز عبور"
         type="password"
         {...form.register("password")}
       />
 
-      <Button type="submit" className="w-full" disabled={isPending}>
+      <Button
+        className="w-full bg-[#D4AF37] hover:bg-[#BFA67A] text-[#0F1724] font-bold py-2 rounded-xl transition-all hover:shadow-lg disabled:opacity-50"
+        type="submit"
+        disabled={isPending}
+      >
         ورود با رمز عبور
       </Button>
 

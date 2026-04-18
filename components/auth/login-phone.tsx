@@ -106,7 +106,7 @@ function LoginPhone({ setStep, setPhone }: LoginPhoneProps) {
         <Button
           type="submit"
           disabled={isLoading || phoneValue.length !== 11}
-          className="w-full bg-[#D4AF37] hover:bg-[#BFA67A] text-[#0F1724] font-bold py-6 rounded-xl transition-all hover:shadow-lg disabled:opacity-50"
+          className="w-full bg-[#D4AF37] hover:bg-[#edd3a5] text-[#0F1724] font-bold py-6 rounded-xl transition-all hover:shadow-lg disabled:opacity-50"
         >
           {isLoading ? (
             <span className="flex items-center gap-2">

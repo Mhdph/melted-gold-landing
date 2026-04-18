@@ -25,9 +25,17 @@ export default function ForgotPassword({ setStep, setPhone }: LoginOtpProps) {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-      <Input placeholder="شماره موبایل" {...form.register("mobile")} />
+      <Input
+        className="pr-10 text-left dir-ltr bg-white dark:bg-white dark:text-gray-900 border-[#e8e3d6] focus:border-[#D4AF37] focus:ring-[#D4AF37]"
+        placeholder="09121234567"
+        {...form.register("mobile")}
+      />
 
-      <Button type="submit" className="w-full" disabled={isPending}>
+      <Button
+        type="submit"
+        className="w-full bg-[#D4AF37] hover:bg-[#BFA67A] text-[#0F1724] font-bold py-2 rounded-xl transition-all hover:shadow-lg disabled:opacity-50"
+        disabled={isPending}
+      >
         ارسال کد بازیابی
       </Button>
 
