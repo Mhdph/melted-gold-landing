@@ -32,11 +32,14 @@ import {
 import { useLastTransaction } from "@/hooks/use-get-last-transaction-websocket";
 import { useState } from "react";
 import Loading from "@/components/ui/loading";
+import TransactionDataTable from "@/components/pages/admin/transactions/transaction-table";
+import { transactionColumns } from "@/components/pages/admin/transactions/transaction-columns";
+import PaginationControls from "@/components/pages/price-changes/pagination-controls";
 
 export default function TransactionsApprovalPage() {
   const { toast } = useToast();
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(10);
 
   // Initialize React Hook Form with Zod resolver
   const form = useForm<TransactionFiltersFormData>({
@@ -148,119 +151,58 @@ export default function TransactionsApprovalPage() {
     setValue("page", page);
   };
 
-  // Form submission handler
-  const onSubmit = (data: TransactionFiltersFormData) => {
-    // Handle form submission logic here
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    setCurrentPage(1); // Reset to first page when changing page size
   };
-
-  const totalPages = transactionsData?.meta
-    ? Math.ceil(transactionsData.meta.itemCount / watchedValues.pageSize)
-    : 1;
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error?.message}</div>;
   if (!transactionsData) return <div>No transactions found</div>;
   const pendingCount = transactionsData?.data.filter(isPending).length;
-
+  const meta = transactionsData?.meta || {
+    page: 1,
+    limit: 10,
+    itemCount: 0,
+    hasNextPage: false,
+  };
   return (
-    <Form {...form}>
-      <form onSubmit={handleSubmit(onSubmit)} className="p-6 lg:p-8 space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gold mb-2">
-              تایید تراکنش‌ها
-            </h1>
-            <p className="text-cream/60">
-              {pendingCount} تراکنش در انتظار تایید
-            </p>
-          </div>
+    <div className="p-6 lg:p-8  space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gold mb-2">تایید تراکنش‌ها</h1>
+          <p className="text-cream/60">{pendingCount} تراکنش در انتظار تایید</p>
         </div>
+      </div>
 
-        {/* Filters */}
-        {/* <TransactionFilters
+      {/* Filters */}
+      {/* <TransactionFilters
           searchQuery={searchQuery}
           filterStatus={filterStatus}
           onSearchChange={setSearchQuery}
           onFilterChange={setFilterStatus}
         /> */}
 
-        {/* Last Transaction Card */}
-        {/* {transactions?.msg && (
-          <LastTransactionCard
-            transaction={transactions.msg}
-            onApprove={handleApprove}
-            onReject={handleReject}
+      {/* Transaction Table */}
+
+      <TransactionDataTable
+        data={transactionsData.data}
+        columns={transactionColumns(handleApprove, handleReject)}
+      />
+
+      {/* Pagination */}
+      <div className="bw-white">
+        {meta.itemCount > 0 && (
+          <PaginationControls
+            meta={meta}
+            currentPage={currentPage}
+            pageSize={pageSize}
+            onPageChange={handlePageChange}
+            onPageSizeChange={handlePageSizeChange}
           />
-        )} */}
-
-        {/* Transaction Table */}
-        <TransactionTable
-          transactions={transactionsData.data}
-          onApprove={handleApprove}
-          onReject={handleReject}
-        />
-
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="flex justify-center mt-6">
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (watchedValues.page > 1) {
-                        handlePageChange(watchedValues.page - 1);
-                      }
-                    }}
-                    className={
-                      watchedValues.page <= 1
-                        ? "pointer-events-none opacity-50"
-                        : ""
-                    }
-                  />
-                </PaginationItem>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (page) => (
-                    <PaginationItem key={page}>
-                      <PaginationLink
-                        href="#"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handlePageChange(page);
-                        }}
-                        isActive={watchedValues.page === page}
-                      >
-                        {page}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ),
-                )}
-
-                <PaginationItem>
-                  <PaginationNext
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (watchedValues.page < totalPages) {
-                        handlePageChange(watchedValues.page + 1);
-                      }
-                    }}
-                    className={
-                      watchedValues.page >= totalPages
-                        ? "pointer-events-none opacity-50"
-                        : ""
-                    }
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </div>
         )}
-      </form>
-    </Form>
+      </div>
+    </div>
   );
 }

@@ -36,7 +36,7 @@ export default function TransferTable<TData, TValue>({
   });
 
   return (
-    <div className="overflow-hidden rounded-md border border-gold/20">
+    <div className="overflow-hidden bg-white p-2 rounded-md border border-gold/20">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

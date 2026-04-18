@@ -1,18 +1,12 @@
 import { BasePaginationResponse, BaseResponse } from "@/lib/response.interface";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "./constant";
+import { User } from "@/components/pages/admin/users/types";
 
 export type TransactionType = "buy" | "sell";
 export type TransactionStatus = "pending" | "approved" | "rejected";
 export type UserStatus = "pending" | "approved" | "rejected";
 export type FilterStatus = "all" | "pending" | "approved" | "rejected";
-
-export interface User {
-  id: string;
-  mobile: string;
-  phone: string;
-  verify: boolean;
-}
 
 export interface Transaction {
   id: string;
