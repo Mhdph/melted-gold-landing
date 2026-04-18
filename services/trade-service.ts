@@ -32,12 +32,16 @@ export interface CreateTransactionResponse {
   livePrice: number;
 }
 
-export const useGetTransactions = (page: number = 1, limit: number = 10) =>
+export const useGetTransactions = (
+  page: number = 1,
+  limit: number = 10,
+  filter: string = "{}",
+) =>
   useQuery({
-    queryKey: ["transactions", page, limit],
+    queryKey: ["transactions", page, limit, filter],
     queryFn: () =>
       apiClient.get<BasePaginationResponse<Transaction[]>>(
-        `/Transaction?filter={}&search={}&page=${page}&limit=${limit}`,
+        `/Transaction?filter=${filter}&search={}&page=${page}&limit=${limit}`,
       ),
   });
 

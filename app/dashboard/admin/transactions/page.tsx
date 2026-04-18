@@ -1,46 +1,34 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "@/hooks/use-toast";
-import { Form } from "@/components/ui/form";
+import { transactionColumns } from "@/components/pages/admin/transactions/transaction-columns";
 import TransactionFilters from "@/components/pages/admin/transactions/transaction-filters";
-import TransactionTable from "@/components/pages/admin/transactions/transaction-table";
-import LastTransactionCard from "@/components/pages/admin/transactions/last-transaction-card";
 import {
-  Transaction,
-  FilterStatus,
-} from "@/components/pages/admin/transactions/types";
-import { isPending } from "@/components/pages/admin/transactions/utils";
-import {
-  transactionFiltersSchema,
   TransactionFiltersFormData,
+  transactionFiltersSchema,
 } from "@/components/pages/admin/transactions/transaction-form-schema";
+import TransactionDataTable from "@/components/pages/admin/transactions/transaction-table";
+import { isPending } from "@/components/pages/admin/transactions/utils";
+import PaginationControls from "@/components/pages/price-changes/pagination-controls";
+import { useToast } from "@/hooks/use-toast";
 import {
   useApproveTransaction,
   useGetTransactions,
   useRejectTransaction,
 } from "@/services/trade-service";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import { useLastTransaction } from "@/hooks/use-get-last-transaction-websocket";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import Loading from "@/components/ui/loading";
-import TransactionDataTable from "@/components/pages/admin/transactions/transaction-table";
-import { transactionColumns } from "@/components/pages/admin/transactions/transaction-columns";
-import PaginationControls from "@/components/pages/price-changes/pagination-controls";
+import { useForm } from "react-hook-form";
 
 export default function TransactionsApprovalPage() {
   const { toast } = useToast();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
+  const [dateRange, setDateRange] = useState<{
+    from?: string;
+    to?: string;
+  }>({});
+  const [finalFilter, setFinalFilter] = useState<string>("{}");
   // Initialize React Hook Form with Zod resolver
   const form = useForm<TransactionFiltersFormData>({
     resolver: zodResolver(transactionFiltersSchema),
@@ -52,13 +40,11 @@ export default function TransactionsApprovalPage() {
     },
   });
 
-  const { watch, setValue, handleSubmit } = form;
+  const { watch, setValue } = form;
   const watchedValues = watch();
 
   const approveTransaction = useApproveTransaction();
   const rejectTransaction = useRejectTransaction();
-
-  const { transactions, isConnected } = useLastTransaction();
 
   const {
     data: transactionsData,
@@ -66,7 +52,28 @@ export default function TransactionsApprovalPage() {
     isError,
     error,
     refetch,
-  } = useGetTransactions(watchedValues.page, watchedValues.pageSize);
+  } = useGetTransactions(
+    watchedValues.page,
+    watchedValues.pageSize,
+    finalFilter,
+  );
+
+  const applyDateFilter = () => {
+    if (dateRange.from && dateRange.to) {
+      setFinalFilter(
+        JSON.stringify({
+          createdAt: {
+            gte: dateRange.from,
+            lte: dateRange.to,
+          },
+        }),
+      );
+    } else {
+      setFinalFilter("{}");
+    }
+
+    refetch();
+  };
 
   const handleApprove = async (transactionId: string, userName: string) => {
     try {
@@ -177,12 +184,11 @@ export default function TransactionsApprovalPage() {
       </div>
 
       {/* Filters */}
-      {/* <TransactionFilters
-          searchQuery={searchQuery}
-          filterStatus={filterStatus}
-          onSearchChange={setSearchQuery}
-          onFilterChange={setFilterStatus}
-        /> */}
+      <TransactionFilters
+        applyDateFilter={applyDateFilter}
+        dateRange={dateRange}
+        setDateRange={setDateRange}
+      />
 
       {/* Transaction Table */}
 
