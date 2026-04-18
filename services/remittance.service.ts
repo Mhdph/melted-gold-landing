@@ -30,8 +30,10 @@ export interface CreateTransferRequest {
 export interface TransferFilters {
   status?: string;
   type?: string;
-  dateFrom?: string;
-  dateTo?: string;
+  createdAt?: {
+    gte?: string;
+    lte?: string;
+  };
   page?: number;
   limit?: number;
 }
@@ -54,21 +56,15 @@ export const useCreateTransfer = () => {
 };
 
 // Get Transfers for Admin Panel (with pagination)
-export const useGetTransfers = (filters: TransferFilters = {}) => {
-  const queryParams = new URLSearchParams();
-
-  if (filters.status) queryParams.append("status", filters.status);
-  if (filters.type) queryParams.append("type", filters.type);
-  if (filters.dateFrom) queryParams.append("dateFrom", filters.dateFrom);
-  if (filters.dateTo) queryParams.append("dateTo", filters.dateTo);
-  if (filters.page) queryParams.append("page", filters.page.toString());
-  if (filters.limit) queryParams.append("limit", filters.limit.toString());
-
-  const queryString = queryParams.toString();
-  const url = queryString ? `/transfer?${queryString}` : "/transfer";
+export const useGetTransfers = (
+  page: number = 1,
+  limit: number = 10,
+  filter: string = "{}",
+) => {
+  const url = `/transfer?filter=${filter}&search={}&page=${page}&limit=${limit}`;
 
   return useQuery({
-    queryKey: ["transfers", filters],
+    queryKey: ["transfers", filter, page, limit],
     queryFn: () => apiClient.get<BasePaginationResponse<Transfer[]>>(url),
   });
 };
@@ -77,15 +73,25 @@ export const useGetTransfers = (filters: TransferFilters = {}) => {
 export const useGetUserTransfers = (filters: TransferFilters = {}) => {
   const queryParams = new URLSearchParams();
 
-  if (filters.status) queryParams.append("status", filters.status);
-  if (filters.type) queryParams.append("type", filters.type);
-  if (filters.dateFrom) queryParams.append("dateFrom", filters.dateFrom);
-  if (filters.dateTo) queryParams.append("dateTo", filters.dateTo);
+  // فقط در صورتی که فیلتر تاریخ وجود داشت، stringify کن
+  if (filters.createdAt) {
+    queryParams.append(
+      "filter",
+      JSON.stringify({
+        createdAt: {
+          gte: filters.createdAt.gte,
+          lte: filters.createdAt.lte,
+        },
+      }),
+    );
+  }
+
   if (filters.page) queryParams.append("page", filters.page.toString());
   if (filters.limit) queryParams.append("limit", filters.limit.toString());
 
-  const queryString = queryParams.toString();
-  const url = queryString ? `/transfer/user?${queryString}` : "/transfer/user";
+  const url = queryParams.toString()
+    ? `/transfer/user?${queryParams.toString()}`
+    : "/transfer/user";
 
   return useQuery({
     queryKey: ["user-transfers", filters],

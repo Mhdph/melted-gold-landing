@@ -1,82 +1,70 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Search, Filter } from "lucide-react";
-import { FilterStatus } from "./types";
+import { Dispatch, SetStateAction } from "react";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
+import DatePicker from "react-multi-date-picker";
 
 interface TransferFiltersProps {
-  searchQuery: string;
-  filterStatus: FilterStatus;
-  onSearchChange: (query: string) => void;
-  onFilterChange: (status: FilterStatus) => void;
-  onClearFilters: () => void;
+  applyDateFilter: () => void;
+  dateRange: {
+    from?: string | undefined;
+    to?: string | undefined;
+  };
+  setDateRange: Dispatch<
+    SetStateAction<{
+      from?: string;
+      to?: string;
+    }>
+  >;
 }
-
 export default function TransferFilters({
-  searchQuery,
-  filterStatus,
-  onSearchChange,
-  onFilterChange,
-  onClearFilters,
+  applyDateFilter,
+  dateRange,
+  setDateRange,
 }: TransferFiltersProps) {
   return (
-    <Card className="bg-white border-gold/20">
-      <CardContent className="p-6">
-        <div className="flex flex-col sm:flex-row gap-4 items-end">
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-cream/80 mb-2">
-              جستجو در گیرندگان
-            </label>
-            <div className="relative">
-              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-cream/40 h-4 w-4" />
-              <Input
-                type="text"
-                placeholder="نام گیرنده را وارد کنید..."
-                value={searchQuery}
-                onChange={(e) => onSearchChange(e.target.value)}
-                className="pr-10 bg-navy border-gold/30 text-cream placeholder:text-cream/40"
-              />
-            </div>
-          </div>
-
-          <div className="sm:w-48">
-            <label className="block text-sm font-medium text-cream/80 mb-2">
-              نوع انتقال
-            </label>
-            <Select
-              value={filterStatus}
-              onValueChange={(value: FilterStatus) => onFilterChange(value)}
-            >
-              <SelectTrigger className="bg-navy border-gold/30 text-cream">
-                <SelectValue placeholder="انتخاب کنید" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">همه</SelectItem>
-                <SelectItem value="gold">طلا</SelectItem>
-                <SelectItem value="mony">پول</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="flex gap-2">
-            <Button
-              onClick={onClearFilters}
-              variant="outline"
-              className="border-gold/30 text-cream hover:bg-gold/10"
-            >
-              <Filter className="h-4 w-4 ml-2" />
-              پاک کردن فیلترها
-            </Button>
-          </div>
+    <div className="flex flex-col gap-4 p-4 bg-white dark:bg-slate-800 rounded-md border border-gold/20">
+      <div className="flex gap-4 items-end">
+        <div className="flex flex-col">
+          <label className="text-sm text-cream/80 mb-1">از تاریخ</label>
+          <DatePicker
+            calendar={persian}
+            locale={persian_fa}
+            inputClass="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm shadow-none placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:border-slate-700 dark:text-slate-50 dark:focus:ring-slate-400 dark:focus:ring-offset-slate-900"
+            value={dateRange.from ? new Date(dateRange.from) : null}
+            onChange={(d) => {
+              if (!d) return;
+              setDateRange((prev) => ({
+                ...prev,
+                from: d.toDate()?.toISOString(),
+              }));
+            }}
+            className="bg-white text-black rounded-md p-2"
+          />
         </div>
-      </CardContent>
-    </Card>
+
+        <div className="flex flex-col">
+          <label className="text-sm text-cream/80 mb-1">تا تاریخ</label>
+          <DatePicker
+            inputClass="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm shadow-none placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:border-slate-700 dark:text-slate-50 dark:focus:ring-slate-400 dark:focus:ring-offset-slate-900"
+            calendar={persian}
+            locale={persian_fa}
+            value={dateRange.to ? new Date(dateRange.to) : null}
+            onChange={(d) => {
+              if (!d) return;
+              setDateRange((prev) => ({
+                ...prev,
+                to: d.toDate()?.toISOString(),
+              }));
+            }}
+            className="bg-white text-black rounded-md p-2"
+          />
+        </div>
+
+        <Button className=" text-black px-5 py-2" onClick={applyDateFilter}>
+          جستجو
+        </Button>
+      </div>
+    </div>
   );
 }
