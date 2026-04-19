@@ -70,31 +70,15 @@ export const useGetTransfers = (
 };
 
 // Get User Transfers (with pagination)
-export const useGetUserTransfers = (filters: TransferFilters = {}) => {
-  const queryParams = new URLSearchParams();
-
-  // فقط در صورتی که فیلتر تاریخ وجود داشت، stringify کن
-  if (filters.createdAt) {
-    queryParams.append(
-      "filter",
-      JSON.stringify({
-        createdAt: {
-          gte: filters.createdAt.gte,
-          lte: filters.createdAt.lte,
-        },
-      }),
-    );
-  }
-
-  if (filters.page) queryParams.append("page", filters.page.toString());
-  if (filters.limit) queryParams.append("limit", filters.limit.toString());
-
-  const url = queryParams.toString()
-    ? `/transfer/user?${queryParams.toString()}`
-    : "/transfer/user";
+export const useGetUserTransfers = (
+  page: number = 1,
+  limit: number = 10,
+  filter: string = "{}",
+) => {
+  const url = `/transfer?filter=${filter}&search={}&page=${page}&limit=${limit}`;
 
   return useQuery({
-    queryKey: ["user-transfers", filters],
+    queryKey: ["user-transfers", filter],
     queryFn: () => apiClient.get<BasePaginationResponse<Transfer[]>>(url),
   });
 };

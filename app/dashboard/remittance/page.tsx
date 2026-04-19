@@ -1,30 +1,27 @@
 "use client";
 
-import { useState } from "react";
 import PageTitle from "@/components/page-title";
+import PaginationControls from "@/components/pages/price-changes/pagination-controls";
 import RemittanceForm from "@/components/pages/remittance/remittance-form";
 import RemittanceList from "@/components/pages/remittance/remittance-list";
 import {
+  CreateTransferRequest,
+  FilterUnit,
   Remittance,
   SortBy,
-  FilterUnit,
-  CreateTransferRequest,
-  TransferFilters,
 } from "@/components/pages/remittance/types";
+import { Card, CardContent } from "@/components/ui/card";
 import {
-  useGetUserTransfers,
   useCreateTransfer,
-  useGetTransferStats,
+  useGetUserTransfers,
 } from "@/services/remittance.service";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { DollarSign, TrendingUp, Clock, CheckCircle } from "lucide-react";
+import { useState } from "react";
 
 export default function RemittancePage() {
-  const [sortBy, setSortBy] = useState<SortBy>("date");
+  const [pageSize, setPageSize] = useState(10);
   const [filterUnit, setFilterUnit] = useState<FilterUnit>("all");
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10);
+  const [finalFilter, setFinalFilter] = useState<string>("{}");
 
   // API hooks
   const createTransfer = useCreateTransfer();
@@ -34,17 +31,7 @@ export default function RemittancePage() {
     isError,
     error,
     refetch,
-  } = useGetUserTransfers({
-    page: currentPage,
-    limit: pageSize,
-    type:
-      filterUnit === "all"
-        ? undefined
-        : filterUnit === "گرم طلا"
-          ? "remittance"
-          : "transfer",
-  });
-  const { data: statsData } = useGetTransferStats();
+  } = useGetUserTransfers(currentPage, pageSize, finalFilter);
 
   const handleNewRemittance = async (newRemittance: CreateTransferRequest) => {
     const transferData: CreateTransferRequest = {
@@ -71,9 +58,6 @@ export default function RemittancePage() {
 
   const remittances =
     transfersData?.data?.map(convertTransferToRemittance) || [];
-  const totalPages = transfersData?.meta
-    ? Math.ceil(transfersData.meta.itemCount / pageSize)
-    : 1;
 
   const filteredRemittances = remittances
     .filter((r) => filterUnit === "all" || r.valueType === filterUnit)
@@ -107,6 +91,22 @@ export default function RemittancePage() {
     );
   }
 
+  const meta = transfersData?.meta || {
+    page: 1,
+    limit: 10,
+    itemCount: 0,
+    hasNextPage: false,
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    setCurrentPage(1); // Reset to first page when changing page size
+  };
+
   return (
     <div className="min-h-screen bg-[#F6F5EE] dark:bg-slate-800" dir="rtl">
       <main className="px-4 py-4 space-y-6">
@@ -117,71 +117,6 @@ export default function RemittancePage() {
         />
 
         {/* Statistics Cards */}
-        {statsData?.data && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card className="bg-white border-gray-200">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-gray-600">
-                  کل حواله‌ها
-                </CardTitle>
-                <DollarSign className="h-4 w-4 text-blue-600" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-blue-600">
-                  {statsData.data.totalTransfers}
-                </div>
-                <p className="text-xs text-gray-500">تعداد کل حواله‌ها</p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white dark:bg-slate-800 border-gray-200">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-gray-600">
-                  در انتظار
-                </CardTitle>
-                <Clock className="h-4 w-4 text-yellow-600" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-yellow-600">
-                  {statsData.data.pendingTransfers}
-                </div>
-                <p className="text-xs text-gray-500">حواله‌های در انتظار</p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white dark:bg-slate-800 border-gray-200">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-gray-600">
-                  تکمیل شده
-                </CardTitle>
-                <CheckCircle className="h-4 w-4 text-green-600" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-green-600">
-                  {statsData.data.completedTransfers}
-                </div>
-                <p className="text-xs text-gray-500">حواله‌های تکمیل شده</p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white dark:bg-slate-800 border-gray-200">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-gray-600">
-                  مبلغ کل
-                </CardTitle>
-                <TrendingUp className="h-4 w-4 text-purple-600" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-purple-600">
-                  {new Intl.NumberFormat("fa-IR").format(
-                    statsData.data.totalAmount,
-                  )}
-                </div>
-                <p className="text-xs text-gray-500">ریال</p>
-              </CardContent>
-            </Card>
-          </div>
-        )}
 
         {/* New Remittance Form */}
         <RemittanceForm
@@ -192,14 +127,20 @@ export default function RemittancePage() {
         {/* Remittance History */}
         <RemittanceList
           remittances={filteredRemittances}
-          sortBy={sortBy}
-          filterUnit={filterUnit}
-          onSortChange={setSortBy}
-          onFilterChange={setFilterUnit}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
+          setFinalFilter={setFinalFilter}
+          refetch={refetch}
         />
+        <div className="bg-white rounded-md">
+          {meta.itemCount > 0 && (
+            <PaginationControls
+              meta={meta}
+              currentPage={currentPage}
+              pageSize={pageSize}
+              onPageChange={handlePageChange}
+              onPageSizeChange={handlePageSizeChange}
+            />
+          )}
+        </div>
       </main>
     </div>
   );

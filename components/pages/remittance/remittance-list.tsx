@@ -6,40 +6,45 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+
 import { Calendar, User, Weight } from "lucide-react";
 import { Remittance } from "./types";
 import RemittanceFilters from "./remittance-filters";
-import { SortBy, FilterUnit } from "./types";
+import { Dispatch, SetStateAction, useState } from "react";
 
 interface RemittanceListProps {
   remittances: Remittance[];
-  sortBy: SortBy;
-  filterUnit: FilterUnit;
-  onSortChange: (value: SortBy) => void;
-  onFilterChange: (value: FilterUnit) => void;
-  currentPage?: number;
-  totalPages?: number;
-  onPageChange?: (page: number) => void;
+  setFinalFilter: Dispatch<SetStateAction<string>>;
+  refetch: any;
 }
 
 export default function RemittanceList({
   remittances,
-  sortBy,
-  filterUnit,
-  onSortChange,
-  onFilterChange,
-  currentPage = 1,
-  totalPages = 1,
-  onPageChange,
+  setFinalFilter,
+  refetch,
 }: RemittanceListProps) {
+  const [dateRange, setDateRange] = useState<{
+    from?: string;
+    to?: string;
+  }>({});
+
+  const applyDateFilter = () => {
+    if (dateRange.from && dateRange.to) {
+      setFinalFilter(
+        JSON.stringify({
+          createdAt: {
+            gte: dateRange.from,
+            lte: dateRange.to,
+          },
+        }),
+      );
+    } else {
+      setFinalFilter("{}");
+    }
+
+    refetch();
+  };
+
   return (
     <Card className="bg-white dark:bg-slate-800 border-gold/20">
       <CardHeader>
@@ -52,10 +57,9 @@ export default function RemittanceList({
           </div>
 
           <RemittanceFilters
-            sortBy={sortBy}
-            filterUnit={filterUnit}
-            onSortChange={onSortChange}
-            onFilterChange={onFilterChange}
+            applyDateFilter={applyDateFilter}
+            dateRange={dateRange}
+            setDateRange={setDateRange}
           />
         </div>
       </CardHeader>
@@ -108,64 +112,6 @@ export default function RemittanceList({
             </div>
           ))}
         </div>
-
-        {/* Pagination */}
-        {totalPages > 1 && onPageChange && (
-          <div className="flex justify-center mt-6">
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (currentPage > 1) {
-                        onPageChange(currentPage - 1);
-                      }
-                    }}
-                    className={
-                      currentPage <= 1 ? "pointer-events-none opacity-50" : ""
-                    }
-                  />
-                </PaginationItem>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (page) => (
-                    <PaginationItem key={page}>
-                      <PaginationLink
-                        href="#"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          onPageChange(page);
-                        }}
-                        isActive={currentPage === page}
-                      >
-                        {page}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ),
-                )}
-
-                <PaginationItem>
-                  <PaginationNext
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (currentPage < totalPages) {
-                        onPageChange(currentPage + 1);
-                      }
-                    }}
-                    className={
-                      currentPage >= totalPages
-                        ? "pointer-events-none opacity-50"
-                        : ""
-                    }
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </div>
-        )}
       </CardContent>
     </Card>
   );
