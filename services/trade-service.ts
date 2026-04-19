@@ -54,12 +54,42 @@ export const useCreateTransaction = () =>
       ),
   });
 
-export const useGetUserTransactions = () =>
-  useQuery({
-    queryKey: ["user-transactions"],
-    queryFn: () =>
-      apiClient.get<BasePaginationResponse<Transaction[]>>(`/Transaction/user`),
+interface TransactionFilters {
+  page?: number;
+  limit?: number;
+  createdAt?: {
+    gte?: string;
+    lte?: string;
+  };
+}
+
+export const useGetUserTransactions = (filters: TransactionFilters = {}) => {
+  const queryParams = new URLSearchParams();
+
+  if (filters.page) queryParams.append("page", filters.page.toString());
+  if (filters.limit) queryParams.append("limit", filters.limit.toString());
+
+  if (filters.createdAt) {
+    queryParams.append(
+      "filter",
+      JSON.stringify({
+        createdAt: {
+          gte: filters.createdAt.gte,
+          lte: filters.createdAt.lte,
+        },
+      }),
+    );
+  }
+
+  const url = queryParams.toString()
+    ? `/Transaction/user?${queryParams.toString()}`
+    : `/Transaction/user`;
+
+  return useQuery({
+    queryKey: ["user-transactions", filters],
+    queryFn: () => apiClient.get<BasePaginationResponse<Transaction[]>>(url),
   });
+};
 
 export const useApproveTransaction = () => {
   const queryClient = useQueryClient();
